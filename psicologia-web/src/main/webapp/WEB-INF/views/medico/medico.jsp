@@ -6,33 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript">
-//     $("#formId").submit(function(){
-//         alert("oi");
-//         var data = {};
-//         data['identificaoCliente'] = $('[name="identificaoCliente"]').val();
-//         data['velocidade'] = $('[name="velocidade"]').val();
-//         $.ajax({
-//         headers: {
-//             Accept: "application/json; charset=utf-8",
-//             "Content-Type": "application/json; charset=utf-8"
-//         },
-//         type: "POST",
-//         url: "/ws/mensagem",
-//         data: JSON.stringify(data),
-//         contentType: "application/json; charset=utf-8",
-//         dataType: "json",
-//         beforeSend: function(xhr) {
-
-//         },
-//         success: function(data) {
-
-//         },
-
-//        return false; //Prevent normal submitting of the form
-//     });
-        
-    </script>
+    
 </head>
 <body>
 	<h1>Sala do Médico</h1>
