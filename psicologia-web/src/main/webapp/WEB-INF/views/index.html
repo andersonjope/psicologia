@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<label id="label-1">Name:</label>
+	
+	var stompClient = null; 
+
+        function setConnected(connected) {
+            document.getElementById('connect').disabled = connected;
+            document.getElementById('disconnect').disabled = !connected;
+            document.getElementById('calculationDiv').style.visibility = connected ? 'visible' : 'hidden';
+            document.getElementById('calResponse').innerHTML = '';
+        }
+
+        function connect() {
+            var socket = new SockJS('/psicologia-web/chat');
+			stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                setConnected(true);
+//                 console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/messages', function(calResult){
+                	var from = JSON.parse(calResult.body).from;
+                	var text = JSON.parse(calResult.body).text;
+                	showResult(from, text);
+                });
+            });
+        }
+
+        function disconnect() {
+            stompClient.disconnect();
+            setConnected(false);
+            console.log("Disconnected");
+        }
+
+        function sendNum() {
+            var from = document.getElementById('from').value;
+            var text = document.getElementById('text').value;
+            stompClient.send("/app/chat", {}, JSON.stringify({ 'from': from, 'text': text }));
+        }
+
+        function showResult(from, text) {
+            var response = document.getElementById('calResponse');
+            var p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            console.log("result: " + from + " <> " + text);
+            p.appendChild(document.createTextNode(from + " <> " + text));
+            response.appendChild(p);
+        }
+	
+</body>
+</html>

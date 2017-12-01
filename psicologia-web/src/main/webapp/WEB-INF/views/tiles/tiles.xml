@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE tiles-definitions PUBLIC  
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="template" template="/WEB-INF/views/tiles/template/template.jsp">
+		<put-attribute name="title" value="*****" />
+		<put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
+		<put-attribute name="content" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+	</definition>
+	
+	<definition name="home" extends="template">
+		<put-attribute name="title" value="Médico/Cliente" />
+		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
+	</definition>
+	
+	<definition name="cliente" extends="template">
+		<put-attribute name="title" value="Cliente" />
+		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
+	</definition>
+	
+	<definition name="medico" extends="template">
+		<put-attribute name="title" value="Médico" />
+		<put-attribute name="content" value="/WEB-INF/views/medico/medico.jsp" />
+	</definition>
+	
+</tiles-definitions>
