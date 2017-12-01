@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>br.com.jope</groupId>
+  <artifactId>psicologia</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+  <properties>
+  	<java-version>1.7</java-version>
+	<org.springframework-version>4.3.12.RELEASE</org.springframework-version>
+	<org.springframework.security.web-version>4.2.3.RELEASE</org.springframework.security.web-version>
+	<org.aspectj-version>1.8.1</org.aspectj-version>
+	<org.slf4j-version>1.7.12</org.slf4j-version>
+	<jackson-version>2.7.3</jackson-version>
+  </properties>
+  
+  <modules>
+  	<module>psicologia-core</module>
+  	<module>psicologia-web</module>
+  </modules>
+  
+   <build>
+   	<finalName>psicologia-web</finalName>
+   	
+	<plugins>
+	
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.6.1</version>
+			<configuration>
+				<source>${java-version}</source>
+				<target>${java-version}</target>
+			</configuration>
+		</plugin>
+
+	</plugins>
+
+</build>
+  
+</project>
