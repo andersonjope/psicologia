@@ -19,18 +19,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages={"br.com.jope.psicologia.services"})
+@ComponentScan(basePackages={"br.com.jope.psicologia.services", "br.com.jope.psicologia.persistence"})
 public class PersistenceJPAConfig {
 
 	   @Bean
 	   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-//	      em.setDataSource(getDataSource());
+	      em.setDataSource(getDataSource());
 	      em.setPackagesToScan(new String[] {"br.com.jope.psicologia.entity"});
 	 
 	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 	      em.setJpaVendorAdapter(vendorAdapter);
-//	      em.setJpaProperties(addItionalProperties());
+	      em.setJpaProperties(addProperties());
 	 
 	      return em;
 	   }
@@ -38,10 +38,10 @@ public class PersistenceJPAConfig {
 	   @Bean
 	   public DataSource getDataSource(){
 	      DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	      dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-	      dataSource.setUrl("jdbc:mysql://localhost:3306/spring_jpa");
-	      dataSource.setUsername( "tutorialuser" );
-	      dataSource.setPassword( "tutorialmy5ql" );
+	      dataSource.setDriverClassName("org.postgresql.Driver");
+	      dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+	      dataSource.setUsername( "psi" );
+	      dataSource.setPassword( "psi" );
 	      return dataSource;
 	   }
 	 
@@ -58,12 +58,13 @@ public class PersistenceJPAConfig {
 	      return new PersistenceExceptionTranslationPostProcessor();
 	   }
 	 
-	   Properties addItionalProperties() {
+	   Properties addProperties() {
 	      Properties properties = new Properties();
-	      properties.setProperty("hibernate.hbm2ddl.auto", "update");/*"create-drop"*/
-	      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+	      properties.setProperty("hibernate.hbm2ddl.auto", "validate");/*"create-drop, update"*/
+	      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
 	      properties.setProperty("hibernate.show_sql", "true");
 	      properties.setProperty("hibernate.format_sql","false");
+	      properties.setProperty("hibernate.default_schema","psicologia");
 	      return properties;
 	   }
 	
