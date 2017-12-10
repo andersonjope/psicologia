@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioMedico;
+import br.com.jope.psicologia.services.UsuarioService;
 import br.com.jope.psicologia.view.push.MovieEventSocketClient;
 
 @Controller
@@ -27,9 +31,18 @@ public class HomeController {
 	private static List<Integer> countClienteList;
 	private FormularioMedico formularioMedico;
 	
+	@Autowired(required=true)
+	@Qualifier("usuarioService")
+	private UsuarioService usuarioService;
+	
 	@RequestMapping(value="/medico", method = RequestMethod.GET)
 	public ModelAndView medico(Model model) {
 		addModelAttribute(model);
+		try {
+			usuarioService.getAll();
+		} catch (BussinessException e) {
+			e.printStackTrace();
+		}
 		return new ModelAndView("medico");
 	}
 

@@ -6,9 +6,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.jope.psicologia.entity.BaseEntity;
 import br.com.jope.psicologia.exception.BussinessException;
 
+@Repository("repositoryService")
+@Transactional
 public class RepositoryServiceCore<E extends BaseEntity> implements RepositoryService<E> {
 
 	private static final long serialVersionUID = 1489170320973529521L;

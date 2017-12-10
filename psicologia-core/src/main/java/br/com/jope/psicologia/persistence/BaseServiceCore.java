@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jope.psicologia.entity.BaseEntity;
 import br.com.jope.psicologia.exception.BussinessException;
@@ -13,11 +15,13 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 	private static final long serialVersionUID = -4048759443768481563L;
 	
 	@Autowired
+	@Qualifier("repositoryService")
 	private RepositoryService<E> repository;
 	
 	protected abstract Class<E> getBeanClass();
 	
 	@Override
+	@Transactional(readOnly=false)
 	public E alterar(E entity) throws BussinessException {
 		try {		
 			return repository.update(entity);
@@ -30,6 +34,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void excluir(E entity) throws BussinessException {
 		try {		
 			repository.delete(entity);
@@ -42,6 +47,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 	}
 
 	@Override
+	@Transactional(readOnly=false)
 	public void incluir(E entity) throws BussinessException {
 		try {		
 			repository.persist(entity);
@@ -55,6 +61,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
+	@Transactional(readOnly=true)
 	public E getId(Class entity, Serializable id) throws BussinessException {
 		try {		
 			return repository.getId(entity, id);
@@ -67,6 +74,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public List<E> getAll() throws BussinessException {
 		try {		
 			return repository.getAll(getBeanClass());
