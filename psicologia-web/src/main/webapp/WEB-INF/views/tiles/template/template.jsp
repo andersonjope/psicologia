@@ -9,10 +9,12 @@
 <html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' href='webjars/bootstrap/4.0.0-alpha.6-1/css/bootstrap.min.css'>
+    <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="resources/css/bootstrap/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="resources/css/sb-admin.min.css">
     
-    <script type="text/javascript" src="webjars/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="webjars/bootstrap/4.0.0-alpha.6-1/js/bootstrap.min.js"></script>
+
     
 	<style type="text/css">
 		#template, .header, .menu-content, .footer{
@@ -41,7 +43,7 @@
 	</style>
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
-<body>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<noscript><h2>Enable Java script</h2></noscript>	
 	<div id="template">
 		<div class="header">
@@ -59,6 +61,14 @@
 			<tiles:insertAttribute name="footer"/>
 		</div>
 	</div>
-
+	
+    <script type="text/javascript" src="resources/js/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="resources/js/bootstrap/js/bootstrap.bundle.min.js"></script>
+	
+	<script type="text/javascript" src="resources/js/jquery-easing/jquery.easing.min.js"></script>
+	
+	<script type="text/javascript" src="resources/js/sb-admin.min.js"></script>
+	<script type="text/javascript" src="resources/js/sb-admin-charts.min.js"></script>
+	<script type="text/javascript" src="resources/js/sb-admin-datatables.min.js"></script>
 </body>
 </html>
