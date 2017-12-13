@@ -22,6 +22,11 @@
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
 	</definition>
 	
+	<definition name="cadastrarCliente" extends="template">
+		<put-attribute name="title" value="Cadastro Cliente" />
+		<put-attribute name="content" value="/WEB-INF/views/cliente/cadastrarCliente.jsp" />
+	</definition>
+	
 	<definition name="medico" extends="template">
 		<put-attribute name="title" value="Médico" />
 		<put-attribute name="content" value="/WEB-INF/views/medico/medico.jsp" />

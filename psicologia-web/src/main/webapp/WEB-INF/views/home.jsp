@@ -4,8 +4,6 @@
 <html>
 
 <body>
-	<a href="medico">Médico</a> 
-	<br />
-	<a href="cliente">Cliente</a>
+	
 </body>
 </html>

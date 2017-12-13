@@ -10,9 +10,13 @@
 					<span class="nav-link-text">Cliente</span>
 				</a>
 				<ul class="sidenav-second-level collapse" id="collapseComponents">
-					<li><a href="cliente"><i class="fa fa-floppy-o"></i> Cadastrar Cliente</a></li>
-					<li><a href="cards.html"><i class="fa fa-list"></i> Sessão Cliente</a></li>
-				</ul></li>
+					<li>
+						<a href="cadastrarCliente">
+							<i class="fa fa-floppy-o"></i> Cadastrar Cliente
+						</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </nav>

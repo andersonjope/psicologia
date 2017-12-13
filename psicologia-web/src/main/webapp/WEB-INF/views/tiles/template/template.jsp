@@ -17,12 +17,16 @@
 
     
 	<style type="text/css">
+		.error{
+			color: red;
+			font-weight: bold;
+		}
 		#template, .header, .menu-content, .footer{
 			width: 100%;
 			float: left;
 		}
 		.header {
-			
+			display: none;
 		}
 		.menu-content{
 			padding: 10px;
@@ -49,11 +53,11 @@
 		<div class="header">
 			<tiles:insertAttribute name="header"/>			
 		</div>
-		<div class="menu-content">
+		<div class="menu-content content-wrapper">
 			<div class="menu">
 				<tiles:insertAttribute name="menu"/>		
 			</div>
-			<div class="content">
+			<div class="content container-fluid">
 				<tiles:insertAttribute name="content"/>	
 			</div>
 		</div>
