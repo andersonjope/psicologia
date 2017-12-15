@@ -1,10 +1,32 @@
 package br.com.jope.psicologia.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class FormularioMedico {
 
+	@NotEmpty(message="Preenchimento obrigatório.")
+	private String deNome;
+	
+	@NotEmpty(message="Preenchimento obrigatório.")
+	@Email(message="E-mail inválido.")
+	private String deLogin;
+	
 	private String identificaoCliente;
 	private String velocidade;
 	
+	public String getDeNome() {
+		return deNome;
+	}
+	public void setDeNome(String deNome) {
+		this.deNome = deNome;
+	}
+	public String getDeLogin() {
+		return deLogin;
+	}
+	public void setDeLogin(String deLogin) {
+		this.deLogin = deLogin;
+	}
 	public String getIdentificaoCliente() {
 		return identificaoCliente;
 	}

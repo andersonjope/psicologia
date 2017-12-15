@@ -5,14 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="usuario")
+@NamedQueries({
+	@NamedQuery(name=Usuario.FIND_USUARIO_LOGIN, query="select u from Usuario u where u.deLogin = :deLogin ")
+})
 public class Usuario extends BaseEntity {
 
 	private static final long serialVersionUID = 1503719338265091527L;
+	public static final String FIND_USUARIO_LOGIN = "Usuario.findUsuarioLogin";
 
 	@Id
 	@SequenceGenerator(name = "seq_nu_usuario", sequenceName = "seq_nu_usuario", allocationSize = 1, initialValue = 1)

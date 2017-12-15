@@ -9,12 +9,12 @@
 </head>
 <div class="row">
 	<div class="col-xl-10 col-sm-6 mb-3">
-		<div class="card text-white bg-success o-hidden h-100">
+		<div class="card text-white bg-warning o-hidden h-100">
 			<div class="card-body">
 				<div class="card-body-icon">
 					<i class="fa fa-fw fa-list"></i>
 				</div>
-				<div class="mr-5">Cadastro de Clientes</div>
+				<div class="mr-5">Cadastro de Médico</div>
 			</div>
 			<div id="page-wrapper">
             	<div class="row">
@@ -23,8 +23,8 @@
 							<div class="panel-body">
 								<div class="row">
 									<div class="col-lg-6">
-										<spring:url value="/salvarCliente" var="salvarCliente" />
-										<form:form id="formId" modelAttribute="formularioCliente" action="${salvarCliente}" method="POST" >
+										<spring:url value="/salvarMedico" var="salvarMedico" />
+										<form:form id="formId" modelAttribute="formularioMedico" action="${salvarMedico}" method="POST" >
 											<div class="form-group">
 												<label>Nome:</label> 
 												<form:input path="deNome" id="deNome" size="50"/>
@@ -50,13 +50,13 @@
             </div>
 		</div>
 	</div>
-	<c:if test="${not empty clienteList}">
+	<c:if test="${not empty medicoList}">
 		<div id="page-wrapper">
 			<div class="row">
 		        <div class="col-lg-12">
 		            <div class="panel panel-default">
 		                <div class="panel-heading">
-		                    Lista de Clientes
+		                    Lista de Médico
 		                </div>
 		                <!-- /.panel-heading -->
 		                <div class="panel-body">
@@ -69,10 +69,10 @@
 			                            </tr>
 			                        </thead>
 			                        <tbody>
-					                  	<c:forEach items="${clienteList}" varStatus="vs" var="c">
+					                  	<c:forEach items="${medicoList}" varStatus="vs" var="m">
 					                  		<tr class="gradeX">
-			                               		<td><c:out value ="${c.deNome}"/></td>
-			                               		<td><c:out value ="${c.usuario.deLogin}"/></td>
+			                               		<td><c:out value ="${m.deNome}"/></td>
+			                               		<td><c:out value ="${m.usuario.deLogin}"/></td>
 			                               	</tr>
 					                  	</c:forEach>
 				                 	</tbody>
@@ -83,6 +83,6 @@
 		        </div>
 		   	</div>
 	   	</div>
-	  </c:if>
+   	</c:if>
 </div>
 </html>

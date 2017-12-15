@@ -1,5 +1,7 @@
 package br.com.jope.psicologia.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import br.com.jope.psicologia.entity.Usuario;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioCliente;
 import br.com.jope.psicologia.services.ClienteService;
+import br.com.jope.psicologia.services.UsuarioService;
 
 @Controller
 public class ClienteController {
@@ -23,6 +26,10 @@ public class ClienteController {
 	@Autowired(required=true)
 	@Qualifier("clienteService")
 	private ClienteService clienteService;
+	
+	@Autowired(required=true)
+	@Qualifier("usuarioService")
+	private UsuarioService usuarioService;
 	
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
 	public String cliente(Model model) {
@@ -32,6 +39,7 @@ public class ClienteController {
 	@RequestMapping(value="/cadastrarCliente", method = RequestMethod.GET)
 	public String cadastrarCliente(Model model) {
 		model.addAttribute("formularioCliente", new FormularioCliente());
+		loadClienteList(model);
 		return "cadastrarCliente";
 	}
 	
@@ -39,7 +47,13 @@ public class ClienteController {
 	public String salvarCliente(Model model, @Valid @ModelAttribute("formularioCliente") FormularioCliente formularioCliente, BindingResult result) {
 		try {
 			if(result.hasErrors()) {
+				loadClienteList(model);
 				return "cadastrarCliente";			
+			}
+			
+			if(usuarioService.validarUsuarioLogin(formularioCliente.getDeLogin())) {
+				loadClienteList(model);
+				return "cadastrarCliente";
 			}
 			
 			Cliente cliente = new Cliente();
@@ -50,13 +64,22 @@ public class ClienteController {
 			cliente.setUsuario(usuario);
 		
 			clienteService.incluir(cliente);
+			
+			loadClienteList(model);
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return "cadastrarCliente";
+	}
+
+	private void loadClienteList(Model model) {
+		try {
+			List<Cliente> clienteList = clienteService.getAll();
+			model.addAttribute("clienteList", clienteList);
+		} catch (BussinessException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

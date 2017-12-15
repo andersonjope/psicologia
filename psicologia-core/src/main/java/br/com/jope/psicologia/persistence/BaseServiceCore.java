@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jope.psicologia.entity.BaseEntity;
 import br.com.jope.psicologia.exception.BussinessException;
+import br.com.jope.psicologia.vo.ConsultaVO;
 
 public abstract class BaseServiceCore<E extends BaseEntity> implements BaseService<E> {
 
@@ -85,5 +86,16 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 			throw new BussinessException(ex.getMessage());
 		}
 	}
-
+	
+	@Transactional(readOnly=true)
+	@Override
+	public List<E> loadListNamedQuery(ConsultaVO consulta) throws BussinessException {
+		try {
+			return repository.loadListNamedQuery(consulta);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
 }

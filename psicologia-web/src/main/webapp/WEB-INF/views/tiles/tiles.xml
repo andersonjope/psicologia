@@ -32,4 +32,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/medico/medico.jsp" />
 	</definition>
 	
+	<definition name="cadastrarMedico" extends="template">
+		<put-attribute name="title" value="Cadastro Médico" />
+		<put-attribute name="content" value="/WEB-INF/views/medico/cadastrarMedico.jsp" />
+	</definition>
+	
 </tiles-definitions>
