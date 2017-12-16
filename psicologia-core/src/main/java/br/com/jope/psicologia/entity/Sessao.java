@@ -1,14 +1,20 @@
 package br.com.jope.psicologia.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -41,6 +47,10 @@ public class Sessao extends BaseEntity {
 	@Column(name="dh_final_sessao")
 	private Date dhFinalSessao;
 
+	@OneToMany(mappedBy="sessao", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OrderBy(value="dhRegistro desc")
+	private List<SalaSessao> salaSessaoList;
+	
 	public Long getNuSessao() {
 		return nuSessao;
 	}
@@ -81,6 +91,22 @@ public class Sessao extends BaseEntity {
 		this.dhFinalSessao = dhFinalSessao;
 	}
 
+	public List<SalaSessao> getSalaSessaoList() {
+		return salaSessaoList;
+	}
+
+	public void setSalaSessaoList(List<SalaSessao> salaSessaoList) {
+		this.salaSessaoList = salaSessaoList;
+	}
+
+	public void addSalaSessao(SalaSessao salaSessao) {
+		if(salaSessaoList == null) {
+			salaSessaoList = new ArrayList<>();
+		}
+		salaSessao.setSessao(this);
+		salaSessaoList.add(salaSessao);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

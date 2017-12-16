@@ -42,4 +42,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/sessao/iniciarSessao.jsp" />
 	</definition>
 	
+	<definition name="gerenciarSessao" extends="template">
+		<put-attribute name="title" value="Gerenciar Sessão" />
+		<put-attribute name="content" value="/WEB-INF/views/sessao/gerenciarSessao.jsp" />
+	</definition>
+	
 </tiles-definitions>

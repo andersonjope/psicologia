@@ -28,18 +28,20 @@
 											<div class="form-group">
 												<label>Médico:</label> 
 												<form:select path="nuMedico" id="nuMedico">
-													<form:option value="NONE"> Select - Médico </form:option>
+													<form:option value=""> Select - Médico </form:option>
 													<form:options items="${medicoList}" itemValue="nuMedico" itemLabel="deNome"></form:options>
 												</form:select>
+												<br/>
 												<form:errors path="nuMedico" cssClass="error"/>
 											</div>
 											
 											<div class="form-group">
 												<label>Cliente:</label> 
 												<form:select path="nuCliente" id="nuCliente">
-													<form:option value="NONE"> Select - Cliente </form:option>
+													<form:option value=""> Select - Cliente </form:option>
 													<form:options items="${clienteList}" itemValue="nuCliente" itemLabel="deNome"></form:options>
 												</form:select>
+												<br/>
 												<form:errors path="nuCliente" cssClass="error"/>
 											</div>
 											
@@ -75,6 +77,8 @@
 			                                <th>Nome do Médico</th>
 			                                <th>Nome do Cliente</th>
 			                                <th>Data de Início</th>
+			                                <th>Situação</th>
+			                                <th>Ações</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>
@@ -83,6 +87,17 @@
 			                               		<td><c:out value ="${s.medico.deNome}"/></td>
 			                               		<td><c:out value ="${s.cliente.deNome}"/></td>
 			                               		<td><c:out value ="${s.dhInicioSessao}"/></td>
+			                               		<td>
+			                               			<c:if test="${not empty s.dhFinalSessao}">Encerrada</c:if>
+			                               			<c:if test="${empty s.dhFinalSessao}">Ativa</c:if>			                               		
+			                               		</td>
+			                               		<td>
+			                               			Encerrar
+			                               			<br/>
+			                               			<a href="gerenciarSessao?sessao=${s.nuSessao}">
+														<i class="fa"></i> Gerenciar
+													</a>
+			                               		</td>
 			                               	</tr>
 					                  	</c:forEach>
 				                 	</tbody>
