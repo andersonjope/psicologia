@@ -37,4 +37,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/medico/cadastrarMedico.jsp" />
 	</definition>
 	
+	<definition name="iniciarSessao" extends="template">
+		<put-attribute name="title" value="Sessão" />
+		<put-attribute name="content" value="/WEB-INF/views/sessao/iniciarSessao.jsp" />
+	</definition>
+	
 </tiles-definitions>
