@@ -14,8 +14,12 @@ import javax.websocket.WebSocketContainer;
 // based on http://stackoverflow.com/questions/26452903/javax-websocket-client-simple-example
 
 @ClientEndpoint
-public class MovieEventSocketClient {
-    public MovieEventSocketClient(URI endpointURI) {
+public class PingPongEventSocketClient {
+	
+	private Session userSession = null;
+	private MessageHandler messageHandler;
+	
+    public PingPongEventSocketClient(URI endpointURI) {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpointURI);
@@ -23,9 +27,6 @@ public class MovieEventSocketClient {
             throw new RuntimeException(e);
         }
     }
-
-    Session userSession = null;
-    private MessageHandler messageHandler;
 
     @OnOpen
     public void onOpen(Session userSession) {
@@ -78,7 +79,6 @@ public class MovieEventSocketClient {
     }
 
     public static interface MessageHandler {
-
         public void handleMessage(String message);
     }
 }

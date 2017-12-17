@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.jope.psicologia.model.FormularioMedico;
 import br.com.jope.psicologia.services.UsuarioService;
-import br.com.jope.psicologia.view.push.MovieEventSocketClient;
+import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
 
 @Controller
 public class HomeController {
 	
-	private MovieEventSocketClient client;
+	private PingPongEventSocketClient client;
     private final String webSocketAddress = "ws://localhost:8080/psicologia-web/cinemaSocket";
 	private static List<Integer> countClienteList;
 	private FormularioMedico formularioMedico;
@@ -56,9 +56,9 @@ public class HomeController {
     private void initializeWebSocket() throws URISyntaxException {
         //ws://localhost:7101/CinemaMonitor/cinemaSocket/
         System.out.println("REST service: open websocket client at " + webSocketAddress);
-        client = new MovieEventSocketClient(new URI(webSocketAddress + "/" + formularioMedico.getIdentificaoCliente()));
+        client = new PingPongEventSocketClient(new URI(webSocketAddress + "/" + formularioMedico.getIdentificaoCliente()));
         // add listener
-        client.addMessageHandler(new MovieEventSocketClient.MessageHandler() {
+        client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
             public void handleMessage(String message) {
                 System.out.println("messagehandler in REST service - process message "+message);
             }

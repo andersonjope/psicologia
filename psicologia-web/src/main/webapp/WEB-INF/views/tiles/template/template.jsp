@@ -3,8 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +12,9 @@
     <link rel="stylesheet" href="resources/css/bootstrap/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="resources/css/sb-admin.min.css">
     
-
+	<script type="text/javascript">
+		var contextPath = "${pageContext.request.contextPath}";
+	</script>
     
 	<style type="text/css">
 		.error{

@@ -1,5 +1,5 @@
 function initWebsocket(identificador){
-	var wsUri = "ws://" + document.location.host + "/psicologia-web/cinemaSocket/" + identificador;
+	var wsUri = "ws://" + document.location.host + "/psicologia-web/pingpong/" + identificador;
 	var websocket = new WebSocket(wsUri);
 
 	websocket.onmessage = function(evt) { onMessage(evt) };
@@ -12,8 +12,10 @@ function onMessage(evt) {
 		var obj = jQuery.parseJSON(evt.data);
 		
 		var velocidade = obj.velocidade;
+		var altura = obj.altura;
+		var largura = obj.largura;
 		if (velocidade > 1) {
-			canvasCliente(velocidade);
+			canvasCliente(velocidade, altura, largura);
 		}
 	}
 }
@@ -23,11 +25,6 @@ function onError(evt) {
 }
 
 function onOpen(evt) {
-    alert("Erro ao conetar ao servidor.");
-}
-
-function sendText(json) {
-    console.log("sending text: " + json);
-    websocket.send(json);
+    //alert("Erro ao conetar ao servidor. open");
 }
                 

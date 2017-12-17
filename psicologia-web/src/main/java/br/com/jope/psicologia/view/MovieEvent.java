@@ -3,14 +3,14 @@ package br.com.jope.psicologia.view;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import br.com.jope.psicologia.view.push.MovieEventSocketClient;
+import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
 
 //invoke at : http://localhost:7101/CinemaMonitor/resources/cinemaevent
 
 //@Path("/ws/mensagem")
 public class MovieEvent {
 
-    private MovieEventSocketClient client;
+    private PingPongEventSocketClient client;
 
     private final String webSocketAddress = "ws://localhost:8080/psicologia-web/cinemaSocket";
 
@@ -20,9 +20,9 @@ public class MovieEvent {
     private void initializeWebSocket() throws URISyntaxException {
         //ws://localhost:7101/CinemaMonitor/cinemaSocket/
         System.out.println("REST service: open websocket client at " + webSocketAddress);
-        client = new MovieEventSocketClient(new URI(webSocketAddress + "/0"));
+        client = new PingPongEventSocketClient(new URI(webSocketAddress + "/0"));
         // add listener
-        client.addMessageHandler(new MovieEventSocketClient.MessageHandler() {
+        client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
             public void handleMessage(String message) {
                 System.out.println("messagehandler in REST service - process message "+message);
             }

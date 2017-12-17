@@ -16,8 +16,8 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 
-@ServerEndpoint("/cinemaSocket/{client-id}")
-public class CinemaEventSocketMediator {
+@ServerEndpoint("/pingpong/{client-id}")
+public class PingPongEventSocketMediator {
 
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
 

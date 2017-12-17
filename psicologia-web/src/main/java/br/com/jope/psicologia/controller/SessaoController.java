@@ -3,6 +3,7 @@ package br.com.jope.psicologia.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +21,16 @@ import br.com.jope.psicologia.entity.Medico;
 import br.com.jope.psicologia.entity.SalaSessao;
 import br.com.jope.psicologia.entity.Sessao;
 import br.com.jope.psicologia.exception.BussinessException;
-import br.com.jope.psicologia.model.FormularioSessao;
+import br.com.jope.psicologia.model.FormularioAlteraSessao;
+import br.com.jope.psicologia.model.FormularioCriaSessao;
 import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.MedicoService;
 import br.com.jope.psicologia.services.SessaoService;
 
 @Controller
-public class SessaoController {
+public class SessaoController extends AbstractController {
+
+	private static final long serialVersionUID = -5671612353886861039L;
 
 	@Autowired(required=true)
 	@Qualifier("medicoService")
@@ -57,11 +61,11 @@ public class SessaoController {
 		model.addAttribute("medicoList", medicoList);
 		model.addAttribute("clienteList", clienteList);
 		model.addAttribute("sessaoList", sessaoList);
-		model.addAttribute("formularioSessao", new FormularioSessao());
+		model.addAttribute("formularioSessao", new FormularioCriaSessao());
 	}
 	
 	@RequestMapping(value="/criarSessao", method = RequestMethod.POST)
-	public String criarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioSessao formularioSessao, BindingResult result) {
+	public String criarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioCriaSessao formularioSessao, BindingResult result) {
 		try {
 			if(result.hasErrors()) {
 				loadDados(model);
@@ -80,7 +84,7 @@ public class SessaoController {
 			sessao.setDhInicioSessao(new Date());
 			
 			sessaoService.incluir(sessao);
-
+			
 			loadDados(model);
 		} catch (BussinessException e) {
 			e.printStackTrace();
@@ -93,7 +97,7 @@ public class SessaoController {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
 			model.addAttribute("sessao", sessao);
-			FormularioSessao formularioSessao = new FormularioSessao();
+			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
 			formularioSessao.setNuSessao(sessao.getNuSessao());
 			model.addAttribute("formularioSessao", formularioSessao);
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
@@ -104,7 +108,7 @@ public class SessaoController {
 	}
 	
 	@RequestMapping(value="/alterarSessao", method = RequestMethod.POST)
-	public String alterarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioSessao formularioSessao, BindingResult result) {
+	public String alterarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioAlteraSessao formularioSessao, BindingResult result, HttpServletRequest request) {
 		try {
 			if(result.hasErrors()) {
 				loadSessaoSalaSessao(model, formularioSessao);
@@ -117,10 +121,18 @@ public class SessaoController {
 			SalaSessao salaSessao = new SalaSessao();
 			salaSessao.setDhRegistro(new Date());
 			salaSessao.setNuVelocidadeMovimento(formularioSessao.getVelocidade());
+			if(formularioSessao.getAltura() != null) {
+				salaSessao.setNuAltura(formularioSessao.getAltura());
+			}
+			if(formularioSessao.getLargura() != null) {
+				salaSessao.setNuLargura(formularioSessao.getLargura());
+			}
 			
 			sessao.addSalaSessao(salaSessao);
 			
 			sessaoService.alterar(sessao);
+			
+			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), salaSessao.getNuVelocidadeMovimento(), formularioSessao.getAltura(), formularioSessao.getLargura());
 			
 			loadSessaoSalaSessao(model, formularioSessao);
 			
@@ -130,7 +142,7 @@ public class SessaoController {
 		return "gerenciarSessao";
 	}
 
-	private void loadSessaoSalaSessao(Model model, FormularioSessao formularioSessao) throws BussinessException {
+	private void loadSessaoSalaSessao(Model model, FormularioAlteraSessao formularioSessao) throws BussinessException {
 		Sessao sessaoAlterada = sessaoService.getId(Sessao.class, formularioSessao.getNuSessao());
 		List<SalaSessao> salaSessaoList = sessaoAlterada.getSalaSessaoList();
 		

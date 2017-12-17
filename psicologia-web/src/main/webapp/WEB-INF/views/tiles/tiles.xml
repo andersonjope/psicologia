@@ -5,7 +5,7 @@
 <tiles-definitions>
 
 	<definition name="template" template="/WEB-INF/views/tiles/template/template.jsp">
-		<put-attribute name="title" value="*****" />
+		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
 		<put-attribute name="content" value="" />
@@ -17,8 +17,9 @@
 		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
 	</definition>
 	
-	<definition name="cliente" extends="template">
-		<put-attribute name="title" value="Cliente" />
+	<definition name="salaCliente" extends="template" >
+		<put-attribute name="title" value="Sala Cliente" />
+		<put-attribute name="menu" value="" />
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
 	</definition>
 	

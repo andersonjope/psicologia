@@ -33,6 +33,12 @@ public class SalaSessao extends BaseEntity {
 	@Column(name="nu_velocidade_movimento", nullable=false)
 	private Integer nuVelocidadeMovimento;
 	
+	@Column(name="nu_altura", nullable=true)
+	private Integer nuAltura;
+	
+	@Column(name="nu_largura", nullable=true)
+	private Integer nuLargura;
+	
 	@ManyToOne
 	@JoinColumn(name="nu_sessao")
 	private Sessao sessao;
@@ -67,6 +73,22 @@ public class SalaSessao extends BaseEntity {
 
 	public void setSessao(Sessao sessao) {
 		this.sessao = sessao;
+	}
+
+	public Integer getNuAltura() {
+		return nuAltura;
+	}
+
+	public void setNuAltura(Integer nuAltura) {
+		this.nuAltura = nuAltura;
+	}
+
+	public Integer getNuLargura() {
+		return nuLargura;
+	}
+
+	public void setNuLargura(Integer nuLargura) {
+		this.nuLargura = nuLargura;
 	}
 
 	@Override

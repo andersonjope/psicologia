@@ -13,15 +13,21 @@
 			$("#canvas").height($(".content").height());
 		});
 	</script>
+	<style type="text/css">
+		.content-wrapper{
+			margin-left: 0px;
+		}
+	</style>
 </head>
 <body>
 	<h1>Sala do Cliente  - ${idCliente}</h1>
-
-	<canvas id="canvas"></canvas>
+	<div id="containerCanvas">
+		<canvas id="canvas" height="400" width="600"></canvas>
+	</div>
 	
 </body>
 	<script type="text/javascript">
 		initWebsocket("${idCliente}");
-		canvasCliente(0);	
+		canvasCliente(0,0,0);	
 	</script>	
 </html>

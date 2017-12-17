@@ -6,6 +6,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript">
+	function visualizarSalaSessao(){
+		window.location.href = contextPath + "/cliente?idCliente=" + "${sessao.cliente.usuario.deLogin}";
+	}
+</script>
+
 </head>
 <div class="row">
 	<div class="col-xl-10 col-sm-6 mb-3">
@@ -35,8 +41,6 @@
 										<spring:url value="/alterarSessao" var="alterarSessao" />
 										<form:form id="formId" modelAttribute="formularioSessao" action="${alterarSessao}" method="POST" >
 											<form:hidden path="nuSessao" />
-											<form:hidden path="nuMedico" value="${sessao.medico.nuMedico}"/>
-											<form:hidden path="nuCliente" value="${sessao.cliente.nuCliente}"/>
 											<div class="form-group">
 												<label>Velocidade:</label> 
 												<form:input path="velocidade"/>
@@ -45,16 +49,15 @@
 											<div class="form-group">
 												<label>Altura:</label> 
 												<form:input path="altura"/>
-												<form:errors path="altura" cssClass="error"/>
 											</div>
 											<div class="form-group">
 												<label>Largura:</label> 
 												<form:input path="largura"/>
-												<form:errors path="largura" cssClass="error"/>
 											</div>
 											
 											<div class="form-group">
 												<input type="submit" value="Start/Alterar Sessão" class="btn"/>
+												<input type="button" onclick="visualizarSalaSessao(); return false;" value="Visualizar Sessão" class="btn"/>
 											</div>
 										</form:form>
 									</div>
@@ -84,6 +87,8 @@
 			                            <tr>
 			                                <th>Data</th>
 			                                <th>Velocidade</th>
+			                                <th>Altura</th>
+			                                <th>Largura</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>
@@ -91,6 +96,8 @@
 					                  		<tr class="gradeX">
 			                               		<td><c:out value ="${s.dhRegistro}"/></td>
 			                               		<td><c:out value ="${s.nuVelocidadeMovimento}"/></td>
+			                               		<td><c:out value ="${s.nuAltura}"/></td>
+			                               		<td><c:out value ="${s.nuLargura}"/></td>
 			                               	</tr>
 					                  	</c:forEach>
 				                 	</tbody>

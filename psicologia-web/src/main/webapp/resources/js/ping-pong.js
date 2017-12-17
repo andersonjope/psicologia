@@ -1,8 +1,14 @@
-function canvasCliente(velocidade){
+function canvasCliente(velocidade, altura, largura){
 	var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
 	    window.setTimeout(callback, 1000 / 60)
-	};
+	};	
 	var canvas = document.getElementById("canvas");
+	if(altura > 0){
+		canvas.height = altura;
+	}
+	if(largura > 0){
+		canvas.width = largura;
+	}
 	var width = canvas.width;
 	var height = canvas.height;
 	var x_speed = velocidade;
@@ -134,9 +140,9 @@ function canvasCliente(velocidade){
 	};
 
 	if(velocidade > 0){
-		document.body.replaceChild(canvas, canvas);
+		document.getElementById("containerCanvas").replaceChild(canvas, canvas);
 	}else{
-		document.body.appendChild(canvas);
+		document.getElementById("containerCanvas").appendChild(canvas);
 	}
 	
 	animate(step);

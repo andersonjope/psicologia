@@ -2,6 +2,7 @@ package br.com.jope.psicologia.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.entity.Usuario;
@@ -21,7 +23,9 @@ import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.UsuarioService;
 
 @Controller
-public class ClienteController {
+public class ClienteController extends AbstractController {
+
+	private static final long serialVersionUID = -3883844098757797700L;
 
 	@Autowired(required=true)
 	@Qualifier("clienteService")
@@ -32,12 +36,15 @@ public class ClienteController {
 	private UsuarioService usuarioService;
 	
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
-	public String cliente(Model model) {
-		return "cliente";
+	public String cliente(Model model, @RequestParam("idCliente") String idCliente, HttpServletRequest request) {
+		model.addAttribute("idCliente", idCliente);
+		initializeWebSocket(request, idCliente);
+		return "salaCliente";
 	}
 	
 	@RequestMapping(value="/cadastrarCliente", method = RequestMethod.GET)
-	public String cadastrarCliente(Model model) {
+	public String cadastrarCliente(Model model, HttpServletRequest request) {
+		System.out.println(request.getContextPath());
 		model.addAttribute("formularioCliente", new FormularioCliente());
 		loadClienteList(model);
 		return "cadastrarCliente";

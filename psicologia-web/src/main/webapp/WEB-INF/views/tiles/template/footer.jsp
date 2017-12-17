@@ -2,6 +2,6 @@
 <html>
 <body>
 	<div>
-		Footer
+		...
 	</div>
 </html>
