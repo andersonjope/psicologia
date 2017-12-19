@@ -92,11 +92,15 @@
 			                               			<c:if test="${empty s.dhFinalSessao}">Ativa</c:if>			                               		
 			                               		</td>
 			                               		<td>
-			                               			Encerrar
-			                               			<br/>
-			                               			<a href="gerenciarSessao?sessao=${s.nuSessao}">
-														<i class="fa"></i> Gerenciar
-													</a>
+			                               			<c:if test="${empty s.dhFinalSessao}">
+				                               			<a href="encerrarSessao?sessao=${s.nuSessao}">
+															<i class="fa"></i> Encerrar
+														</a>
+				                               			<br/>
+				                               			<a href="gerenciarSessao?sessao=${s.nuSessao}">
+															<i class="fa"></i> Gerenciar
+														</a>
+													</c:if>
 			                               		</td>
 			                               	</tr>
 					                  	</c:forEach>

@@ -26,6 +26,7 @@ import br.com.jope.psicologia.model.FormularioCriaSessao;
 import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.MedicoService;
 import br.com.jope.psicologia.services.SessaoService;
+import br.com.jope.psicologia.view.message.MessageType;
 
 @Controller
 public class SessaoController extends AbstractController {
@@ -86,6 +87,23 @@ public class SessaoController extends AbstractController {
 			sessaoService.incluir(sessao);
 			
 			loadDados(model);
+			addMessages(model, MessageType.WARNING, false, "Sessão criada.");
+		} catch (BussinessException e) {
+			e.printStackTrace();
+		}
+		return "iniciarSessao";
+	}
+	
+	@RequestMapping(value="/encerrarSessao", method = RequestMethod.GET)
+	public String encerrarSessao(Model model, @RequestParam("sessao") Long nuSessao) {
+		try {
+			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
+			sessao.setDhFinalSessao(new Date());
+			
+			sessaoService.alterar(sessao);
+			
+			loadDados(model);
+			addMessages(model, MessageType.SUCCESS, false, "Sessão encerrada.");
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
@@ -135,7 +153,7 @@ public class SessaoController extends AbstractController {
 			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), salaSessao.getNuVelocidadeMovimento(), formularioSessao.getAltura(), formularioSessao.getLargura());
 			
 			loadSessaoSalaSessao(model, formularioSessao);
-			
+			addMessages(model, MessageType.INFO, false, "Dados enviados para o cliente.");
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}

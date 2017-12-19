@@ -21,6 +21,7 @@ import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioCliente;
 import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.UsuarioService;
+import br.com.jope.psicologia.view.message.MessageType;
 
 @Controller
 public class ClienteController extends AbstractController {
@@ -43,8 +44,7 @@ public class ClienteController extends AbstractController {
 	}
 	
 	@RequestMapping(value="/cadastrarCliente", method = RequestMethod.GET)
-	public String cadastrarCliente(Model model, HttpServletRequest request) {
-		System.out.println(request.getContextPath());
+	public String cadastrarCliente(Model model) {
 		model.addAttribute("formularioCliente", new FormularioCliente());
 		loadClienteList(model);
 		return "cadastrarCliente";
@@ -73,6 +73,7 @@ public class ClienteController extends AbstractController {
 			clienteService.incluir(cliente);
 			
 			loadClienteList(model);
+			addMessages(model, MessageType.SUCCESS, false, "Cadastro cliente efeturado.");
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}

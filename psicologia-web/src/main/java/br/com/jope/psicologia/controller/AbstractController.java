@@ -3,12 +3,17 @@ package br.com.jope.psicologia.controller;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.springframework.ui.Model;
 
+import br.com.jope.psicologia.view.message.Message;
+import br.com.jope.psicologia.view.message.MessageType;
 import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
 
 public class AbstractController implements Serializable {
@@ -17,6 +22,7 @@ public class AbstractController implements Serializable {
 
 	private final String webSocketAddress = "ws://%s:%s/psicologia-web/pingpong/%s";
 	private PingPongEventSocketClient client;
+	private List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String idCliente) {
 		try {
@@ -56,6 +62,21 @@ public class AbstractController implements Serializable {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected void addMessages(Model model, MessageType messageType, boolean multipleMessage, String keyMsg){
+		String message = keyMsg;//getMessage(keyMsg);
+		if(message == null){
+			message = keyMsg;
+		}
+		if(!multipleMessage){
+			messages = new ArrayList<Message>();
+		}
+		Message messageBean = new Message();
+		messageBean.setMessageType(messageType);
+		messageBean.setMessage(message);
+		messages.add(messageBean);
+		model.addAttribute("messages", messages);		
 	}
 	
 }

@@ -20,9 +20,12 @@ import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioMedico;
 import br.com.jope.psicologia.services.MedicoService;
 import br.com.jope.psicologia.services.UsuarioService;
+import br.com.jope.psicologia.view.message.MessageType;
 
 @Controller
-public class MedicoController {
+public class MedicoController extends AbstractController {
+
+	private static final long serialVersionUID = 5433459120147438409L;
 
 	@Autowired(required=true)
 	@Qualifier("medicoService")
@@ -62,6 +65,7 @@ public class MedicoController {
 			medicoService.incluir(medico);
 			
 			loadMedicoList(model);
+			addMessages(model, MessageType.SUCCESS, false, "Cadastro médico efeturado.");
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}

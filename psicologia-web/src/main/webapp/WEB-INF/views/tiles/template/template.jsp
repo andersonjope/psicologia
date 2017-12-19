@@ -58,6 +58,7 @@
 				<tiles:insertAttribute name="menu"/>		
 			</div>
 			<div class="content container-fluid">
+				<tiles:insertAttribute name="pageMessages" />
 				<tiles:insertAttribute name="content"/>	
 			</div>
 		</div>

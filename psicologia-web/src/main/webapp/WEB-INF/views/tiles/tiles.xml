@@ -10,6 +10,7 @@
 		<put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+		<put-attribute name="pageMessages" value="/WEB-INF/views/tiles/template/pageMessages.jsp" />
 	</definition>
 	
 	<definition name="home" extends="template">

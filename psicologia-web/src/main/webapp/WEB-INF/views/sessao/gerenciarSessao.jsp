@@ -57,7 +57,7 @@
 											
 											<div class="form-group">
 												<input type="submit" value="Start/Alterar Sessão" class="btn"/>
-												<input type="button" onclick="visualizarSalaSessao(); return false;" value="Visualizar Sessão" class="btn"/>
+<!-- 												<input type="button" onclick="visualizarSalaSessao(); return false;" value="Visualizar Sessão" class="btn"/> -->
 											</div>
 										</form:form>
 									</div>
@@ -66,9 +66,8 @@
 						</div>
 					</div>
 				</div>
-				
-	                                                
             </div>
+			<label class="error">Copie a url e cole em outra aba do navegador, após abrir altere os dados:</label><br />http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/cliente?idCliente=${sessao.cliente.usuario.deLogin}
 		</div>
 	</div>
 	<c:if test="${not empty salaSessaoList}">
