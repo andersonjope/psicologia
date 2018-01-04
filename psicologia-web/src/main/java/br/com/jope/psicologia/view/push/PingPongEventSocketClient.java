@@ -30,7 +30,7 @@ public class PingPongEventSocketClient {
 
     @OnOpen
     public void onOpen(Session userSession) {
-        System.out.println("client: opening websocket ");
+        //System.out.println("client: opening websocket ");
         this.userSession = userSession;
     }
 
@@ -42,7 +42,7 @@ public class PingPongEventSocketClient {
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
-        System.out.println("client: closing websocket");
+        //System.out.println("client: closing websocket");
         this.userSession = null;
     }
 
@@ -53,7 +53,7 @@ public class PingPongEventSocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-        System.out.println("client: received message "+message);
+        //System.out.println("client: received message "+message);
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
         }

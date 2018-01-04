@@ -39,9 +39,9 @@ public class PersistenceJPAConfig {
 	   public DataSource getDataSource(){
 	      DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	      dataSource.setDriverClassName("org.postgresql.Driver");
-	      dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
+	      dataSource.setUrl("jdbc:postgresql://localhost:5432/mbls");
 	      dataSource.setUsername( "psi" );
-	      dataSource.setPassword( "psi" );
+	      dataSource.setPassword( "psi2017" );
 	      return dataSource;
 	   }
 	 
@@ -60,11 +60,11 @@ public class PersistenceJPAConfig {
 	 
 	   Properties addProperties() {
 	      Properties properties = new Properties();
-	      properties.setProperty("hibernate.hbm2ddl.auto", "validate");/*"create-drop, update"*/
+	      properties.setProperty("hibernate.hbm2ddl.auto", "none");/*"create-drop, update"*/
 	      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
-	      properties.setProperty("hibernate.show_sql", "true");
+	      properties.setProperty("hibernate.show_sql", "false");
 	      properties.setProperty("hibernate.format_sql","false");
-	      properties.setProperty("hibernate.default_schema","psicologia");
+	      properties.setProperty("hibernate.default_schema","public");
 	      return properties;
 	   }
 	

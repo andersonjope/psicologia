@@ -21,15 +21,16 @@ public class PingPongEventSocketMediator {
 
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
 
-    @OnMessage
+    @SuppressWarnings("unused")
+	@OnMessage
     public String onMessage(String message, Session session, @PathParam("client-id") String clientId) {
         try {
             JSONObject jObj = new JSONObject(message);
-            System.out.println("received message from client " + clientId);
+            //System.out.println("received message from client " + clientId);
             for (Session s : peers) {
                 try {
                     s.getBasicRemote().sendText(message);
-                    System.out.println("send message to peer ");
+                    //System.out.println("send message to peer ");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -38,23 +39,23 @@ public class PingPongEventSocketMediator {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "message was received by socket mediator and processed: " + message;
+        return message;
     }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("client-id") String clientId) {
-        System.out.println("mediator: opened websocket channel for client " + clientId);
+        //System.out.println("mediator: opened websocket channel for client " + clientId);
         peers.add(session);
 
         try {
-            session.getBasicRemote().sendText("good to be in touch");
+            session.getBasicRemote().sendText(clientId);
         } catch (IOException e) {
         }
     }
 
     @OnClose
     public void onClose(Session session, @PathParam("client-id") String clientId) {
-        System.out.println("mediator: closed websocket channel for client " + clientId);
+        //System.out.println("mediator: closed websocket channel for client " + clientId);
         peers.remove(session);
     }
 }

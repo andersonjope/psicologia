@@ -28,12 +28,12 @@ public class AbstractController implements Serializable {
 		try {
 			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), idCliente};
 			String url = String.format(webSocketAddress, parametro);
-	        System.out.println("REST service: open websocket client at " + url);
+	        //System.out.println("REST service: open websocket client at " + url);
 	        
 			client = new PingPongEventSocketClient(new URI(url));
 	        client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
 	            public void handleMessage(String message) {
-	                System.out.println("messagehandler in REST service - process message "+message);
+	                //System.out.println("messagehandler in REST service - process message "+message);
 	            }
 	        });
 		} catch (URISyntaxException e) {
