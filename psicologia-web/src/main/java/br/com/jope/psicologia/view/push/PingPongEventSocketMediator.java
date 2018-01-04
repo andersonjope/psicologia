@@ -15,7 +15,6 @@ import javax.websocket.server.ServerEndpoint;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-
 @ServerEndpoint("/pingpong/{client-id}")
 public class PingPongEventSocketMediator {
 

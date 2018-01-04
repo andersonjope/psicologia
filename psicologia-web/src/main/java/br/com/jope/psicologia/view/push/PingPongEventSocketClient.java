@@ -10,7 +10,6 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
-
 // based on http://stackoverflow.com/questions/26452903/javax-websocket-client-simple-example
 
 @ClientEndpoint
