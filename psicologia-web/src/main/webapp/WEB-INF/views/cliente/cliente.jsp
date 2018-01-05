@@ -5,8 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript" src="resources/js/ping-pong.js"></script>
-    <script type="text/javascript" src="resources/js/websocket/websocket.js"></script>
     <script type="text/javascript">
 		$(document).ready(function() {
 			$("#canvas").width($(".content").width());
