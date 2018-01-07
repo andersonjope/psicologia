@@ -58,7 +58,17 @@
 <title><tiles:insertAttribute name="title" ignore="true" /></title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-	<noscript><h2>Enable Java script</h2></noscript>	
+	<noscript><h2>Enable Java script</h2></noscript>
+	
+	<tilesx:useAttribute id="addAudiosList" name="addAudios" classname="java.util.List" />
+    <c:if test="${not empty addAudiosList}">
+		<c:forEach var="item" items="${addAudiosList}" varStatus="vs">
+		    <c:if test="${item ne ''}">
+				<audio id="${item}" preload="auto" src="resources/js/audio/${item}.mp3"> </audio>
+			</c:if>
+		</c:forEach>
+    </c:if>
+    	
 	<div id="template">
 		<div class="header">
 			<tiles:insertAttribute name="header"/>			
@@ -83,6 +93,6 @@
 		  <script type="text/javascript" src="${item}"></script>
 		</c:forEach>
     </c:if>
-	
+    
 </body>
 </html>

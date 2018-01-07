@@ -5,12 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript">
-		$(document).ready(function() {
-			$("#canvas").width($(".content").width());
-			$("#canvas").height($(".content").height());
-		});
-	</script>
 	<style type="text/css">
 		.content-wrapper{
 			margin-left: 0px;
@@ -28,4 +22,5 @@
 		initWebsocket("${idCliente}");
 		canvasCliente(0,0,0);	
 	</script>	
+	
 </html>

@@ -83,6 +83,9 @@ function canvasCliente(velocidade, altura, largura){
 	
 	Computer.prototype.update = function (ball) {
 	    var x_pos = ball.x;
+	    
+	    movimentacaoBall(x_pos, xBall);
+	    
 	    var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
 	    if (diff < 0 && diff < -4) {
 	        diff = -5;
