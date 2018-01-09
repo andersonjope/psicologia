@@ -64,7 +64,7 @@
     <c:if test="${not empty addAudiosList}">
 		<c:forEach var="item" items="${addAudiosList}" varStatus="vs">
 		    <c:if test="${item ne ''}">
-				<audio id="${item}" preload="auto" src="resources/js/audio/${item}.mp3"> </audio>
+				<audio id="${item}" preload="auto" loop src="resources/js/audio/${item}.mp3"> </audio>
 			</c:if>
 		</c:forEach>
     </c:if>

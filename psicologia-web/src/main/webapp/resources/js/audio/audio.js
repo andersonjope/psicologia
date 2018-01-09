@@ -3,7 +3,7 @@ var esquerda = false;
 
 function acaoAudio(acao, audio){
 	var _audio = document.getElementById(audio);
-	if(acao == "play"){
+	if(acao == "play"){//play
 		_audio.play();
 	}else{
 		_audio.pause();

@@ -117,7 +117,7 @@ function canvasCliente(velocidade, altura, largura){
 	Ball.prototype.render = function () {
 	    context.beginPath();
 	    context.arc(this.x, this.y, radius, Math.PI * 2, false);
-	    context.fillStyle = "#ff0000";
+	    context.fillStyle = "#006400";
 	    context.fill();
 	};
 	
