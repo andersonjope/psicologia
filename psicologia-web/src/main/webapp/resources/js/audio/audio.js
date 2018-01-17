@@ -1,5 +1,7 @@
 var direta = false;
 var esquerda = false;
+var audioDireita = 'audioDireita';
+var audioEsquerda = 'audioEsquerda';
 
 function acaoAudio(acao, audio){
 	var _audio = document.getElementById(audio);
@@ -12,15 +14,17 @@ function acaoAudio(acao, audio){
 }
 
 function movimentacaoBall(x_pos, xBall){
-	if(x_pos > xBall && !direta){
-    	direta = true;
-    	esquerda = false;
-    	acaoAudio('play', 'audioDireita');	    	
-    	acaoAudio('pause', 'audioEsquerda');	    	
-    }else if(x_pos < xBall && !esquerda){
-    	esquerda = true;
-    	direta = false;
-    	acaoAudio('play', 'audioEsquerda');	    	
-    	acaoAudio('pause', 'audioDireita');	    	
-    }
+	if(xBall > 0){
+		if(x_pos > xBall && !direta){
+	    	direta = true;
+	    	esquerda = false;
+	    	acaoAudio('pause', 'audioDireita');	    	
+	    	acaoAudio('play', 'audioEsquerda');	    	
+	    }else if(x_pos < xBall && !esquerda){
+	    	esquerda = true;
+	    	direta = false;
+	    	acaoAudio('pause', 'audioEsquerda');	    	
+	    	acaoAudio('play', 'audioDireita');	    	
+	    }
+	}
 }

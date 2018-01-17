@@ -37,14 +37,8 @@
 		<put-attribute name="menu" value="" />
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
 		<put-list-attribute name="addScripts">
-		    <add-attribute value="resources/js/ping-pong.js" />
 		    <add-attribute value="resources/js/websocket/websocket.js" />
-		    <add-attribute value="resources/js/audio/audio.js" />
 	  	</put-list-attribute>
-	  	<put-list-attribute name="addAudios" >
-		    <add-attribute value="audioDireita" />		
-		    <add-attribute value="audioEsquerda" />		
-		</put-list-attribute>
 	</definition>
 	
 	<definition name="cadastrarCliente" extends="template">
@@ -70,6 +64,20 @@
 	<definition name="gerenciarSessao" extends="template">
 		<put-attribute name="title" value="Gerenciar Sessão" />
 		<put-attribute name="content" value="/WEB-INF/views/sessao/gerenciarSessao.jsp" />
+	</definition>
+	
+	<definition name="canvas" template="/WEB-INF/views/canvas/canvas.jsp">
+		<put-list-attribute name="scripts" >
+		    <add-attribute value="resources/js/jquery/jquery.min.js" />
+		</put-list-attribute>
+		<put-list-attribute name="addScripts">
+		    <add-attribute value="resources/js/ping-pong.js" />
+		    <add-attribute value="resources/js/audio/audio.js" />
+	  	</put-list-attribute>
+	  	<put-list-attribute name="addAudios" >
+		    <add-attribute value="audioDireita" />		
+		    <add-attribute value="audioEsquerda" />		
+		</put-list-attribute>
 	</definition>
 	
 </tiles-definitions>

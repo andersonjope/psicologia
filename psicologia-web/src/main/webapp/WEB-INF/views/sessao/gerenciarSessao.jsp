@@ -44,15 +44,8 @@
 											<div class="form-group">
 												<label>Velocidade:</label> 
 												<form:input path="velocidade"/>
+												<br />
 												<form:errors path="velocidade" cssClass="error"/>
-											</div>
-											<div class="form-group">
-												<label>Altura:</label> 
-												<form:input path="altura"/>
-											</div>
-											<div class="form-group">
-												<label>Largura:</label> 
-												<form:input path="largura"/>
 											</div>
 											
 											<div class="form-group">
@@ -86,8 +79,6 @@
 			                            <tr>
 			                                <th>Data</th>
 			                                <th>Velocidade</th>
-			                                <th>Altura</th>
-			                                <th>Largura</th>
 			                            </tr>
 			                        </thead>
 			                        <tbody>
@@ -95,8 +86,6 @@
 					                  		<tr class="gradeX">
 			                               		<td><c:out value ="${s.dhRegistro}"/></td>
 			                               		<td><c:out value ="${s.nuVelocidadeMovimento}"/></td>
-			                               		<td><c:out value ="${s.nuAltura}"/></td>
-			                               		<td><c:out value ="${s.nuLargura}"/></td>
 			                               	</tr>
 					                  	</c:forEach>
 				                 	</tbody>

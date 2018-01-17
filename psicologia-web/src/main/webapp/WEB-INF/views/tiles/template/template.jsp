@@ -13,6 +13,13 @@
     <link rel="stylesheet" href="resources/css/bootstrap/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="resources/css/sb-admin.min.css">
     
+    <tilesx:useAttribute id="scriptList" name="scripts" classname="java.util.List" />
+    <c:if test="${not empty scriptList}">
+		<c:forEach var="item" items="${scriptList}">
+		  <script type="text/javascript" src="${item}"></script>
+		</c:forEach>
+    </c:if>
+    
     <tilesx:useAttribute id="addScriptList" name="addScripts" classname="java.util.List" />
     <c:if test="${not empty addScriptList}">
 		<c:forEach var="item" items="${addScriptList}">
@@ -23,6 +30,8 @@
     </c:if>
     
 	<script type="text/javascript">
+		var serverName = "${pageContext.request.serverName}";
+		var serverPort = "${pageContext.request.serverPort}";
 		var contextPath = "${pageContext.request.contextPath}";
 	</script>
     
@@ -60,15 +69,6 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 	<noscript><h2>Enable Java script</h2></noscript>
 	
-	<tilesx:useAttribute id="addAudiosList" name="addAudios" classname="java.util.List" />
-    <c:if test="${not empty addAudiosList}">
-		<c:forEach var="item" items="${addAudiosList}" varStatus="vs">
-		    <c:if test="${item ne ''}">
-				<audio id="${item}" preload="auto" loop src="resources/js/audio/${item}.mp3"> </audio>
-			</c:if>
-		</c:forEach>
-    </c:if>
-    	
 	<div id="template">
 		<div class="header">
 			<tiles:insertAttribute name="header"/>			
@@ -87,12 +87,5 @@
 		</div>
 	</div>
 	
-	<tilesx:useAttribute id="scriptList" name="scripts" classname="java.util.List" />
-    <c:if test="${not empty scriptList}">
-		<c:forEach var="item" items="${scriptList}">
-		  <script type="text/javascript" src="${item}"></script>
-		</c:forEach>
-    </c:if>
-    
 </body>
 </html>

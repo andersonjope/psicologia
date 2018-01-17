@@ -13,14 +13,10 @@
 </head>
 <body>
 	<h1>Sala do Cliente  - ${idCliente}</h1>
-	<div id="containerCanvas">
-		<canvas id="canvas" height="400" width="600"></canvas>
-	</div>
-	
+	<div id="frame" style="width:100%; height:100%;"></div>
 </body>
 	<script type="text/javascript">
 		initWebsocket("${idCliente}");
-		canvasCliente(0,0,0);	
 	</script>	
 	
 </html>

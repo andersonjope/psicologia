@@ -3,12 +3,12 @@ function canvasCliente(velocidade, altura, largura){
 	    window.setTimeout(callback, 1000 / 60)
 	};	
 	var canvas = document.getElementById("canvas");
-	if(altura > 0){
-		canvas.height = altura;
-	}
-	if(largura > 0){
-		canvas.width = largura;
-	}
+	
+	var _auxWidth = document.getElementById("containerCanvas").style.width.replace('px','');
+	var _auxHeight = document.getElementById("containerCanvas").style.height.replace('px','');
+	canvas.width = _auxWidth;
+	canvas.height = _auxHeight;
+	
 	var width = canvas.width;
 	var height = canvas.height;
 	var x_speed = velocidade;
@@ -19,6 +19,7 @@ function canvasCliente(velocidade, altura, largura){
 	//canvas.width = width;
 	//canvas.height = height;
 	var context = canvas.getContext('2d');
+	
 	var player = new Player();
 	var computer = new Computer();
 	var ball = new Ball(xBall, yBall);
@@ -26,8 +27,9 @@ function canvasCliente(velocidade, altura, largura){
 	var keysDown = {};
 	
 	var render = function () {
-	    context.fillStyle = "#000";
+	    context.fillStyle = "#000";	    
 	    context.fillRect(0, 0, width, height);
+//	    context.resetTransform();
 	    player.render();
 	    computer.render();
 	    ball.render();
@@ -55,8 +57,8 @@ function canvasCliente(velocidade, altura, largura){
 	}
 	
 	Paddle.prototype.render = function () {
-	    //context.fillStyle = "#000";
 	    context.fillRect(this.x, this.y, this.width, this.height);
+//	    context.resetTransform();
 	};
 	
 	Paddle.prototype.move = function (x, y) {
@@ -64,10 +66,12 @@ function canvasCliente(velocidade, altura, largura){
 	    this.y += y;
 	    this.x_speed = x;
 	    this.y_speed = y;
-	    if (this.x < 0) {    
+	    if (this.x < 0) {   
+	    	 console.log('1');
 	        this.x = 0;
 	        this.x_speed = x_speed;
 	    } else if (this.x + this.width > width) {
+	    	console.log('2');
 	        this.x = width - this.width;
 	        this.x_speed = x_speed;
 	    }
@@ -124,7 +128,7 @@ function canvasCliente(velocidade, altura, largura){
 	Ball.prototype.update = function () {		
 	    this.x += this.x_speed;
 	    this.y += this.y_speed;
-	 		
+	    
 	   if (this.x - 5 < 0) {   
 	     this.x = 5;
 	     this.x_speed = -this.x_speed;
