@@ -1,12 +1,9 @@
 package br.com.jope.psicologia.model;
 
-import javax.validation.constraints.NotNull;
-
-public class FormularioAlteraSessao {
+public class FormularioAlteraSessaoSom {
 
 	private Long nuSessao;
 	
-	@NotNull(message="Preenchimento obrigatório.")
 	private Integer velocidade;
 	
 	private boolean playStop;

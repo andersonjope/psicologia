@@ -37,7 +37,8 @@
 		$("#containerCanvas").width($(window).width());
 		$("#containerCanvas").height($(window).height());
 		var velocidade = getQueryString().velocidade;
-		canvasCliente(parseInt(velocidade),0,0);
+		var playStop = getQueryString().playStop;
+		canvasCliente(parseInt(velocidade), playStop);
 	});
 	
 	function getQueryString() {

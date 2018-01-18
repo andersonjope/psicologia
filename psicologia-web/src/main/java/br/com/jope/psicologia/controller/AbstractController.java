@@ -42,21 +42,13 @@ public class AbstractController implements Serializable {
     }
 	
 	@SuppressWarnings("unused")
-	protected void notificaCliente(HttpServletRequest request, String idCliente, Integer velocidade, Integer altura, Integer largura) {
+	protected void notificaCliente(HttpServletRequest request, String idCliente, Integer velocidade, boolean playStop) {
 		try {
 			if(client == null) {
 				initializeWebSocket(request, idCliente);
 			}
-			int msgLargura = 0;
-			int msgAltura = 0;
-			if(largura != null) {
-				msgLargura = largura;
-			}
-			if(altura != null) {
-				msgAltura = altura;
-			}
 			
-			String mensagem = "{\"identificador\":\""+ idCliente+ "\", \"velocidade\":\"" + velocidade + "\", \"altura\":\"" + msgAltura + "\", \"largura\":\"" + msgLargura + "\"}";
+			String mensagem = "{\"identificador\":\""+ idCliente+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
 			client.sendMessage(mensagem);
 		} catch (JSONException e) {

@@ -1,4 +1,4 @@
-function canvasCliente(velocidade, altura, largura){
+function canvasCliente(velocidade, playStop){
 	var animate = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
 	    window.setTimeout(callback, 1000 / 60)
 	};	
@@ -23,6 +23,8 @@ function canvasCliente(velocidade, altura, largura){
 	var player = new Player();
 	var computer = new Computer();
 	var ball = new Ball(xBall, yBall);
+	
+	var _playStop = playStop;
 	
 	var keysDown = {};
 	
@@ -88,7 +90,7 @@ function canvasCliente(velocidade, altura, largura){
 	Computer.prototype.update = function (ball) {
 	    var x_pos = ball.x;
 	    
-	    movimentacaoBall(x_pos, xBall);
+	    movimentacaoBall(x_pos, xBall, _playStop);
 	    
 	    var diff = -((this.paddle.x + (this.paddle.width / 2)) - x_pos);
 	    if (diff < 0 && diff < -4) {

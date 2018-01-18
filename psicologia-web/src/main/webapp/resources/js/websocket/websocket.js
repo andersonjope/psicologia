@@ -12,13 +12,14 @@ function onMessage(evt) {
 		try {
 			var obj = jQuery.parseJSON(evt.data);
 			var velocidade = obj.velocidade;
-			var altura = obj.altura;
-			var largura = obj.largura;
-			if (velocidade > 1) {
-				loadIframe(velocidade, altura, largura);
+			var playStop = obj.playStop;
+			if (velocidade > 0) {
+				loadIframe(velocidade, playStop);
+			}else{
+				loadIframe(0,false);				
 			}
 		} catch (e) {
-			loadIframe(0,0,0);
+			loadIframe(0,false);
 		}
 	}
 }
@@ -32,7 +33,7 @@ function onOpen(evt) {
     //alert("Erro ao conetar ao servidor. open");
 }
                
-function loadIframe(velocidade, altura, largura){
-	var iFrame = "<iframe width='100%' height='100%' frameborder='0' scrolling='no' id='iframeCanvas' src='http://\\" + serverName + ':' + serverPort + contextPath + "/iframeCanvas?time=" + new Date() + "&velocidade=" + velocidade + "&altura=" + altura + "&largura=" + largura + "\'> </iframe>";
+function loadIframe(velocidade, playStop){
+	var iFrame = "<iframe width='100%' height='100%' frameborder='0' scrolling='no' id='iframeCanvas' src='http://\\" + serverName + ':' + serverPort + contextPath + "/iframeCanvas?time=" + new Date() + "&velocidade=" + velocidade + "&playStop=" + playStop + "\'> </iframe>";
 	$("#frame").html(iFrame);
 }

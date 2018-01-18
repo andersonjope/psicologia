@@ -22,6 +22,7 @@ import br.com.jope.psicologia.entity.SalaSessao;
 import br.com.jope.psicologia.entity.Sessao;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioAlteraSessao;
+import br.com.jope.psicologia.model.FormularioAlteraSessaoSom;
 import br.com.jope.psicologia.model.FormularioCriaSessao;
 import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.MedicoService;
@@ -114,10 +115,12 @@ public class SessaoController extends AbstractController {
 	public String gerenciarSessao(Model model, @RequestParam("sessao") Long nuSessao) {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
-			model.addAttribute("sessao", sessao);
 			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
 			formularioSessao.setNuSessao(sessao.getNuSessao());
+			
+			model.addAttribute("sessao", sessao);
 			model.addAttribute("formularioSessao", formularioSessao);
+			model.addAttribute("formularioSessaoSom", new FormularioAlteraSessaoSom());
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
 		} catch (BussinessException e) {
 			e.printStackTrace();
@@ -126,42 +129,65 @@ public class SessaoController extends AbstractController {
 	}
 	
 	@RequestMapping(value="/alterarSessao", method = RequestMethod.POST)
-	public String alterarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioAlteraSessao formularioSessao, BindingResult result, HttpServletRequest request) {
+	public String alterarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioAlteraSessao formularioSessao, @ModelAttribute("formularioSessaoSom") FormularioAlteraSessaoSom formularioSessaoSom, BindingResult result, HttpServletRequest request) {
 		try {
 			if(result.hasErrors()) {
-				loadSessaoSalaSessao(model, formularioSessao);
+				loadSessaoSalaSessao(model, formularioSessao.getNuSessao());
 				return "gerenciarSessao";
 			}
 			
 			Sessao sessao = sessaoService.getId(Sessao.class, formularioSessao.getNuSessao());
-			model.addAttribute("sessao", sessao);
 			
 			SalaSessao salaSessao = new SalaSessao();
 			salaSessao.setDhRegistro(new Date());
 			salaSessao.setNuVelocidadeMovimento(formularioSessao.getVelocidade());
-			if(formularioSessao.getAltura() != null) {
-				salaSessao.setNuAltura(formularioSessao.getAltura());
-			}
-			if(formularioSessao.getLargura() != null) {
-				salaSessao.setNuLargura(formularioSessao.getLargura());
-			}
-			
 			sessao.addSalaSessao(salaSessao);
 			
 			sessaoService.alterar(sessao);
 			
-			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), salaSessao.getNuVelocidadeMovimento(), formularioSessao.getAltura(), formularioSessao.getLargura());
+			formularioSessaoSom.setNuSessao(formularioSessao.getNuSessao());
+			formularioSessaoSom.setVelocidade(formularioSessao.getVelocidade());
 			
-			loadSessaoSalaSessao(model, formularioSessao);
+			model.addAttribute("formularioSessaoSom", formularioSessaoSom);
+			model.addAttribute("sessao", sessao);
+			
+			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), salaSessao.getNuVelocidadeMovimento(), formularioSessaoSom.isPlayStop());
+			
+			loadSessaoSalaSessao(model, sessao.getNuSessao());
 			addMessages(model, MessageType.INFO, false, "Dados enviados para o cliente.");
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
 		return "gerenciarSessao";
 	}
+	
+	@RequestMapping(value="/alterarSessaoSom", method = RequestMethod.POST)
+	public String alterarSessaoSom(Model model, @ModelAttribute("formularioSessaoSom") FormularioAlteraSessaoSom formularioSessaoSom, BindingResult result, HttpServletRequest request) {
+		try {
+			Sessao sessao = sessaoService.getId(Sessao.class, formularioSessaoSom.getNuSessao());
+			
+			formularioSessaoSom.setNuSessao(sessao.getNuSessao());
+			formularioSessaoSom.setVelocidade(formularioSessaoSom.getVelocidade());
+			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
+			formularioSessao.setNuSessao(sessao.getNuSessao());
+			formularioSessao.setPlayStop(formularioSessaoSom.isPlayStop());
+			
+			model.addAttribute("formularioSessao", formularioSessao);
+			model.addAttribute("formularioSessaoSom", formularioSessaoSom);
+			model.addAttribute("sessao", sessao);
+			
+			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), formularioSessaoSom.getVelocidade(), formularioSessaoSom.isPlayStop());
+			
+			addMessages(model, MessageType.INFO, false, "Dados enviados para o cliente.");
+			loadSessaoSalaSessao(model, sessao.getNuSessao());
+		} catch (BussinessException e) {
+			e.printStackTrace();
+		}
+		return "gerenciarSessao";
+	}
 
-	private void loadSessaoSalaSessao(Model model, FormularioAlteraSessao formularioSessao) throws BussinessException {
-		Sessao sessaoAlterada = sessaoService.getId(Sessao.class, formularioSessao.getNuSessao());
+	private void loadSessaoSalaSessao(Model model, Long nuSessao) throws BussinessException {
+		Sessao sessaoAlterada = sessaoService.getId(Sessao.class, nuSessao);
 		List<SalaSessao> salaSessaoList = sessaoAlterada.getSalaSessaoList();
 		
 		model.addAttribute("salaSessaoList", salaSessaoList);

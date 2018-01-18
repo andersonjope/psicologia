@@ -39,8 +39,10 @@
 										</div>
 										
 										<spring:url value="/alterarSessao" var="alterarSessao" />
-										<form:form id="formId" modelAttribute="formularioSessao" action="${alterarSessao}" method="POST" >
+										<spring:url value="/alterarSessaoSom" var="alterarSessaoSom" />
+										<form:form id="formSessaoId" modelAttribute="formularioSessao" action="${alterarSessao}" method="POST" >
 											<form:hidden path="nuSessao" />
+											<form:hidden path="playStop"/>
 											<div class="form-group">
 												<label>Velocidade:</label> 
 												<form:input path="velocidade"/>
@@ -50,9 +52,20 @@
 											
 											<div class="form-group">
 												<input type="submit" value="Start/Alterar Sessão" class="btn"/>
-<!-- 												<input type="button" onclick="visualizarSalaSessao(); return false;" value="Visualizar Sessão" class="btn"/> -->
 											</div>
 										</form:form>
+										<c:if test="${formularioSessaoSom.velocidade > 0}">
+											<label>Ajuste de som</label> 
+											<form:form id="formSessaoSomId" modelAttribute="formularioSessaoSom" action="${alterarSessaoSom}" method="POST" >
+												<form:hidden path="nuSessao" />
+												<form:hidden path="velocidade" />
+												<form:hidden id="playStopSom" path="playStop" />
+												<div class="form-group">
+													<input type="submit" value="Play" class="btn" onclick="$('#playStopSom').val(true);"/>
+													<input type="submit" value="Stop" class="btn" onclick="$('#playStopSom').val(false);"/>
+												</div>
+											</form:form>
+										</c:if>
 									</div>
 								</div>
 							</div>
