@@ -2,10 +2,15 @@ var direta = false;
 var esquerda = false;
 var audioDireita = 'audioDireita';
 var audioEsquerda = 'audioEsquerda';
+var _playStop = "";
 
-function acaoAudio(acao, audio, playStop){
+function playStop(playStop){
+	_playStop = playStop;
+}
+
+function acaoAudio(acao, audio){
 	var _audio = document.getElementById(audio);
-	if(acao == "play" && playStop == "true"){//play
+	if(acao == "play" && _playStop == "true"){
 		_audio.play();
 	}else{
 		_audio.pause();
@@ -13,18 +18,18 @@ function acaoAudio(acao, audio, playStop){
 	}
 }
 
-function movimentacaoBall(x_pos, xBall, playStop){
+function movimentacaoBall(x_pos, xBall){
 	if(xBall > 0){
 		if(x_pos > xBall && !direta){
 	    	direta = true;
 	    	esquerda = false;
-	    	acaoAudio('pause', 'audioDireita', playStop);	    	
-	    	acaoAudio('play', 'audioEsquerda', playStop);	    	
+	    	acaoAudio('pause', 'audioDireita');	    	
+	    	acaoAudio('play', 'audioEsquerda');	    	
 	    }else if(x_pos < xBall && !esquerda){
 	    	esquerda = true;
 	    	direta = false;
-	    	acaoAudio('pause', 'audioEsquerda', playStop);	    	
-	    	acaoAudio('play', 'audioDireita', playStop);	    	
+	    	acaoAudio('pause', 'audioEsquerda');	    	
+	    	acaoAudio('play', 'audioDireita');	    	
 	    }
 	}
 }
