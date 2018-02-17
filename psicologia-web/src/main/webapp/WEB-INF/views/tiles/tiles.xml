@@ -27,6 +27,10 @@
 		</put-list-attribute>
 	</definition>
 	
+	<definition name="login" template="/WEB-INF/views/login.jsp">
+		<put-attribute name="title" value="Login" />
+	</definition>
+	
 	<definition name="home" extends="template">
 		<put-attribute name="title" value="Médico/Cliente" />
 		<put-attribute name="content" value="/WEB-INF/views/home.jsp" />
