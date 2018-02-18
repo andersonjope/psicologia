@@ -7,7 +7,6 @@
 	<definition name="template" template="/WEB-INF/views/tiles/template/template.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" />
-		<put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
 		<put-attribute name="pageMessages" value="/WEB-INF/views/tiles/template/pageMessages.jsp" />
@@ -46,7 +45,7 @@
 	</definition>
 	
 	<definition name="cadastrarCliente" extends="template">
-		<put-attribute name="title" value="Cadastro Cliente" />
+		<put-attribute name="title" value="Cadastro de paciente" />
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cadastrarCliente.jsp" />
 	</definition>
 	

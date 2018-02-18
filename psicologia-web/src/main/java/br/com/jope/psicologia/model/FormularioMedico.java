@@ -3,7 +3,9 @@ package br.com.jope.psicologia.model;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class FormularioMedico {
+public class FormularioMedico extends AbstractFormulario {
+
+	private static final long serialVersionUID = -183895083944787159L;
 
 	@NotEmpty(message="Preenchimento obrigatório.")
 	private String deNome;
