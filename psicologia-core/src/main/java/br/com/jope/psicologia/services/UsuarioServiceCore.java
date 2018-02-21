@@ -36,5 +36,21 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 			throw new BussinessException(e.getMensagem());
 		}
 	}
+
+	@Override
+	public Usuario loadUsuarioLogin(String deLogin) throws BussinessException {
+		try {
+			ConsultaVO consulta = new ConsultaVO(Usuario.FIND_USUARIO_LOGIN);
+			consulta.addParametros("deLogin", deLogin);
+			List<Usuario> list = loadListNamedQuery(consulta);
+			if(!list.isEmpty()) {
+				return list.get(0);				
+			}
+			return null;
+		} catch (BussinessException e) {
+			e.printStackTrace();
+			throw new BussinessException(e.getMensagem());
+		}
+	}
 	
 }

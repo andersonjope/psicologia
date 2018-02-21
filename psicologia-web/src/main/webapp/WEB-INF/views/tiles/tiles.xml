@@ -28,6 +28,7 @@
 	
 	<definition name="login" template="/WEB-INF/views/login.jsp">
 		<put-attribute name="title" value="Login" />
+		<put-attribute name="pageMessages" value="/WEB-INF/views/tiles/template/pageMessages.jsp" />
 	</definition>
 	
 	<definition name="home" extends="template">

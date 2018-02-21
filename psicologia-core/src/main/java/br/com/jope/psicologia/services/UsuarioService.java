@@ -8,4 +8,6 @@ public interface UsuarioService extends BaseService<Usuario> {
 
 	boolean validarUsuarioLogin(String deLogin) throws BussinessException;
 	
+	Usuario loadUsuarioLogin(String deLogin) throws BussinessException;
+	
 }

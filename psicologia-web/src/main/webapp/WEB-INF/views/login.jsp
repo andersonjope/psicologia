@@ -198,7 +198,8 @@
 		<div class="eye eye-left centered"><div class="iris centered"><div class="pupil centered"></div></div></div>
 		<div class="eye eye-right centered"><div class="iris iris-45 centered"><div class="pupil centered"></div></div></div>
 	</figure>
-	
+	<tiles:insertAttribute name="pageMessages" />
+	<br/>
 	<spring:url value="/auth" var="logar" />
 	<form:form id="formId" modelAttribute="formularioLogin" action="${logar}" method="POST" cssClass="form-signin">
 	

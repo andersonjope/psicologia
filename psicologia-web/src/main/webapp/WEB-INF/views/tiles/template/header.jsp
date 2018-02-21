@@ -13,13 +13,17 @@
 				<button type="button" class="btn btn-outline-success">Voltar</button>
 			</a>
 			
-			<a href="cadastrarCliente">
-				<button type="button" class="btn btn-outline-success">CADASTRAR PACIENTE</button>
-			</a> 
+			<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 0}">
+				<a href="cadastrarMedico">
+					<button type="button" class="btn btn-outline-info">CADASTRAR PSICÓLOGO</button>
+				</a>
+			</c:if>
 			
-			<a href="cadastrarMedico">
-				<button type="button" class="btn btn-outline-info">CADASTRAR PSICÓLOGO</button>
-			</a>
+			<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 1}">
+				<a href="cadastrarCliente">
+					<button type="button" class="btn btn-outline-success">CADASTRAR PACIENTE</button>
+				</a> 
+			</c:if>
 
 		</nav>
 
