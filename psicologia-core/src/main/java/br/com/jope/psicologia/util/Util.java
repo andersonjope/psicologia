@@ -2,16 +2,29 @@ package br.com.jope.psicologia.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Util implements Serializable {
 
 	private static final long serialVersionUID = 2125689433135450051L;
 	private static final String ZERO = "0";
+	private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String lower = ""; //upper.toLowerCase();
+	private static final String caracter = "!@#$%&*()_+";
+	private static final String digits = "0123456789";
+	private static final String alphanum = upper + lower + digits + caracter;
+    private static final int TAMANHO_SENHA = 5;
+    public static final String FORMATO_DATA_DIA_MES_ANO = "dd/MM/yyyy";
 
 	/**
 	 * 
@@ -268,6 +281,46 @@ public class Util implements Serializable {
 			}
 		}
 	}
-	
-	
+
+	public static String encryptPassword(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public static String getRandomSenha() {
+    	int length = TAMANHO_SENHA;
+        StringBuilder result = new StringBuilder();
+        Random rand = new Random();
+        result.append(upper.charAt(rand.nextInt(upper.length())));
+        while(length-1 > 0) {
+            rand = new Random();
+            result.append(String.valueOf(alphanum.charAt(rand.nextInt(alphanum.length()))).toLowerCase());
+            length--;
+        }
+        return result.toString();
+     }	
+
+    public static Date converteStringToDate(String formato, String dateInString) {
+    	SimpleDateFormat formatter = new SimpleDateFormat(formato);
+    	Date date = null;
+        try {
+            date = formatter.parse(dateInString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }	
+        return date;
+    }
+    
 }

@@ -43,7 +43,11 @@ public class LoginController extends AbstractController {
 				return "login";			
 			}
 			
-			Usuario usuario = usuarioService.loadUsuarioLogin(formularioLogin.getEmail());
+			Usuario usuario = new Usuario();
+			usuario.setDeLogin(formularioLogin.getEmail());
+			usuario.setDeSenha(formularioLogin.getSenha());
+					
+			usuario = usuarioService.loadUsuarioLogin(usuario);
 			
 			if(Util.isEmpty(usuario)) {
 				addMessages(model, MessageType.ERROR, false, "Usuário não encontrado, com login informado.");

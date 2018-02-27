@@ -16,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.jope.psicologia.entity.Medico;
 import br.com.jope.psicologia.entity.Usuario;
+import br.com.jope.psicologia.enumeration.EnumPerfil;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioMedico;
+import br.com.jope.psicologia.services.EmailService;
 import br.com.jope.psicologia.services.MedicoService;
 import br.com.jope.psicologia.services.UsuarioService;
+import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.view.message.MessageType;
 
 @Controller
@@ -34,6 +37,9 @@ public class MedicoController extends AbstractController {
 	@Autowired(required=true)
 	@Qualifier("usuarioService")
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping(value="/medico", method = RequestMethod.GET)
 	public ModelAndView medico(Model model) {
@@ -60,9 +66,38 @@ public class MedicoController extends AbstractController {
 			medico.setDeNome(formularioMedico.getDeNome());
 			usuario.setDeLogin(formularioMedico.getDeLogin());
 			
+			if(!Util.isEmpty(formularioMedico.getCoCep())) {
+				usuario.setCoCep(formularioMedico.getCoCep());
+			}
+			if(!Util.isEmpty(formularioMedico.getCoCPF())) {
+				usuario.setCoCPF(formularioMedico.getCoCPF());
+			}
+			if(!Util.isEmpty(formularioMedico.getCoTelefone())) {
+				usuario.setCoTelefone(formularioMedico.getCoTelefone());
+			}
+			if(!Util.isEmpty(formularioMedico.getDeCidade())) {
+				usuario.setDeCidade(formularioMedico.getDeCidade());
+			}
+			if(!Util.isEmpty(formularioMedico.getDeEndereco())) {
+				usuario.setDeEndereco(formularioMedico.getDeEndereco());
+			}
+			if(!Util.isEmpty(formularioMedico.getDeNascimento())) {
+				usuario.setDtNascimento(Util.converteStringToDate(Util.FORMATO_DATA_DIA_MES_ANO, formularioMedico.getDeNascimento()));
+			}
+			if(!Util.isEmpty(formularioMedico.getDePais())) {
+				usuario.setDePais(formularioMedico.getDePais());
+			}
+			if(!Util.isEmpty(formularioMedico.getDeSexo())) {
+				usuario.setDeSexo(formularioMedico.getDeSexo());
+			}
+			
 			medico.setUsuario(usuario);
-		
+			String randomSenha = Util.getRandomSenha();
+			usuario.setDeSenha(randomSenha);
+			usuario.setEnumPerfil(EnumPerfil.MEDICO);
 			medicoService.incluir(medico);
+			
+			emailService.enviaEmail(formularioMedico.getDeLogin(), "Cadastro de Psicólogo: " + medico.getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + formularioMedico.getDeLogin() + "<br/>Senha: " + randomSenha);
 			
 			loadMedicoList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro médico efeturado.");

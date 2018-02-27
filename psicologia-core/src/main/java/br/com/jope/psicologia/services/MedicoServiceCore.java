@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jope.psicologia.entity.Medico;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.persistence.BaseServiceCore;
+import br.com.jope.psicologia.util.Util;
 
 @Service("medicoService")
 @Transactional
@@ -26,6 +27,8 @@ public class MedicoServiceCore extends BaseServiceCore<Medico> implements Medico
 
 	@Override
 	public void incluir(Medico entity) throws BussinessException {
+		String encryptPassword = Util.encryptPassword(entity.getUsuario().getDeSenha());
+		entity.getUsuario().setDeSenha(encryptPassword);
 		usuarioService.incluir(entity.getUsuario());
 		super.incluir(entity);
 	}

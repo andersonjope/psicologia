@@ -21,51 +21,51 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScan(basePackages={"br.com.jope.psicologia.services", "br.com.jope.psicologia.persistence"})
 public class PersistenceJPAConfig {
-
-	   @Bean
-	   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-	      LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-	      em.setDataSource(getDataSource());
-	      em.setPackagesToScan(new String[] {"br.com.jope.psicologia.entity"});
+	
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+	    em.setDataSource(getDataSource());
+	    em.setPackagesToScan(new String[] {"br.com.jope.psicologia.entity"});
 	 
-	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-	      em.setJpaVendorAdapter(vendorAdapter);
-	      em.setJpaProperties(addProperties());
+	    JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	    em.setJpaVendorAdapter(vendorAdapter);
+	    em.setJpaProperties(addProperties());
 	 
-	      return em;
-	   }
+	    return em;
+	}
 	 
-	   @Bean
-	   public DataSource getDataSource(){
-	      DriverManagerDataSource dataSource = new DriverManagerDataSource();
-	      dataSource.setDriverClassName("org.postgresql.Driver");
-	      dataSource.setUrl("jdbc:postgresql://localhost:5432/mbls");
-	      dataSource.setUsername( "psi" );
-	      dataSource.setPassword( "psi2017" );
-	      return dataSource;
-	   }
-	 
-	   @Bean
-	   public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
-	      JpaTransactionManager transactionManager = new JpaTransactionManager();
-	      transactionManager.setEntityManagerFactory(emf);
-	 
-	      return transactionManager;
-	   }
-	 
-	   @Bean
-	   public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
-	      return new PersistenceExceptionTranslationPostProcessor();
-	   }
-	 
-	   Properties addProperties() {
-	      Properties properties = new Properties();
-	      properties.setProperty("hibernate.hbm2ddl.auto", "none");/*"create-drop, update"*/
-	      properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
-	      properties.setProperty("hibernate.show_sql", "false");
-	      properties.setProperty("hibernate.format_sql","false");
-	      properties.setProperty("hibernate.default_schema","public");
-	      return properties;
-	   }
+	@Bean
+	public DataSource getDataSource(){
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("org.postgresql.Driver");
+		dataSource.setUrl("jdbc:postgresql://localhost:5432/mbls");
+		dataSource.setUsername( "psi" );
+		dataSource.setPassword( "psi2017" );
+	    return dataSource;
+	}
+ 
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+		JpaTransactionManager transactionManager = new JpaTransactionManager();
+		transactionManager.setEntityManagerFactory(emf);
+		 
+		return transactionManager;
+	}
+		 
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+		return new PersistenceExceptionTranslationPostProcessor();
+	}
+		 
+	Properties addProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.hbm2ddl.auto", "none");/*"create-drop, update"*/
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL9Dialect");
+		properties.setProperty("hibernate.show_sql", "false");
+		properties.setProperty("hibernate.format_sql","false");
+		properties.setProperty("hibernate.default_schema","public");
+		return properties;
+	}
 	
 }

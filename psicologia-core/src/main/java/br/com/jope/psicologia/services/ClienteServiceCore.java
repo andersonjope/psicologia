@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.persistence.BaseServiceCore;
+import br.com.jope.psicologia.util.Util;
 
 @Service("clienteService")
 @Transactional
@@ -26,6 +27,8 @@ public class ClienteServiceCore extends BaseServiceCore<Cliente> implements Clie
 
 	@Override
 	public void incluir(Cliente entity) throws BussinessException {
+		String encryptPassword = Util.encryptPassword(entity.getUsuario().getDeSenha());
+		entity.getUsuario().setDeSenha(encryptPassword);
 		usuarioService.incluir(entity.getUsuario());
 		super.incluir(entity);
 	}

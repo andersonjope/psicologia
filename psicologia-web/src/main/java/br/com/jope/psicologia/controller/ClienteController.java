@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.entity.Usuario;
+import br.com.jope.psicologia.enumeration.EnumPerfil;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioCliente;
 import br.com.jope.psicologia.services.ClienteService;
+import br.com.jope.psicologia.services.EmailService;
 import br.com.jope.psicologia.services.UsuarioService;
+import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.view.message.MessageType;
 
 @Controller
@@ -35,6 +38,9 @@ public class ClienteController extends AbstractController {
 	@Autowired(required=true)
 	@Qualifier("usuarioService")
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
 	public String cliente(Model model, @RequestParam("idCliente") String idCliente, HttpServletRequest request) {
@@ -67,10 +73,39 @@ public class ClienteController extends AbstractController {
 			Usuario usuario = new Usuario();
 			cliente.setDeNome(formularioCliente.getDeNome());
 			usuario.setDeLogin(formularioCliente.getDeLogin());
+
+			if(!Util.isEmpty(formularioCliente.getCoCep())) {
+				usuario.setCoCep(formularioCliente.getCoCep());
+			}
+			if(!Util.isEmpty(formularioCliente.getCoCPF())) {
+				usuario.setCoCPF(formularioCliente.getCoCPF());
+			}
+			if(!Util.isEmpty(formularioCliente.getCoTelefone())) {
+				usuario.setCoTelefone(formularioCliente.getCoTelefone());
+			}
+			if(!Util.isEmpty(formularioCliente.getDeCidade())) {
+				usuario.setDeCidade(formularioCliente.getDeCidade());
+			}
+			if(!Util.isEmpty(formularioCliente.getDeEndereco())) {
+				usuario.setDeEndereco(formularioCliente.getDeEndereco());
+			}
+			if(!Util.isEmpty(formularioCliente.getDeNascimento())) {
+				usuario.setDtNascimento(Util.converteStringToDate(Util.FORMATO_DATA_DIA_MES_ANO, formularioCliente.getDeNascimento()));
+			}
+			if(!Util.isEmpty(formularioCliente.getDePais())) {
+				usuario.setDePais(formularioCliente.getDePais());
+			}
+			if(!Util.isEmpty(formularioCliente.getDeSexo())) {
+				usuario.setDeSexo(formularioCliente.getDeSexo());
+			}
 			
 			cliente.setUsuario(usuario);
-		
+			String randomSenha = Util.getRandomSenha();
+			usuario.setDeSenha(randomSenha);
+			usuario.setEnumPerfil(EnumPerfil.CLIENTE);
 			clienteService.incluir(cliente);
+			
+			emailService.enviaEmail(formularioCliente.getDeLogin(), "Cadastro de Paciente: " + cliente.getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + formularioCliente.getDeLogin() + "<br/>Senha: " + randomSenha);
 			
 			loadClienteList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro cliente efeturado.");

@@ -19,7 +19,7 @@
 				</a>
 			</c:if>
 			
-			<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 1}">
+			<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 0 or sessionScope.usuario.enumPerfil.ordinal() eq 1}">
 				<a href="cadastrarCliente">
 					<button type="button" class="btn btn-outline-success">CADASTRAR PACIENTE</button>
 				</a> 
