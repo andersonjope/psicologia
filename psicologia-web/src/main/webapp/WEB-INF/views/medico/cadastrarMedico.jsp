@@ -7,82 +7,123 @@
 <html>
 <head>
 </head>
-<div class="row">
-	<div class="col-xl-10 col-sm-6 mb-3">
-		<div class="card text-white bg-warning o-hidden h-100">
-			<div class="card-body">
-				<div class="card-body-icon">
-					<i class="fa fa-fw fa-list"></i>
-				</div>
-				<div class="mr-5">Cadastro de Médico</div>
+	<spring:url value="/salvarMedico" var="salvarMedico" />
+	<form:form id="formId" modelAttribute="formularioMedico" action="${salvarMedico}" method="POST">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.deNome">Nome completo</label>
+			<div class="col-sm-10">
+				<form:input path="medico.deNome" id="deNome" class="form-control"/>
+				<form:errors path="medico.deNome" cssClass="error"/>
 			</div>
-			<div id="page-wrapper">
-            	<div class="row">
-					<div class="col-lg-12">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-lg-6">
-										<spring:url value="/salvarMedico" var="salvarMedico" />
-										<form:form id="formId" modelAttribute="formularioMedico" action="${salvarMedico}" method="POST" >
-											<div class="form-group">
-												<label>Nome:</label> 
-												<form:input path="deNome" id="deNome" size="50"/>
-												<form:errors path="deNome" cssClass="error"/>
-											</div>
-											<div class="form-group">
-												<label>E-mail:</label> 
-												<form:input path="deLogin" id="deLogin" size="50"/>
-												<form:errors path="deLogin" cssClass="error"/>
-											</div>
-											<div class="form-group">
-												<input type="submit" value="Salvar" class="btn btn-primary"/>
-											</div>
-										</form:form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-	                                                
-            </div>
 		</div>
-	</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.coCPF">CPF</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.coCPF" id="coCPF" class="form-control"/>
+				<form:errors path="medico.usuario.coCPF" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.deLogin">Email</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.deLogin" id="deLogin" class="form-control"/>
+				<form:errors path="medico.usuario.deLogin" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.deEndereco">Endereço</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.deEndereco" id="deEndereco" class="form-control"/>
+				<form:errors path="medico.usuario.deEndereco" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.coCep">CEP</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.coCep" id="coCep" class="form-control"/>
+				<form:errors path="medico.usuario.coCep" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.deCidade">Cidade</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.deCidade" id="deCidade" class="form-control"/>
+				<form:errors path="medico.usuario.deCidade" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.dePais">País</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.dePais" id="dePais" class="form-control"/>
+				<form:errors path="medico.usuario.dePais" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.coTelefone">Telefone</label>
+			<div class="col-sm-10">
+				<form:input path="medico.usuario.coTelefone" id="coTelefone" class="form-control" placeholder="(xx)9xxxx-xxxx"/>
+				<form:errors path="medico.usuario.coTelefone" cssClass="error"/>
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="deNascimento">Data de nascimento</label>
+			<div class="col-sm-10">
+				<form:input path="deNascimento" id="deNascimento" class="form-control" placeholder="dd/mm/aa"/>
+				<form:errors path="deNascimento" cssClass="error"/>
+			</div>
+		</div>
+	
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="medico.usuario.deSexo">Sexo</label>
+			<div class="col-sm-10">
+				<label class="radio-inline">
+					<form:radiobutton path="medico.usuario.deSexo" value="M"/>Mascuino
+				</label> 
+				<label class="radio-inline">
+					<form:radiobutton path="medico.usuario.deSexo" value="F"/>Feminino
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-success">Enviar cadastro</button>
+			</div>
+		</div>
+	</form:form>
+	
 	<c:if test="${not empty medicoList}">
-		<div id="page-wrapper">
-			<div class="row">
-		        <div class="col-lg-12">
-		            <div class="panel panel-default">
-		                <div class="panel-heading">
-		                    Lista de Médico
-		                </div>
-		                <!-- /.panel-heading -->
-		                <div class="panel-body">
-		                	<div class="table-responsive">
-		                         <table width="100%" class="table table-striped table-bordered table-hover">
-			                        <thead>
-			                            <tr>
-			                                <th>Nome</th>
-			                                <th>Login</th>
-			                            </tr>
-			                        </thead>
-			                        <tbody>
-					                  	<c:forEach items="${medicoList}" varStatus="vs" var="m">
-					                  		<tr class="gradeX">
-			                               		<td><c:out value ="${m.deNome}"/></td>
-			                               		<td><c:out value ="${m.usuario.deLogin}"/></td>
-			                               	</tr>
-					                  	</c:forEach>
-				                 	</tbody>
-			                	</table>
-			                </div>
-		                </div>
-		            </div>
-		        </div>
-		   	</div>
-	   	</div>
+		<table class="table">
+	        <thead class="thead-dark">
+	            <tr>
+	                <th scope="col">Nome</th>
+	                <th scope="col">Login</th>
+	            </tr>
+	        </thead>
+            <tbody>
+	         	<c:forEach items="${medicoList}" varStatus="vs" var="m">
+	         		<tr class="gradeX">
+                  		<td><c:out value ="${m.deNome}"/></td>
+                  		<td><c:out value ="${m.usuario.deLogin}"/></td>
+                  	</tr>
+	         	</c:forEach>
+       		</tbody>
+     	</table>
    	</c:if>
-</div>
+   	
+   	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#showBotaoVoltar").removeAttr("style");
+		});
+	</script>
+   	
 </html>

@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import br.com.jope.psicologia.enumeration.EnumPerfil;
 
 @Entity
@@ -34,6 +37,8 @@ public class Usuario extends BaseEntity {
 	@Column(name="nu_usuario", nullable=false)
 	private Long nuUsuario;
 	
+	@NotEmpty(message="Preenchimento obrigatório.")
+	@Email(message="E-mail inválido.")
 	@Column(name="de_login", nullable=false)
 	private String deLogin;
 	

@@ -1,30 +1,21 @@
 package br.com.jope.psicologia.model;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.Valid;
+
+import br.com.jope.psicologia.entity.Cliente;
 
 public class FormularioCliente extends AbstractFormulario {
 
 	private static final long serialVersionUID = 5752885575790773812L;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
-	private String deNome;
+	@Valid
+	private Cliente cliente;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
-	@Email(message="E-mail inválido.")
-	private String deLogin;
-
-	public String getDeNome() {
-		return deNome;
+	public Cliente getCliente() {
+		return cliente;
 	}
-	public void setDeNome(String deNome) {
-		this.deNome = deNome;
-	}
-	public String getDeLogin() {
-		return deLogin;
-	}
-	public void setDeLogin(String deLogin) {
-		this.deLogin = deLogin;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 	
 }

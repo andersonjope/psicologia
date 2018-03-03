@@ -1,45 +1,22 @@
 package br.com.jope.psicologia.model;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.Valid;
+
+import br.com.jope.psicologia.entity.Medico;
 
 public class FormularioMedico extends AbstractFormulario {
 
 	private static final long serialVersionUID = -183895083944787159L;
 
-	@NotEmpty(message="Preenchimento obrigatório.")
-	private String deNome;
-	
-	@NotEmpty(message="Preenchimento obrigatório.")
-	@Email(message="E-mail inválido.")
-	private String deLogin;
-	
-	private String identificaoCliente;
-	private String velocidade;
-	
-	public String getDeNome() {
-		return deNome;
+	@Valid
+	private Medico medico;
+
+	public Medico getMedico() {
+		return medico;
 	}
-	public void setDeNome(String deNome) {
-		this.deNome = deNome;
-	}
-	public String getDeLogin() {
-		return deLogin;
-	}
-	public void setDeLogin(String deLogin) {
-		this.deLogin = deLogin;
-	}
-	public String getIdentificaoCliente() {
-		return identificaoCliente;
-	}
-	public void setIdentificaoCliente(String identificaoCliente) {
-		this.identificaoCliente = identificaoCliente;
-	}
-	public String getVelocidade() {
-		return velocidade;
-	}
-	public void setVelocidade(String velocidade) {
-		this.velocidade = velocidade;
+
+	public void setMedico(Medico medico) {
+		this.medico = medico;
 	}
 	
 }

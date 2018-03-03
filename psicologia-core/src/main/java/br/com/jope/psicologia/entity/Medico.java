@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="medico")
@@ -22,9 +25,11 @@ public class Medico extends BaseEntity {
 	@Column(name="nu_medico", nullable=false)
 	private Long nuMedico;
 	
+	@NotEmpty(message="Preenchimento obrigatório.")
 	@Column(name="de_nome", nullable=false)
 	private String deNome;
 	
+	@Valid
 	@OneToOne
 	@JoinColumn(name="nu_usuario", nullable=false)
 	private Usuario usuario;
