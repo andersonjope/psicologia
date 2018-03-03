@@ -1,33 +1,42 @@
 package br.com.jope.psicologia.model;
 
-import javax.validation.constraints.NotNull;
-
 public class FormularioAlteraSessao {
 
 	private Long nuSessao;
-	
-	@NotNull(message="Preenchimento obrigatório.")
-	private Integer velocidade;
-	
-	private boolean playStop;
-	
+	private String acao;
+	private boolean sessaoIniciada;
+	private boolean somAtivo;
+
 	public Long getNuSessao() {
 		return nuSessao;
 	}
+
 	public void setNuSessao(Long nuSessao) {
 		this.nuSessao = nuSessao;
 	}
-	public Integer getVelocidade() {
-		return velocidade;
+
+	public String getAcao() {
+		return acao;
 	}
-	public void setVelocidade(Integer velocidade) {
-		this.velocidade = velocidade;
+
+	public void setAcao(String acao) {
+		this.acao = acao;
 	}
-	public boolean isPlayStop() {
-		return playStop;
+
+	public boolean isSessaoIniciada() {
+		return sessaoIniciada;
 	}
-	public void setPlayStop(boolean playStop) {
-		this.playStop = playStop;
+
+	public void setSessaoIniciada(boolean sessaoIniciada) {
+		this.sessaoIniciada = sessaoIniciada;
 	}
-	
+
+	public boolean isSomAtivo() {
+		return somAtivo;
+	}
+
+	public void setSomAtivo(boolean somAtivo) {
+		this.somAtivo = somAtivo;
+	}
+
 }

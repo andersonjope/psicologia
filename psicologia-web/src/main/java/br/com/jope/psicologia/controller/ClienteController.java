@@ -64,6 +64,7 @@ public class ClienteController extends AbstractController {
 			}
 			
 			if(usuarioService.validarUsuarioLogin(formularioCliente.getCliente().getUsuario().getDeLogin())) {
+				addMessages(model, MessageType.WARNING, false, "E-mail já informado para outro Usuário.");
 				loadClienteList(model);
 				return "cadastrarCliente";
 			}

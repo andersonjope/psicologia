@@ -6,10 +6,9 @@ public class FormularioCriaSessao {
 
 	private Long nuSessao;
 	
-	@NotNull(message="Preenchimento obrigatório.")
 	private Long nuMedico;
 	
-	@NotNull(message="Preenchimento obrigatório.")
+	@NotNull(message="{obrigatorio}")
 	private Long nuCliente;
 	
 	public Long getNuSessao() {

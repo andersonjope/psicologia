@@ -323,4 +323,8 @@ public class Util implements Serializable {
         return date;
     }
     
+    public static void main(String[] args) {
+		System.out.println(encryptPassword("123"));
+	}
+    
 }

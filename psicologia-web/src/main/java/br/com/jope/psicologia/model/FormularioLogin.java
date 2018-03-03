@@ -5,11 +5,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class FormularioLogin {
 
-	@NotEmpty(message="Preenchimento obrigatório.")
-	@Email(message="E-mail inválido.")
+	@NotEmpty(message="{obrigatorio}")
+	@Email(message="{email_invalido}")
 	private String email;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
+	@NotEmpty(message="{obrigatorio}")
 	private String senha;
 	
 	private boolean relembre;

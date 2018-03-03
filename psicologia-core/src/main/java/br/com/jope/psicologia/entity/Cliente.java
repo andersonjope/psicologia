@@ -25,7 +25,7 @@ public class Cliente extends BaseEntity {
 	@Column(name="nu_cliente", nullable=false)
 	private Long nuCliente;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
+	@NotEmpty(message="{obrigatorio}")
 	@Column(name="de_nome", nullable=false)
 	private String deNome;
 	

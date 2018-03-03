@@ -37,8 +37,8 @@ public class Usuario extends BaseEntity {
 	@Column(name="nu_usuario", nullable=false)
 	private Long nuUsuario;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
-	@Email(message="E-mail inválido.")
+	@NotEmpty(message="{obrigatorio}")
+	@Email(message="{email_invalido}")
 	@Column(name="de_login", nullable=false)
 	private String deLogin;
 	

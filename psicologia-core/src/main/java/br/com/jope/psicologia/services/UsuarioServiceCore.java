@@ -51,9 +51,12 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 				if(!Util.isEmpty(usuarioRecuperado.getDeSenha()) && usuarioRecuperado.getDeSenha().equals(encryptPassword)) {
 					return usuarioRecuperado;
 				}
-			}else if(usuario.getDeLogin().equals("administrador@gmail.com") && usuario.getDeSenha().equals("PSI_201802")) {
-				usuario.setEnumPerfil(EnumPerfil.ADMINISTRADOR);
-				return usuario;
+			}else if(usuario.getDeLogin().equals("administrador@gmail.com")) {
+				String encryptPassword = Util.encryptPassword(usuario.getDeSenha());
+				if(encryptPassword.equals("efd632efad05bdfe2e3d6ad9e91d5d82")) {
+					usuario.setEnumPerfil(EnumPerfil.ADMINISTRADOR);
+					return usuario;					
+				}
 			}
 			return null;
 		} catch (BussinessException e) {

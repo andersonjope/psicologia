@@ -9,9 +9,11 @@ public class UsuarioVO implements Serializable {
 
 	private static final long serialVersionUID = 1085386835854733132L;
 	private EnumPerfil enumPerfil;
+	private Long nuUsuario;
 
 	public UsuarioVO(Usuario usuario) {
 		this.enumPerfil = usuario.getEnumPerfil();
+		this.nuUsuario = usuario.getNuUsuario();
 	}
 	
 
@@ -21,6 +23,14 @@ public class UsuarioVO implements Serializable {
 
 	public void setEnumPerfil(EnumPerfil enumPerfil) {
 		this.enumPerfil = enumPerfil;
+	}
+
+	public Long getNuUsuario() {
+		return nuUsuario;
+	}
+
+	public void setNuUsuario(Long nuUsuario) {
+		this.nuUsuario = nuUsuario;
 	}
 	
 }

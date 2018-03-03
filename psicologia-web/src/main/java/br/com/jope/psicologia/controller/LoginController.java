@@ -58,7 +58,7 @@ public class LoginController extends AbstractController {
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
-		return "home";
+		return "redirect:home";
 	}
 	
 }

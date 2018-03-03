@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -15,9 +17,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="medico")
+@NamedQueries({
+	@NamedQuery(name=Medico.FIND_MEDICO_POR_USUARIO, query="select m from Medico m join m.usuario u where u.nuUsuario = :nuUsuario ")
+})
 public class Medico extends BaseEntity {
 
 	private static final long serialVersionUID = 2877923100456579325L;
+	public static final String FIND_MEDICO_POR_USUARIO = "Usuario.findMedicoPorUsuario";
 
 	@Id
 	@SequenceGenerator(name = "seq_nu_medico", sequenceName = "seq_nu_medico", allocationSize = 1, initialValue = 1)
@@ -25,7 +31,7 @@ public class Medico extends BaseEntity {
 	@Column(name="nu_medico", nullable=false)
 	private Long nuMedico;
 	
-	@NotEmpty(message="Preenchimento obrigatório.")
+	@NotEmpty(message="{obrigatorio}")
 	@Column(name="de_nome", nullable=false)
 	private String deNome;
 	

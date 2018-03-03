@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -22,9 +24,17 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="sessao")
+@NamedQueries({
+	@NamedQuery(name=Sessao.FIND_SESSAO_MEDICO, query="select s from Sessao s join s.medico m join m.usuario u where u.nuUsuario = :nuUsuario order by s.dhInicioSessao desc "),
+	@NamedQuery(name=Sessao.FIND_SESSAO_CLIENTE, query="select s from Sessao s join s.cliente c join c.usuario u where u.nuUsuario = :nuUsuario order by s.dhInicioSessao desc "),
+	@NamedQuery(name=Sessao.FIND_SESSAO_ABERTA_CLIENTE_MEDICO, query="select s from Sessao s join s.cliente c join s.medico m where s.dhFinalSessao is null and c.nuCliente = :nuCliente and m.nuMedico = :nuMedico ")
+})
 public class Sessao extends BaseEntity {
 
 	private static final long serialVersionUID = 2735099985464966406L;
+	public static final String FIND_SESSAO_MEDICO = "Usuario.findSessaoMedico";
+	public static final String FIND_SESSAO_CLIENTE = "Usuario.findSessaoCliente";
+	public static final String FIND_SESSAO_ABERTA_CLIENTE_MEDICO = "Usuario.findSessaoAbertaClienteMedico";
 
 	@Id
 	@SequenceGenerator(name = "seq_nu_sessao", sequenceName = "seq_nu_sessao", allocationSize = 1, initialValue = 1)

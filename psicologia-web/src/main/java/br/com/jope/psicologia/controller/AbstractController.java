@@ -11,10 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.jope.psicologia.enumeration.EnumUsuario;
 import br.com.jope.psicologia.view.message.Message;
 import br.com.jope.psicologia.view.message.MessageType;
 import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
+import br.com.jope.psicologia.vo.UsuarioVO;
 
 public class AbstractController implements Serializable {
 
@@ -57,7 +60,17 @@ public class AbstractController implements Serializable {
 	}
 	
 	protected void addMessages(Model model, MessageType messageType, boolean multipleMessage, String keyMsg){
-		String message = keyMsg;//getMessage(keyMsg);
+		criaMessage(messageType, multipleMessage, keyMsg);
+		model.addAttribute("messages", messages);
+	}
+
+	protected void addMessages(RedirectAttributes redirectAttributes, MessageType messageType, boolean multipleMessage, String keyMsg){
+		criaMessage(messageType, multipleMessage, keyMsg);
+		redirectAttributes.addFlashAttribute("messages", messages);
+	}
+	
+	private void criaMessage(MessageType messageType, boolean multipleMessage, String keyMsg) {
+		String message = keyMsg;
 		if(message == null){
 			message = keyMsg;
 		}
@@ -68,7 +81,10 @@ public class AbstractController implements Serializable {
 		messageBean.setMessageType(messageType);
 		messageBean.setMessage(message);
 		messages.add(messageBean);
-		model.addAttribute("messages", messages);		
+	}
+	
+	protected UsuarioVO loadUsuarioLogado(HttpServletRequest request) {
+		return (UsuarioVO) request.getSession().getAttribute(EnumUsuario.USUARIO_LOGADO.getDescricao());
 	}
 	
 }

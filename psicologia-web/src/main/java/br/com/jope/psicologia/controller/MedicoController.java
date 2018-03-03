@@ -59,6 +59,12 @@ public class MedicoController extends AbstractController {
 				return "cadastrarMedico";			
 			}
 			
+			if(usuarioService.validarUsuarioLogin(formularioMedico.getMedico().getUsuario().getDeLogin())) {
+				addMessages(model, MessageType.WARNING, false, "E-mail já informado para outro Usuário.");
+				loadMedicoList(model);
+				return "cadastrarMedico";
+			}
+			
 			Medico medico = formularioMedico.getMedico();
 			
 			if(!Util.isEmpty(formularioMedico.getDeNascimento())) {
