@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.enumeration.EnumPerfil;
@@ -24,6 +23,7 @@ import br.com.jope.psicologia.services.EmailService;
 import br.com.jope.psicologia.services.UsuarioService;
 import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.view.message.MessageType;
+import br.com.jope.psicologia.vo.UsuarioVO;
 
 @Controller
 public class ClienteController extends AbstractController {
@@ -42,9 +42,10 @@ public class ClienteController extends AbstractController {
 	private EmailService emailService;
 	
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
-	public String cliente(Model model, @RequestParam("idCliente") String idCliente, HttpServletRequest request) {
-		model.addAttribute("idCliente", idCliente);
-		initializeWebSocket(request, idCliente);
+	public String cliente(Model model, HttpServletRequest request) {
+		UsuarioVO usuario = loadUsuarioLogado(request);
+		model.addAttribute("idCliente", usuario.getDeEmail());
+		initializeWebSocket(request, usuario.getDeEmail());
 		return "salaCliente";
 	}
 	

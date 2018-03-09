@@ -6,7 +6,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-	
+	<style type="text/css">
+		div.bloco1 {
+		    position: relative;
+		    width: 250px;
+		    height: 250px;
+		    border: 3px solid #0000005c;
+		    margin-top: 0%;
+		    margin-right: 10%;
+		    margin-bottom: 0%;
+		    margin-left: 24%;
+		}
+		
+		div.bloco2 {
+		    position: relative;
+		    width: 250px;
+		    height: 250px;
+		    border: 3px solid #0000005c;
+		    margin-top: -18%;
+		    margin-right: 10%;
+		    margin-bottom: 0%;
+		    margin-left: 57%;
+		}
+		
+		div.bloco1image {
+		    margin-top: 26%;
+		    margin-right: 10%;
+		    margin-bottom: 0%;
+		    margin-left: 25%;
+		}
+		
+		div.bloco2image {
+		    margin-top: 20%;
+		    margin-right: 10%;
+		    margin-bottom: 0%;
+		    margin-left: 20%;
+		}
+	</style>
 </head>
 <body>
 
@@ -16,7 +52,24 @@
 <!-- 		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Procurar</button> -->
 <!-- 	</form> -->
 
-	<c:if test="${not empty sessaoMedicoList}">
+	<c:if test="${not empty sessao and sessionScope.usuario.enumPerfil.ordinal() eq 2}">
+		<div class="jumbotron text-center">
+			<div class="bloco1">
+				<div class="bloco1image">
+					<c:if test="${sessaoAberta}">
+						<a href="cliente"> 
+							<img src="resources/imagens/dooropen.png" align="middle" height="130" width="130" title="Sessão Aberta" >
+						</a>
+					</c:if>	
+					<c:if test="${not sessaoAberta}">
+						<img src="resources/imagens/doorclose.jpg" align="middle" height="160" width="160" title="Encerrada sessão" >
+					</c:if>	
+				</div>
+			</div>
+		</div>
+	</c:if>
+	
+	<c:if test="${not empty sessaoMedicoList and sessionScope.usuario.enumPerfil.ordinal() eq 1}">
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>

@@ -111,16 +111,18 @@ public class SessaoController extends AbstractController {
 	}
 	
 	@RequestMapping(value="/gerenciarSessao", method = RequestMethod.GET)
-	public String gerenciarSessao(Model model, @RequestParam("sessao") Long nuSessao) {
+	public String gerenciarSessao(Model model, @RequestParam("sessao") Long nuSessao, HttpServletRequest request) {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
 			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
 			formularioSessao.setNuSessao(sessao.getNuSessao());
-			
+			String deLogin = sessao.getCliente().getUsuario().getDeLogin();
 			model.addAttribute("sessao", sessao);
 			model.addAttribute("formularioSessao", formularioSessao);
 			model.addAttribute("formularioSessaoSom", new FormularioAlteraSessaoSom());
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
+			model.addAttribute("idCliente", deLogin);
+			initializeWebSocket(request, deLogin);
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
@@ -189,21 +191,20 @@ public class SessaoController extends AbstractController {
 				sessaoService.alterar(sessao);				
 			}
 			
+			String deLogin = sessao.getCliente().getUsuario().getDeLogin();
+			model.addAttribute("idCliente", deLogin);
 			model.addAttribute("formularioSessao", formularioSessao);
 			
-			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
+			notificaCliente(request, deLogin, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
 			
 			if(EnumAcaoSessao.ENCERRAR.equals(acaoSessao)) {
 				addMessages(redirectAttributes, MessageType.INFO, false, "Sessão encerrada, dados enviados para o Paciente.");
 				return "redirect:/home";				
 			}
-			
-			loadSessaoSalaSessao(model, sessao.getNuSessao());
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
-		addMessages(model, MessageType.INFO, false, "Dados enviados para o Paciente.");
-		return "gerenciarSessao";
+		return "sessao/controlesSessao";
 	}
 	
 	//TODO REMOVER

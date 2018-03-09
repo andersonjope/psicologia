@@ -33,11 +33,19 @@ public class HomeController extends AbstractController {
 			UsuarioVO usuario = loadUsuarioLogado(request);
 			if(!Util.isEmpty(usuario) && !Util.isEmpty(usuario.getNuUsuario())) {
 				if(EnumPerfil.MEDICO.equals(usuario.getEnumPerfil())) {
-					List<Sessao> sessaoMedico = sessaoService.loadSessaoMedico(usuario.getNuUsuario());
-					model.addAttribute("sessaoMedicoList", sessaoMedico);
+					List<Sessao> sessaoMedicoList = sessaoService.loadSessaoMedico(usuario.getNuUsuario());
+					model.addAttribute("sessaoMedicoList", sessaoMedicoList);
 				}else if(EnumPerfil.CLIENTE.equals(usuario.getEnumPerfil())) {
-					List<Sessao> sessaoCliente = sessaoService.loadSessaoCliente(usuario.getNuUsuario());
-					model.addAttribute("sessaoClienteList", sessaoCliente);
+					List<Sessao> sessaoClienteList = sessaoService.loadSessaoCliente(usuario.getNuUsuario());
+					if(!Util.isEmpty(sessaoClienteList)) {
+						Sessao sessao = sessaoClienteList.get(0);
+						model.addAttribute("sessao", sessao);
+						if(Util.isEmpty(sessao.getDhFinalSessao())) {
+							model.addAttribute("sessaoAberta", true);							
+						}else {
+							model.addAttribute("sessaoAberta", false);							
+						}
+					}
 				}				
 			}
 		} catch (BussinessException e) {

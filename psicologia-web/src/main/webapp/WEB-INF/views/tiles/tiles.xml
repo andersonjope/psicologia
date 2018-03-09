@@ -6,7 +6,11 @@
 
 	<definition name="template" template="/WEB-INF/views/tiles/template/template.jsp">
 		<put-attribute name="title" value="Equipamentos Psi" />
-		<put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" />
+		<put-attribute name="header" >
+			<definition template="/WEB-INF/views/tiles/template/header.jsp">
+				<put-attribute name="menu" value="/WEB-INF/views/tiles/template/menu.jsp" />
+			</definition>
+		</put-attribute>
 		<put-attribute name="content" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
 		<put-attribute name="pageMessages" value="/WEB-INF/views/tiles/template/pageMessages.jsp" />
@@ -60,6 +64,9 @@
 	
 	<definition name="gerenciarSessao" extends="template">
 		<put-attribute name="content" value="/WEB-INF/views/sessao/gerenciarSessao.jsp" />
+		<put-list-attribute name="addScripts">
+		    <add-attribute value="resources/js/websocket/websocket.js" />
+	  	</put-list-attribute>
 	</definition>
 	
 	<definition name="canvas" template="/WEB-INF/views/canvas/canvas.jsp">

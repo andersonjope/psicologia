@@ -13,6 +13,8 @@ public class FormularioLogin {
 	private String senha;
 	
 	private boolean relembre;
+	
+	private boolean recuperaSenha;
 
 	public String getEmail() {
 		return email;
@@ -36,6 +38,14 @@ public class FormularioLogin {
 
 	public void setRelembre(boolean relembre) {
 		this.relembre = relembre;
+	}
+
+	public boolean isRecuperaSenha() {
+		return recuperaSenha;
+	}
+
+	public void setRecuperaSenha(boolean recuperaSenha) {
+		this.recuperaSenha = recuperaSenha;
 	}
 	
 }

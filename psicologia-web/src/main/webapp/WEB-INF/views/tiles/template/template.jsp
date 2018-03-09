@@ -35,6 +35,10 @@
 		var serverName = "${pageContext.request.serverName}";
 		var serverPort = "${pageContext.request.serverPort}";
 		var contextPath = "${pageContext.request.contextPath}";
+		
+		$(document).ready(function() {
+			$(".hideMessage").delay(3000).hide(100);
+		});
 	</script>
     
 	<style type="text/css">

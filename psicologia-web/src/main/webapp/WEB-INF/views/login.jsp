@@ -11,6 +11,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="resources/css/styles/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/styles/signin.css">
+    <script type="text/javascript" src="resources/js/jquery/jquery.min.js"></script>
 
 	<link rel="icon" href="resources/imagens/logo.png">
 	
@@ -202,7 +203,8 @@
 	<br/>
 	<spring:url value="/auth" var="logar" />
 	<form:form id="formId" modelAttribute="formularioLogin" action="${logar}" method="POST" cssClass="form-signin">
-	
+		<form:hidden path="recuperaSenha" id="recuperaSenha"/>
+		
 		<img class="mb-4" src="resources/imagens/logo.png" alt="" width="60%">
 		<h1 class="h3 mb-3 font-weight-normal">Entre em seu login</h1>
 		
@@ -220,9 +222,31 @@
 		    Desejo lembrar minha senha
 		  </label>
 		</div>
-		<button class="btn btn-lg btn-primary btn-block" type="submit" >Entrar</button>
+		<div class="checkbox mb-3">
+		  <label>
+		  	<a id="recuperar" href="#">
+		    	Recuperar senha
+		    </a>
+		  </label>
+		</div>
+		<button id="entrar" class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
 	
 	</form:form>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#recuperar").click(function() {
+				$("#recuperaSenha").val(true);
+				$("#senha").val(" ");
+				$("#formId").submit();
+			});
+			
+			$("#entrar").click(function() {
+				$("#recuperaSenha").val(false);
+				$("#senha").val("");
+			});
+		});	
+	</script>
 
 </body>
 </html>

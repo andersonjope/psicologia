@@ -12,7 +12,6 @@
 	</style>
 </head>
 <body>
-	<h1>Sala do Cliente  - ${idCliente}</h1>
 	<div id="frame" style="width:100%; height:100%;"></div>
 </body>
 	<script type="text/javascript">

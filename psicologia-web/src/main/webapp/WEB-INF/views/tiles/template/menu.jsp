@@ -1,47 +1,32 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-		<ul class="navbar-nav navbar-sidenav" id="nav-menu">
-			<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-				<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#cadastrarCliente" data-parent="#nav-menu"> 
-					<i class="fa fa-pencil-square-o"></i> 
-					<span class="nav-link-text">Cliente</span>
-				</a>
-				<ul class="sidenav-second-level collapse" id="cadastrarCliente">
-					<li>
-						<a href="cadastrarCliente">
-							<i class="fa fa-floppy-o"></i> Cadastrar Cliente
-						</a>
-					</li>
-				</ul>
-			</li>
-			<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-				<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#cadastrarMedico" data-parent="#nav-menu"> 
-					<i class="fa fa-pencil-square-o"></i> 
-					<span class="nav-link-text">Médico</span>
-				</a>
-				<ul class="sidenav-second-level collapse" id="cadastrarMedico">
-					<li>
-						<a href="cadastrarMedico">
-							<i class="fa fa-floppy-o"></i> Cadastrar Médico
-						</a>
-					</li>
-				</ul>
-			</li>
-			<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-				<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#abrirSessao" data-parent="#nav-menu"> 
-					<i class="fa fa-pencil-square-o"></i> 
-					<span class="nav-link-text">Abrir Sessão</span>
-				</a>
-				<ul class="sidenav-second-level collapse" id="abrirSessao">
-					<li>
-						<a href="iniciarSessao">
-							<i class="fa fa-floppy-o"></i> Iniciar Sessão
-						</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
+<nav class="my-2 my-md-0 mr-md-3">
+		
+	<a id="showBotaoVoltar" href="home" style="display: none;">
+		<button type="button" class="btn btn-outline-success">Voltar</button>
+	</a>
+	
+	<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 0}">
+		<a href="cadastrarMedico">
+			<button type="button" class="btn btn-outline-info">CADASTRAR PSICÓLOGO</button>
+		</a>
+	</c:if>
+	
+	<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 0 or sessionScope.usuario.enumPerfil.ordinal() eq 1}">
+		<a href="cadastrarCliente">
+			<button type="button" class="btn btn-outline-success">CADASTRAR PACIENTE</button>
+		</a> 
+	</c:if>
+	
+	<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 1}">
+		<a id="iniciarSessao" href="iniciarSessao">
+			<button type="button" class="btn btn-outline-warning">CRIA SESSÃO</button>
+		</a> 
+	</c:if>
+	
+	<a id="sair" href="sair">
+		<button type="button" class="btn btn-outline-info">Sair</button>
+	</a>
+
 </nav>

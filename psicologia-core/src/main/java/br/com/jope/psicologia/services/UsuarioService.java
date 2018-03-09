@@ -10,4 +10,5 @@ public interface UsuarioService extends BaseService<Usuario> {
 	
 	Usuario loadUsuarioLogin(Usuario usuario) throws BussinessException;
 	
+	Usuario loadUsuarioLogin(String deLogin) throws BussinessException;
 }

@@ -30,7 +30,7 @@ function onError(evt) {
 }
 
 function onOpen(evt) {
-    //alert("Erro ao conetar ao servidor. open");
+//    alert("Erro ao conetar ao servidor. open");
 }
                
 function loadIframe(velocidade, playStop){
