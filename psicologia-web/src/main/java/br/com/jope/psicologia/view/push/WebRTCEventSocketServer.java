@@ -15,21 +15,21 @@ import javax.websocket.server.ServerEndpoint;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-@ServerEndpoint("/pingpong/{client-id}")
-public class PingPongEventSocketMediator {
+@ServerEndpoint("/webtrc/{hash}/{direcionamento}")
+public class WebRTCEventSocketServer {
 
     private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
 
     @SuppressWarnings("unused")
 	@OnMessage
-    public String onMessage(String message, Session session, @PathParam("client-id") String clientId) {
+    public String onMessage(String message, Session session, @PathParam("hash") String hash, @PathParam("direcionamento") String direcionamento) {
         try {
             JSONObject jObj = new JSONObject(message);
-            //System.out.println("received message from client " + clientId);
+//            System.out.println("received message from client " + hash + " message: " + message);
             for (Session s : peers) {
                 try {
                     s.getBasicRemote().sendText(message);
-                    //System.out.println("send message to peer ");
+//                    System.out.println("send message to peer ");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -42,19 +42,19 @@ public class PingPongEventSocketMediator {
     }
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("client-id") String clientId) {
-        //System.out.println("mediator: opened websocket channel for client " + clientId);
+    public void onOpen(Session session, @PathParam("hash") String hash, @PathParam("direcionamento") String direcionamento) {
+//        System.out.println("mediator: opened websocket channel for client " + hash);
         peers.add(session);
 
         try {
-            session.getBasicRemote().sendText(clientId);
+            session.getBasicRemote().sendText(hash);
         } catch (IOException e) {
         }
     }
 
     @OnClose
-    public void onClose(Session session, @PathParam("client-id") String clientId) {
-        //System.out.println("mediator: closed websocket channel for client " + clientId);
+    public void onClose(Session session, @PathParam("hash") String hash, @PathParam("direcionamento") String direcionamento) {
+//        System.out.println("mediator: closed websocket channel for client " + hash);
         peers.remove(session);
     }
 }

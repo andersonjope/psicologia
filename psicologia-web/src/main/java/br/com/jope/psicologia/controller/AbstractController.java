@@ -27,9 +27,9 @@ public class AbstractController implements Serializable {
 	private PingPongEventSocketClient client;
 	private List<Message> messages;
 	
-	protected void initializeWebSocket(HttpServletRequest request, String idCliente) {
+	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
 		try {
-			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), idCliente};
+			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
 			String url = String.format(webSocketAddress, parametro);
 	        //System.out.println("REST service: open websocket client at " + url);
 	        
@@ -45,13 +45,13 @@ public class AbstractController implements Serializable {
     }
 	
 	@SuppressWarnings("unused")
-	protected void notificaCliente(HttpServletRequest request, String idCliente, Integer velocidade, boolean playStop) {
+	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
 		try {
 			if(client == null) {
-				initializeWebSocket(request, idCliente);
+				initializeWebSocket(request, hashSessao);
 			}
 			
-			String mensagem = "{\"identificador\":\""+ idCliente+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
+			String mensagem = "{\"identificador\":\""+ hashSessao+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
 			client.sendMessage(mensagem);
 		} catch (JSONException e) {

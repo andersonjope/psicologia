@@ -27,7 +27,7 @@ public class ClienteServiceCore extends BaseServiceCore<Cliente> implements Clie
 
 	@Override
 	public void incluir(Cliente entity) throws BussinessException {
-		String encryptPassword = Util.encryptPassword(entity.getUsuario().getDeSenha());
+		String encryptPassword = Util.encrypt(entity.getUsuario().getDeSenha());
 		entity.getUsuario().setDeSenha(encryptPassword);
 		usuarioService.incluir(entity.getUsuario());
 		super.incluir(entity);

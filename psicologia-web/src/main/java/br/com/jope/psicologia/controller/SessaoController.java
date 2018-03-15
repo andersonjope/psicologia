@@ -116,13 +116,13 @@ public class SessaoController extends AbstractController {
 			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
 			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
 			formularioSessao.setNuSessao(sessao.getNuSessao());
-			String deLogin = sessao.getCliente().getUsuario().getDeLogin();
+			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("sessao", sessao);
 			model.addAttribute("formularioSessao", formularioSessao);
 			model.addAttribute("formularioSessaoSom", new FormularioAlteraSessaoSom());
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
-			model.addAttribute("idCliente", deLogin);
-			initializeWebSocket(request, deLogin);
+			model.addAttribute("hashSessao", hashSessao);
+			initializeWebSocket(request, hashSessao);
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}
@@ -191,11 +191,11 @@ public class SessaoController extends AbstractController {
 				sessaoService.alterar(sessao);				
 			}
 			
-			String deLogin = sessao.getCliente().getUsuario().getDeLogin();
-			model.addAttribute("idCliente", deLogin);
+			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
+			model.addAttribute("hashSessao", hashSessao);
 			model.addAttribute("formularioSessao", formularioSessao);
 			
-			notificaCliente(request, deLogin, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
+			notificaCliente(request, hashSessao, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
 			
 			if(EnumAcaoSessao.ENCERRAR.equals(acaoSessao)) {
 				addMessages(redirectAttributes, MessageType.INFO, false, "Sessão encerrada, dados enviados para o Paciente.");

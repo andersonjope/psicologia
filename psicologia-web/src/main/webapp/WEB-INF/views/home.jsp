@@ -18,17 +18,6 @@
 		    margin-left: 24%;
 		}
 		
-		div.bloco2 {
-		    position: relative;
-		    width: 250px;
-		    height: 250px;
-		    border: 3px solid #0000005c;
-		    margin-top: -18%;
-		    margin-right: 10%;
-		    margin-bottom: 0%;
-		    margin-left: 57%;
-		}
-		
 		div.bloco1image {
 		    margin-top: 26%;
 		    margin-right: 10%;
@@ -36,12 +25,6 @@
 		    margin-left: 25%;
 		}
 		
-		div.bloco2image {
-		    margin-top: 20%;
-		    margin-right: 10%;
-		    margin-bottom: 0%;
-		    margin-left: 20%;
-		}
 	</style>
 </head>
 <body>

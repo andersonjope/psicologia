@@ -282,7 +282,7 @@ public class Util implements Serializable {
 		}
 	}
 
-	public static String encryptPassword(String input) {
+	public static String encrypt(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(input.getBytes());
@@ -324,7 +324,7 @@ public class Util implements Serializable {
     }
     
     public static void main(String[] args) {
-		System.out.println(encryptPassword("123"));
+		System.out.println(encrypt("123"));
 	}
     
 }

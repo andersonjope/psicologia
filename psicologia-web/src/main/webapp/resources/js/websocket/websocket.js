@@ -1,11 +1,13 @@
-function initWebsocket(identificador){
-	var wsUri = "ws://" + document.location.host + "/psicologia-web/pingpong/" + identificador;
-	var websocket = new WebSocket(wsUri);
+'use strict';
 
+$(document).ready(function() {
+	console.log("websocket " + " : " + wsPingPong);
+	var websocket = new WebSocket(wsPingPong);
+	
 	websocket.onmessage = function(evt) { onMessage(evt) };
 	websocket.onerror = function(evt) { onError(evt) };
 	websocket.onopen = function(evt) { onOpen(evt) };
-}
+});
 
 function onMessage(evt) {
 	if(evt.data !== "" && evt.data !== null){

@@ -24,7 +24,7 @@ import br.com.jope.psicologia.enumeration.EnumPerfil;
 @Entity
 @Table(name="usuario")
 @NamedQueries({
-	@NamedQuery(name=Usuario.FIND_USUARIO_LOGIN, query="select u from Usuario u where u.deLogin = :deLogin ")
+	@NamedQuery(name=Usuario.FIND_USUARIO_LOGIN, query="select u from Usuario u where lower(u.deLogin) = :deLogin ")
 })
 public class Usuario extends BaseEntity {
 

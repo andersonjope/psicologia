@@ -43,16 +43,16 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 	public Usuario loadUsuarioLogin(Usuario usuario) throws BussinessException {
 		try {
 			ConsultaVO consulta = new ConsultaVO(Usuario.FIND_USUARIO_LOGIN);
-			consulta.addParametros("deLogin", usuario.getDeLogin());
+			consulta.addParametros("deLogin", usuario.getDeLogin().toLowerCase());
 			List<Usuario> list = loadListNamedQuery(consulta);
 			if(!list.isEmpty()) {
 				Usuario usuarioRecuperado = list.get(0);
-				String encryptPassword = Util.encryptPassword(usuario.getDeSenha());
+				String encryptPassword = Util.encrypt(usuario.getDeSenha());
 				if(!Util.isEmpty(usuarioRecuperado.getDeSenha()) && usuarioRecuperado.getDeSenha().equals(encryptPassword)) {
 					return usuarioRecuperado;
 				}
 			}else if(usuario.getDeLogin().equals("administrador@gmail.com")) {
-				String encryptPassword = Util.encryptPassword(usuario.getDeSenha());
+				String encryptPassword = Util.encrypt(usuario.getDeSenha());
 				if(encryptPassword.equals("efd632efad05bdfe2e3d6ad9e91d5d82")) {
 					usuario.setEnumPerfil(EnumPerfil.ADMINISTRADOR);
 					return usuario;					

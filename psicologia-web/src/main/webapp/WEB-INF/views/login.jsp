@@ -243,7 +243,6 @@
 			
 			$("#entrar").click(function() {
 				$("#recuperaSenha").val(false);
-				$("#senha").val("");
 			});
 		});	
 	</script>

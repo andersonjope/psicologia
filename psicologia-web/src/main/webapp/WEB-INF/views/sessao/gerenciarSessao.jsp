@@ -6,8 +6,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- <script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.js"></script> -->
-
+<style type="text/css">
+	video{
+		height: 350px; 
+		width: 550px;
+		float: left;
+	}
+</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#showBotaoVoltar").removeAttr("style");
@@ -22,28 +27,32 @@
 	<div id="controles" >
 		<c:import url="/WEB-INF/views/sessao/controlesSessao.jsp"></c:import>
 	</div>
-	
-<!-- 	<video id="localVideo" autoplay muted></video> -->
-<!--     <video id="remoteVideo" autoplay></video> -->
 
-<!--     <br /> -->
+    <div class="form-group">
+		<div class="col-sm-offset-2 col-sm-10">
+		    <input id="videoCallButton" type="button" class="btn btn-success" value="Video Call"/>
+		    <input id="endCallButton" type="button" class="btn btn-success" value="End Call"/>
+    	</div>
+    </div>
+	<div class="form-group">
+		<div class="col-sm-10">
+	    	<video id="remoteVideo" autoplay></video>
+	    	<video id="localVideo" autoplay muted></video>
+	    </div>
+    </div>
 
-<!--      <div> -->
-<!--       <button id="startButton">Start</button> -->
-<!--       <button id="callButton">Call</button> -->
-<!--       <button id="hangupButton">Hang Up</button> -->
-<!--     </div> -->
-
-<!--     <script type="text/javascript"> -->
-<!--       pageReady(); -->
-<!--     </script> -->
 	
 <body>	
 	<script type="text/javascript">
-		initWebsocket("${idCliente}");
+		urlWebSocket("${hashSessao}");
 	</script>
 	
 <!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
-<!-- 	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script> -->
+	<script type="text/javascript" src="resources/js/webrtc/webtrc3.js"></script>
+<!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
+<!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->
 	
+    <script type="text/javascript">
+    	pageReady("L");
+	</script>
 </html>

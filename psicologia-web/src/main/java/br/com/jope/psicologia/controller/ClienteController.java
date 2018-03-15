@@ -44,8 +44,9 @@ public class ClienteController extends AbstractController {
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
 	public String cliente(Model model, HttpServletRequest request) {
 		UsuarioVO usuario = loadUsuarioLogado(request);
-		model.addAttribute("idCliente", usuario.getDeEmail());
-		initializeWebSocket(request, usuario.getDeEmail());
+		String hashSessao = Util.encrypt(String.valueOf(usuario.getNuUsuario()));
+		model.addAttribute("hashSessao", hashSessao);
+		initializeWebSocket(request, hashSessao);
 		return "salaCliente";
 	}
 	

@@ -30,7 +30,7 @@ public class MedicoServiceCore extends BaseServiceCore<Medico> implements Medico
 
 	@Override
 	public void incluir(Medico entity) throws BussinessException {
-		String encryptPassword = Util.encryptPassword(entity.getUsuario().getDeSenha());
+		String encryptPassword = Util.encrypt(entity.getUsuario().getDeSenha());
 		entity.getUsuario().setDeSenha(encryptPassword);
 		usuarioService.incluir(entity.getUsuario());
 		super.incluir(entity);

@@ -34,7 +34,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#containerCanvas").width($(window).width());
+		$("#containerCanvas").width($(window).width() - 20);
 		$("#containerCanvas").height($(window).height());
 		var velocidade = getQueryString().velocidade;
 		var playStop = getQueryString().playStop;
