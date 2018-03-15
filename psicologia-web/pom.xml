@@ -101,14 +101,6 @@
 			<version>${spring.web.version}</version>
 		</dependency>
 
-		<!-- Servlet -->
-		<!-- <dependency> -->
-		<!-- <groupId>javax.servlet</groupId> -->
-		<!-- <artifactId>servlet-api</artifactId> -->
-		<!-- <version>2.5</version> -->
-		<!-- <scope>provided</scope> -->
-		<!-- </dependency> -->
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -156,46 +148,6 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.webjars</groupId> -->
-<!-- 			<artifactId>webjars-locator</artifactId> -->
-<!-- 			<version>0.32</version> -->
-<!-- 		</dependency> -->
-
-		<!-- https://mvnrepository.com/artifact/org.webjars/sockjs-client -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.webjars</groupId> -->
-		<!-- <artifactId>sockjs-client</artifactId> -->
-		<!-- <version>1.0.2</version> -->
-		<!-- </dependency> -->
-
-		<!-- https://mvnrepository.com/artifact/org.webjars/stomp-websocket -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.webjars</groupId> -->
-		<!-- <artifactId>stomp-websocket</artifactId> -->
-		<!-- <version>2.3.3</version> -->
-		<!-- </dependency> -->
-
-		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.webjars</groupId> -->
-<!-- 			<artifactId>bootstrap</artifactId> -->
-<!-- 			<version>4.0.0-beta.2</version> -->
-<!-- 			<exclusions> -->
-<!-- 				<exclusion> -->
-<!-- 					<groupId>org.webjars</groupId> -->
-<!-- 					<artifactId>jquery</artifactId> -->
-<!-- 				</exclusion> -->
-<!-- 			</exclusions> -->
-<!-- 		</dependency> -->
-
-		<!-- https://mvnrepository.com/artifact/org.webjars/jquery -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.webjars</groupId> -->
-<!-- 			<artifactId>jquery</artifactId> -->
-<!-- 			<version>3.2.1</version> -->
-<!-- 		</dependency> -->
 
 		<!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
 		<dependency>
