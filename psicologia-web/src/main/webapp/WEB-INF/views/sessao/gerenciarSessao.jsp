@@ -22,6 +22,7 @@
 
 </head>
 <body>
+	<input type="hidden" id="origen" value="psi_pac">
 	<div id="frame" style="width:100%; height:100%;"></div>
 
 	<div id="controles" >
@@ -30,8 +31,8 @@
 
     <div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
-		    <input id="videoCallButton" type="button" class="btn btn-success" value="Video Call"/>
-		    <input id="endCallButton" type="button" class="btn btn-success" value="End Call"/>
+		    <input id="initVideoCliente" type="button" class="btn btn-success" value="Iniciar Chamada Vídeo"/>
+		    <input id="endVideoCliente" type="button" class="btn btn-success" value="Encerrar Chamda Vídeo"/>
     	</div>
     </div>
 	<div class="form-group">
@@ -47,12 +48,9 @@
 		urlWebSocket("${hashSessao}");
 	</script>
 	
-<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
-	<script type="text/javascript" src="resources/js/webrtc/webtrc3.js"></script>
+	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
 <!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
 <!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->
 	
-    <script type="text/javascript">
-    	pageReady("L");
-	</script>
 </html>

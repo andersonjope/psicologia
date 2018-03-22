@@ -123,6 +123,7 @@ public class SessaoController extends AbstractController {
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
 			model.addAttribute("hashSessao", hashSessao);
 			initializeWebSocket(request, hashSessao);
+			initializeWebSocket(request, hashSessao, DIRECIONAMENTO);
 		} catch (BussinessException e) {
 			e.printStackTrace();
 		}

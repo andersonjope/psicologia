@@ -30,7 +30,7 @@ public class WebRTCEventSocketClient {
 
     @OnOpen
     public void onOpen(Session userSession) {
-//        System.out.println("client: opening websocket ");
+        System.out.println("client: opening websocket " + userSession.getId());
         this.userSession = userSession;
     }
 
@@ -42,7 +42,7 @@ public class WebRTCEventSocketClient {
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
-//        System.out.println("client: closing websocket");
+        System.out.println("client: closing websocket " + userSession.getId());
         this.userSession = null;
     }
 

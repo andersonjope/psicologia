@@ -17,32 +17,50 @@ import br.com.jope.psicologia.enumeration.EnumUsuario;
 import br.com.jope.psicologia.view.message.Message;
 import br.com.jope.psicologia.view.message.MessageType;
 import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
+import br.com.jope.psicologia.view.push.WebRTCEventSocketClient;
 import br.com.jope.psicologia.vo.UsuarioVO;
 
 public class AbstractController implements Serializable {
 
 	private static final long serialVersionUID = -4808859477511429595L;
 
-	private final String webSocketAddress = "ws://%s:%s/psicologia-web/pingpong/%s";
+	protected static final String[] DIRECIONAMENTO = new String[] {"psi_pac","pac_psi"};
+	private final String webSocketAddressPingPong = "ws://%s:%s/psicologia-web/pingpong/%s";
+	private final String webSocketAddressPsiPac = "ws://%s:%s/psicologia-web/webtrc/%s";
 	private PingPongEventSocketClient client;
 	private List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
 		try {
 			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-			String url = String.format(webSocketAddress, parametro);
-	        //System.out.println("REST service: open websocket client at " + url);
-	        
-			client = new PingPongEventSocketClient(new URI(url));
-	        client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
-	            public void handleMessage(String message) {
-	                //System.out.println("messagehandler in REST service - process message "+message);
-	            }
-	        });
+			String urlPingPong = String.format(webSocketAddressPingPong, parametro);
+			client = new PingPongEventSocketClient(new URI(urlPingPong));
+			client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
+				public void handleMessage(String message) {
+					return;
+				}
+			});
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
     }
+	
+	protected void initializeWebSocket(HttpServletRequest request, String hashSessao, String[] direcionamento) {
+		try {
+			for(String direc : direcionamento) {
+				String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao.concat(direc)};
+				String urlPsiPac= String.format(webSocketAddressPsiPac, parametro);
+				WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
+				clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
+					public void handleMessage(String message) {
+						return;
+					}
+				});				
+			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@SuppressWarnings("unused")
 	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {

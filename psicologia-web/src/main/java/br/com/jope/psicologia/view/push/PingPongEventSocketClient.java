@@ -21,7 +21,7 @@ public class PingPongEventSocketClient {
     public PingPongEventSocketClient(URI endpointURI) {
         try {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-            container.connectToServer(this, endpointURI);
+            container.connectToServer(this, endpointURI);            	
         } catch (Exception e) {
         	e.printStackTrace();
             throw new RuntimeException(e);

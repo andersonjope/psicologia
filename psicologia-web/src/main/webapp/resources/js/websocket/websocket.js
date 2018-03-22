@@ -1,7 +1,6 @@
 'use strict';
 
 $(document).ready(function() {
-	console.log("websocket " + " : " + wsPingPong);
 	var websocket = new WebSocket(wsPingPong);
 	
 	websocket.onmessage = function(evt) { onMessage(evt) };

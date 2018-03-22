@@ -18,7 +18,7 @@
 </head>
 <body>
 	<div id="frame" style="width:100%; height:100%;"></div>
-</body>
+	<input type="hidden" id="origen" value="pac_psi">
 	<script type="text/javascript">
 		urlWebSocket("${hashSessao}");
 		$(document).ready(function() {
@@ -27,19 +27,22 @@
 	</script>	
 	
 	<div class="form-group">
-		<div class="col-sm-10">
-			<video id="remoteVideo" autoplay></video>
-			<video id="localVideo" muted autoplay></video>
+		<div class="col-sm-offset-2 col-sm-10">
+		    <input id="initVideoCliente" type="button" class="btn btn-success" value="Iniciar Chamada Vídeo"/>
+		    <input id="endVideoCliente" type="button" class="btn btn-success" value="Encerrar Chamda Vídeo"/>
     	</div>
     </div>
+	<div class="form-group">
+		<div class="col-sm-10">
+	    	<video id="remoteVideo" autoplay ></video>
+	    	<video id="localVideo" autoplay muted></video>
+	    </div>
+    </div>
+</body>
     	
-<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
-	<script type="text/javascript" src="resources/js/webrtc/webtrc3.js"></script>
+	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
 <!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
 <!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->
-	
-    <script type="text/javascript">
-    	pageReady("R");
-	</script>
 	
 </html>
