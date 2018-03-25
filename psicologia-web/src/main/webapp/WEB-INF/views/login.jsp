@@ -191,8 +191,8 @@
 	<a href="#" class="step step-5"></a>
 	<a href="#" class="step step-6"></a>
 	<a href="#" class="step step-7"></a>
-<!-- 	<a href="#" class="step step-8"></a> -->
-<!-- 	<a href="#" class="step step-9"></a> -->
+	<a href="#" class="step step-8"></a>
+	<a href="#" class="step step-9"></a>
 	
 	<!-- EYES -->
 	<figure class="eyes">
@@ -202,7 +202,7 @@
 	<tiles:insertAttribute name="pageMessages" />
 	<br/>
 	<spring:url value="/auth" var="logar" />
-	<form:form id="formId" modelAttribute="formularioLogin" action="${logar}" method="POST" cssClass="form-signin">
+	<form:form id="formId" modelAttribute="formularioLogin" action="${logar}" method="POST" cssClass="form-signin" cssStyle="z-index:1000;">
 		<form:hidden path="recuperaSenha" id="recuperaSenha"/>
 		
 		<img class="mb-4" src="resources/imagens/logo.png" alt="" width="60%">
@@ -216,12 +216,6 @@
 		<form:password path="senha" id="senha" class="form-control" placeholder="Senha" />
 		<form:errors path="senha" cssClass="error"/>
 		
-		<div class="checkbox mb-3">
-		  <label>
-		  	<form:checkbox path="relembre"/>
-		    Desejo lembrar minha senha
-		  </label>
-		</div>
 		<div class="checkbox mb-3">
 		  <label>
 		  	<a id="recuperar" href="#">

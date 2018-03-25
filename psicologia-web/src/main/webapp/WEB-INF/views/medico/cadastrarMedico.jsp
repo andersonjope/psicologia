@@ -10,17 +10,17 @@
 	<spring:url value="/salvarMedico" var="salvarMedico" />
 	<form:form id="formId" modelAttribute="formularioMedico" action="${salvarMedico}" method="POST">
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="medico.deNome">Nome completo</label>
+			<label class="control-label col-sm-2" for="medico.usuario.deNome">Nome completo</label>
 			<div class="col-sm-10">
-				<form:input path="medico.deNome" id="deNome" class="form-control"/>
-				<form:errors path="medico.deNome" cssClass="error"/>
+				<form:input path="medico.usuario.deNome" id="deNome" class="form-control"/>
+				<form:errors path="medico.usuario.deNome" cssClass="error"/>
 			</div>
 		</div>
 	
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="medico.usuario.coCPF">CPF</label>
 			<div class="col-sm-10">
-				<form:input path="medico.usuario.coCPF" id="coCPF" class="form-control"/>
+				<form:input path="medico.usuario.coCPF" id="coCPF" class="form-control maskcpf" placeholder="000.000.000-00"/>
 				<form:errors path="medico.usuario.coCPF" cssClass="error"/>
 			</div>
 		</div>
@@ -44,7 +44,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="medico.usuario.coCep">CEP</label>
 			<div class="col-sm-10">
-				<form:input path="medico.usuario.coCep" id="coCep" class="form-control"/>
+				<form:input path="medico.usuario.coCep" id="coCep" class="form-control maskcep" placeholder="00.000-000"/>
 				<form:errors path="medico.usuario.coCep" cssClass="error"/>
 			</div>
 		</div>
@@ -68,7 +68,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="medico.usuario.coTelefone">Telefone</label>
 			<div class="col-sm-10">
-				<form:input path="medico.usuario.coTelefone" id="coTelefone" class="form-control" placeholder="(xx)9xxxx-xxxx"/>
+				<form:input path="medico.usuario.coTelefone" id="coTelefone" class="form-control masktelefone" placeholder="(xx)xxxxx-xxxx"/>
 				<form:errors path="medico.usuario.coTelefone" cssClass="error"/>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="deNascimento">Data de nascimento</label>
 			<div class="col-sm-10">
-				<form:input path="deNascimento" id="deNascimento" class="form-control" placeholder="dd/mm/aa"/>
+				<form:input path="deNascimento" id="deNascimento" class="form-control maskdata" placeholder="dd/mm/aa"/>
 				<form:errors path="deNascimento" cssClass="error"/>
 			</div>
 		</div>
@@ -112,7 +112,7 @@
             <tbody>
 	         	<c:forEach items="${medicoList}" varStatus="vs" var="m">
 	         		<tr class="gradeX">
-                  		<td><c:out value ="${m.deNome}"/></td>
+                  		<td><c:out value ="${m.usuario.deNome}"/></td>
                   		<td><c:out value ="${m.usuario.deLogin}"/></td>
                   	</tr>
 	         	</c:forEach>

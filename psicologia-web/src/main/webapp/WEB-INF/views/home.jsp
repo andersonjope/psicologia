@@ -11,7 +11,6 @@
 		    position: relative;
 		    width: 250px;
 		    height: 250px;
-		    border: 3px solid #0000005c;
 		    margin-top: 0%;
 		    margin-right: 10%;
 		    margin-bottom: 0%;
@@ -65,7 +64,7 @@
 			<tbody>
 				<c:forEach items="${sessaoMedicoList}" varStatus="vs" var="s">
 					<tr class="gradeX">
-						<td><c:out value="${s.cliente.deNome}" /></td>
+						<td><c:out value="${s.cliente.usuario.deNome}" /></td>
 						<td><c:out value="${s.cliente.usuario.deLogin}" /></td>
 						<td><c:out value="${s.cliente.usuario.coTelefone}" /></td>
 						<td>

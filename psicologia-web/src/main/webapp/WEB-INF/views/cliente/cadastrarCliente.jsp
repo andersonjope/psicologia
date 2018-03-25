@@ -10,17 +10,17 @@
 	<spring:url value="/salvarCliente" var="salvarCliente" />
 	<form:form id="formId" modelAttribute="formularioCliente" action="${salvarCliente}" method="POST">
 		<div class="form-group">
-			<label class="control-label col-sm-2" for="cliente.deNome">Nome completo</label>
+			<label class="control-label col-sm-2" for="cliente.usuario.deNome">Nome completo</label>
 			<div class="col-sm-10">
-				<form:input path="cliente.deNome" id="deNome" class="form-control"/>
-				<form:errors path="cliente.deNome" cssClass="error"/>
+				<form:input path="cliente.usuario.deNome" id="deNome" class="form-control"/>
+				<form:errors path="cliente.usuario.deNome" cssClass="error"/>
 			</div>
 		</div>
 	
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="cliente.usuario.coCPF">CPF</label>
 			<div class="col-sm-10">
-				<form:input path="cliente.usuario.coCPF" id="coCPF" class="form-control"/>
+				<form:input path="cliente.usuario.coCPF" id="coCPF" class="form-control maskcpf" placeholder="000.000.000-00"/>
 				<form:errors path="cliente.usuario.coCPF" cssClass="error"/>
 			</div>
 		</div>
@@ -44,7 +44,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="cliente.usuario.coCep">CEP</label>
 			<div class="col-sm-10">
-				<form:input path="cliente.usuario.coCep" id="coCep" class="form-control"/>
+				<form:input path="cliente.usuario.coCep" id="coCep" class="form-control maskcep" placeholder="00.000-000"/>
 				<form:errors path="cliente.usuario.coCep" cssClass="error"/>
 			</div>
 		</div>
@@ -68,7 +68,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="cliente.usuario.coTelefone">Telefone</label>
 			<div class="col-sm-10">
-				<form:input path="cliente.usuario.coTelefone" id="coTelefone" class="form-control" placeholder="(xx)9xxxx-xxxx"/>
+				<form:input path="cliente.usuario.coTelefone" id="coTelefone" class="form-control masktelefone" placeholder="(xx)xxxxx-xxxx"/>
 				<form:errors path="cliente.usuario.coTelefone" cssClass="error"/>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="deNascimento">Data de nascimento</label>
 			<div class="col-sm-10">
-				<form:input path="deNascimento" id="deNascimento" class="form-control" placeholder="dd/mm/aa"/>
+				<form:input path="deNascimento" id="deNascimento" class="form-control maskdata" placeholder="dd/mm/aa"/>
 				<form:errors path="deNascimento" cssClass="error"/>
 			</div>
 		</div>
@@ -112,7 +112,7 @@
             <tbody>
 	         	<c:forEach items="${clienteList}" varStatus="vs" var="c">
 	         		<tr class="gradeX">
-                  		<td><c:out value ="${c.deNome}"/></td>
+                  		<td><c:out value ="${c.usuario.deNome}"/></td>
                   		<td><c:out value ="${c.usuario.deLogin}"/></td>
                   	</tr>
 	         	</c:forEach>

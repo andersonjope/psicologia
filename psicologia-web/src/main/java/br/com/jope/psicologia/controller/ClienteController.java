@@ -73,7 +73,8 @@ public class ClienteController extends AbstractController {
 			}
 			
 			Cliente cliente = formularioCliente.getCliente();
-
+			removeCaracter(cliente.getUsuario());
+			
 			if(!Util.isEmpty(formularioCliente.getDeNascimento())) {
 				cliente.getUsuario().setDtNascimento(Util.converteStringToDate(Util.FORMATO_DATA_DIA_MES_ANO, formularioCliente.getDeNascimento()));
 			}
@@ -84,7 +85,7 @@ public class ClienteController extends AbstractController {
 			clienteService.incluir(cliente);
 			
 			String deLogin = cliente.getUsuario().getDeLogin();
-			emailService.enviaEmail(deLogin, "Cadastro de Paciente: " + cliente.getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + deLogin + "<br/>Senha: " + randomSenha);
+			emailService.enviaEmail(deLogin, "Cadastro de Paciente: " + cliente.getUsuario().getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + deLogin + "<br/>Senha: " + randomSenha);
 			
 			loadClienteList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro cliente efetuado.");

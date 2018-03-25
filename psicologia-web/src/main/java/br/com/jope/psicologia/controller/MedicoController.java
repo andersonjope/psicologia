@@ -66,6 +66,7 @@ public class MedicoController extends AbstractController {
 			}
 			
 			Medico medico = formularioMedico.getMedico();
+			removeCaracter(medico.getUsuario());
 			
 			if(!Util.isEmpty(formularioMedico.getDeNascimento())) {
 				medico.getUsuario().setDtNascimento(Util.converteStringToDate(Util.FORMATO_DATA_DIA_MES_ANO, formularioMedico.getDeNascimento()));
@@ -77,7 +78,7 @@ public class MedicoController extends AbstractController {
 			medicoService.incluir(medico);
 			
 			String deLogin = medico.getUsuario().getDeLogin();
-			emailService.enviaEmail(deLogin, "Cadastro de Psicólogo: " + medico.getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + deLogin + "<br/>Senha: " + randomSenha);
+			emailService.enviaEmail(deLogin, "Cadastro de Psicólogo: " + medico.getUsuario().getDeNome(), "Cadastro efetuado com sucesso.<br/><br/> Utilize as seguinte informações para entrar no sistema<br/> Usuário: " + deLogin + "<br/>Senha: " + randomSenha);
 			
 			loadMedicoList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro médico efeturado.");

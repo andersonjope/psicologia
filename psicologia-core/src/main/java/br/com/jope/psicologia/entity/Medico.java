@@ -13,8 +13,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 @Entity
 @Table(name="medico")
 @NamedQueries({
@@ -31,10 +29,6 @@ public class Medico extends BaseEntity {
 	@Column(name="nu_medico", nullable=false)
 	private Long nuMedico;
 	
-	@NotEmpty(message="{obrigatorio}")
-	@Column(name="de_nome", nullable=false)
-	private String deNome;
-	
 	@Valid
 	@OneToOne
 	@JoinColumn(name="nu_usuario", nullable=false)
@@ -46,14 +40,6 @@ public class Medico extends BaseEntity {
 
 	public void setNuMedico(Long nuMedico) {
 		this.nuMedico = nuMedico;
-	}
-
-	public String getDeNome() {
-		return deNome;
-	}
-
-	public void setDeNome(String deNome) {
-		this.deNome = deNome;
 	}
 
 	public Usuario getUsuario() {

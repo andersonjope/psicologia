@@ -30,7 +30,7 @@ public class WebRTCEventSocketClient {
 
     @OnOpen
     public void onOpen(Session userSession) {
-        System.out.println("client: opening websocket " + userSession.getId());
+//        System.out.println("client: opening websocket " + userSession.getId());
         this.userSession = userSession;
     }
 

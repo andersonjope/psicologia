@@ -11,8 +11,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 @Entity
 @Table(name="cliente")
 public class Cliente extends BaseEntity {
@@ -25,10 +23,6 @@ public class Cliente extends BaseEntity {
 	@Column(name="nu_cliente", nullable=false)
 	private Long nuCliente;
 	
-	@NotEmpty(message="{obrigatorio}")
-	@Column(name="de_nome", nullable=false)
-	private String deNome;
-	
 	@Valid
 	@OneToOne
 	@JoinColumn(name="nu_usuario", nullable=false)
@@ -40,14 +34,6 @@ public class Cliente extends BaseEntity {
 
 	public void setNuCliente(Long nuCliente) {
 		this.nuCliente = nuCliente;
-	}
-
-	public String getDeNome() {
-		return deNome;
-	}
-
-	public void setDeNome(String deNome) {
-		this.deNome = deNome;
 	}
 
 	public Usuario getUsuario() {

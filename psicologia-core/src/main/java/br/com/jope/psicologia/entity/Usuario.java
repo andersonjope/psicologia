@@ -38,6 +38,10 @@ public class Usuario extends BaseEntity {
 	private Long nuUsuario;
 	
 	@NotEmpty(message="{obrigatorio}")
+	@Column(name="de_nome", nullable=false)
+	private String deNome;
+	
+	@NotEmpty(message="{obrigatorio}")
 	@Email(message="{email_invalido}")
 	@Column(name="de_login", nullable=false)
 	private String deLogin;
@@ -80,6 +84,14 @@ public class Usuario extends BaseEntity {
 
 	public void setNuUsuario(Long nuUsuario) {
 		this.nuUsuario = nuUsuario;
+	}
+
+	public String getDeNome() {
+		return deNome;
+	}
+
+	public void setDeNome(String deNome) {
+		this.deNome = deNome;
 	}
 
 	public String getDeLogin() {

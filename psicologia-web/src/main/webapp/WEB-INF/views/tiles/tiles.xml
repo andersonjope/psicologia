@@ -16,6 +16,11 @@
 		<put-attribute name="pageMessages" value="/WEB-INF/views/tiles/template/pageMessages.jsp" />
 		<put-list-attribute name="scripts" >
 		    <add-attribute value="resources/js/jquery/jquery.min.js" />
+			<add-attribute value="resources/js/inputmask/inputmask.js" />
+			<add-attribute value="resources/js/inputmask/inputmask.numeric.extensions.js" />
+			<add-attribute value="resources/js/inputmask/inputmask.phone.extensions.js" />
+			<add-attribute value="resources/js/inputmask/inputmask.regex.extensions.js" />
+			<add-attribute value="resources/js/inputmask/jquery.inputmask.js" />
 		</put-list-attribute>
 		<put-list-attribute name="addScripts" >
 		    <add-attribute value="" />		

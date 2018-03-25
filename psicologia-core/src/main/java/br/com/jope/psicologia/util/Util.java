@@ -322,6 +322,17 @@ public class Util implements Serializable {
         }	
         return date;
     }
+
+    public static String removeCaracteres(String texto) {
+		texto = texto.replace(".", "");
+		texto = texto.replace("-", "");
+		texto = texto.replace("/", "");
+		texto = texto.replace("(", "");
+		texto = texto.replace(")", "");
+		texto = texto.replace(" ", "");
+		texto = texto.replaceAll("_", "");
+		return texto;
+	}
     
     public static void main(String[] args) {
 		System.out.println(encrypt("123"));

@@ -23,7 +23,7 @@
 				<tbody>
 					<c:forEach items="${clienteList}" varStatus="vs" var="c">
 						<tr class="gradeX">
-							<td><c:out value="${c.deNome}" /></td>
+							<td><c:out value="${c.usuario.deNome}" /></td>
 							<td><c:out value="${c.usuario.deLogin}" /></td>
 							<td><c:out value="${c.usuario.coTelefone}" /></td>
 							<td>

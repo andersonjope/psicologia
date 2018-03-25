@@ -22,13 +22,15 @@ var peerConn = null;
 var processado = false;
 
 $(document).ready(function() {
-	origen = $("#origen").val();
+	loadInit(wsWebRtcPsiPac);
+});
 
+function loadInit(wsWebRtc){
 	if (navigator.getUserMedia) {
 		remoteVideo = document.getElementById('remoteVideo');
 		localVideo = document.getElementById('localVideo');
 		
-		wsc = new WebSocket(wsWebRtcPsiPac);
+		wsc = new WebSocket(wsWebRtc);
 		wsc.onmessage = function(evt) {
 			messageData(evt)
 		};
@@ -45,17 +47,18 @@ $(document).ready(function() {
 			console.log("encerrar video");
 			messageEndCall();
 		});
-		console.log("origen: " + origen + " wsWebRtc " + wsWebRtcPsiPac);
+		console.log("origen: " + origen + " wsWebRtc " + wsWebRtcPsiPac + " : " + wsWebRtcPacPsi);
 	} else {
 		$("#initVideoCliente").attr('display', 'none');
 		$("#endVideoCliente").attr('display', 'none');
 		alert("Sorry, your browser does not support WebRTC!")
 	}
-});
+}
 
 function messageInitConnection() {
-	processado = false;
 	console.log("messageInitConnection. ");
+	origen = $("#origen").val();
+	processado = false;
 	wsc.send(JSON.stringify({
 		"processo" : origen
 	}));
@@ -77,7 +80,14 @@ function messageData(evt) {
 					console.log(origen + ": " + signal.processo);
 					if (!peerConn){
 						answerCall(signal.processo);
+						
+						console.log("iniciando processo cliente");
+						setTimeout(messageInitConnection(), 2000);
+						console.log("iniciando processo cliente WS");
+						loadInit(wsWebRtcPacPsi);
+						console.log("iniciado processo cliente WS");
 					}
+					
 				}
 			}
 		} else {
@@ -262,4 +272,9 @@ function endCall() {
 
 function errorHandler(error) {
 	console.log("ERROR HANDLER: " + error);
+}
+
+function onError(evt) {
+//	endCall();
+//	window.close();
 }

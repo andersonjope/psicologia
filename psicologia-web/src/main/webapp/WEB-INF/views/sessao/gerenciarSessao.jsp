@@ -48,7 +48,7 @@
 		urlWebSocket("${hashSessao}");
 	</script>
 	
-	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
 	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
 <!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
 <!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->
