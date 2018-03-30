@@ -7,9 +7,14 @@
 <html>
 <head>
 <style type="text/css">
-	video{
+	#remoteVideo{
 		height: 350px; 
 		width: 550px;
+		float: left;
+	}
+	#localVideo{
+		height: 250px; 
+		width: 250px;
 		float: left;
 	}
 </style>
@@ -32,7 +37,7 @@
     <div class="form-group">
 		<div class="col-sm-offset-2 col-sm-10">
 		    <input id="initVideoCliente" type="button" class="btn btn-success" value="Iniciar Chamada Vídeo"/>
-		    <input id="endVideoCliente" type="button" class="btn btn-success" value="Encerrar Chamda Vídeo"/>
+		    <input id="endVideoCliente" style="display: none;" type="button" class="btn btn-success" value="Encerrar Chamda Vídeo"/>
     	</div>
     </div>
 	<div class="form-group">
@@ -48,7 +53,7 @@
 		urlWebSocket("${hashSessao}");
 	</script>
 	
-<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
+	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
 <!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
 <!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->

@@ -7,8 +7,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 var hostname = window.location.hostname;
 
 var constraints = {video: true, audio: true};
-//var peerConnCfg = {'iceServers': [{urls: "turn:" + hostname, username: userHash, credential: userHash }]};		
-var peerConnCfg = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun.l.google.com:19302'}]};		
+var peerConnCfg = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun2.l.google.com:19302'}]};
 var psi_pac = "psi_pac";
 var pac_psi = "pac_psi";
 var wsc = null;
@@ -20,12 +19,15 @@ var remoteVideo = null;
 var localVideo = null;
 var peerConn = null;
 var processado = false;
+var processadoCliente = false;
+var uuid;
 
 $(document).ready(function() {
-	loadInit(wsWebRtcPsiPac);
+	loadInit();
 });
 
-function loadInit(wsWebRtc){
+function loadInit(){
+	origen = $("#origen").val();
 	if (navigator.getUserMedia) {
 		remoteVideo = document.getElementById('remoteVideo');
 		localVideo = document.getElementById('localVideo');
@@ -37,86 +39,82 @@ function loadInit(wsWebRtc){
 		wsc.onerror = function(evt) {
 			onError(evt)
 		};
+		wsc.onclose = function(evt) {
+			onClose(evt)
+		};
 
 		$("#initVideoCliente").click(function() {
-			console.log("iniciar video");
-			messageInitConnection();
+			messageInitConnection("iniciarpsipac");
 		});
 
 		$("#endVideoCliente").click(function() {
-			console.log("encerrar video");
 			messageEndCall();
 		});
-		console.log("origen: " + origen + " wsWebRtc " + wsWebRtcPsiPac + " : " + wsWebRtcPacPsi);
+		
+		$("#endVideoPaciente").click(function() {
+			messageEndCall();
+		});
+		
 	} else {
-		$("#initVideoCliente").attr('display', 'none');
-		$("#endVideoCliente").attr('display', 'none');
-		alert("Sorry, your browser does not support WebRTC!")
+		$("#initVideoCliente").css('display', 'none');
+		$("#endVideoCliente").css('display', 'none');
+		alert("Desculpa, o seu navegador não suporta!")
 	}
 }
 
-function messageInitConnection() {
-	console.log("messageInitConnection. ");
-	origen = $("#origen").val();
+function messageInitConnection(processo) {
+	uuid = uuid();
 	processado = false;
 	wsc.send(JSON.stringify({
-		"processo" : origen
+		"processo" : processo,
+		"acao" : origen,
+		"uuid": uuid
 	}));
+	$("#initVideoCliente").css('display', 'none');
+	$("#endVideoCliente").css('display', 'block');
 }
 
 function messageData(evt) {
-	console.log("onMessage: ");
-
 	try {
 		var signal = JSON.parse(evt.data);
 
 		if (signal.processo) {
 			if (!processado) {
 				processado = true;
-				if (psi_pac == origen) {
-					console.log(origen + ": " + signal.processo);
-					initiateCall(signal.processo);
-				} else if (pac_psi == origen) {
-					console.log(origen + ": " + signal.processo);
-					if (!peerConn){
-						answerCall(signal.processo);
-						
-						console.log("iniciando processo cliente");
-						setTimeout(messageInitConnection(), 2000);
-						console.log("iniciando processo cliente WS");
-						loadInit(wsWebRtcPacPsi);
-						console.log("iniciado processo cliente WS");
-					}
-					
+				if (signal.processo == "iniciarpsipac") {
+					if (psi_pac == origen) {
+						initiateCall(signal.acao);
+					} else if (pac_psi == origen) {
+						if (!peerConn){
+							answerCall(signal.acao);
+						}
+					}		
+					setTimeout(messageInitConnection("iniciarpacpsi"),2000);
+				}else if (signal.processo == "iniciarpacpsi") {
+					$("#endVideoPaciente").css('display', 'block');
+					if (psi_pac == origen) {
+						if (!peerConn){
+							answerCall(signal.acao);
+						}
+					} else if (pac_psi == origen) {
+						initiateCall(signal.acao);
+					}					
 				}
 			}
 		} else {
 
 			if (signal.sdp) {
-				console.log("Received SDP from remote peer.");
-//				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
-					  // Only create answers in response to offers
 					  if(signal.sdp.type == 'offer') {
 						  peerConn.createAnswer().then(createdDescription).catch(errorHandler);
 					  }
 				  }).catch(errorHandler);
-				
-//				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp), function () {
-//		            // if we received an offer, we need to answer
-//		            if (signal.sdp.type == 'offer'){
-//		            	peerConn.createAnswer(createdDescription, errorHandler);		            	
-//		            }
-//		        }, errorHandler);
-				
 			} else if (signal.candidate) {
-				console .log("Received ICECandidate from remote peer. signal.candidate" );
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate)).catch(errorHandler);
 			} else if (signal.ice) {
-				console.log("Received ICECandidate from remote peer. signal.ice ");
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
 			} else if (signal.closeConnection) {
-				console.log("Received 'close call' signal from remote peer." );
+				endCall();
 			}
 		}
 
@@ -128,129 +126,103 @@ function messageData(evt) {
 function messageEndCall() {
 	if (wsc) {
 		wsc.send(JSON.stringify({
-			"closeConnection" : true
+			"closeConnection" : true,
+			"uuid": uuid
 		}));
 	}
 }
 
 function initiateCall(processo) {
-	console.log("initiateCall");
-	// wscPsiPac.onmessage = function(evt) { messageData(evt) };
 	peerConn = prepareCall(processo);
-	console.log("peerConn " + peerConn);
-	// get the local stream, show it in the local video element and send it
-	// navigator.mediaDevices.getUserMedia(constraints).then(getUserMediaSuccess).catch(errorHandler);
 	if (navigator.getUserMedia) {
-		console.log("initiateCall 1 ");
 		navigator.getUserMedia(constraints, function(stream) {
 			localVideoStream = stream;
 			localVideo.src = window.URL.createObjectURL(localVideoStream);
-//			peerConn.addStream(localVideoStream);
 			
 			localVideoStream.getTracks().forEach(function(track) {
 				peerConn.addTrack(track, localVideoStream);
 			  });
 			
 			createAndSendOffer();
-		}, function(error) {
-			console.log("initiateCall erro : " + error);
-		});
+		}, function(error) { });
 	} else {
 		alert("Sorry, your browser does not support WebRTC!")
 	}
 };
 
-function prepareCall(processo) {
-	if (processo === psi_pac) {
-		console.log("prepareCall 1");
+function prepareCall(acao) {
+	if (acao === psi_pac) {
 		pc_psi_pac = new RTCPeerConnection(peerConnCfg);
-		// send any ice candidates to the other peer
 		pc_psi_pac.onicecandidate = onIceCandidateHandler;
-		// once remote stream arrives, show it in the remote video element
 		pc_psi_pac.onaddstream = onAddStreamHandler;
-		console.log("prepareCall 1.1");
 		return pc_psi_pac;
-	} else if (processo === pac_psi) {
-		console.log("prepareCall 2");
+	} else if (acao === pac_psi) {
 		pc_pac_psi = new RTCPeerConnection(peerConnCfg);
-		// send any ice candidates to the other peer
 		pc_pac_psi.onicecandidate = onIceCandidateHandler;
-		// once remote stream arrives, show it in the remote video element
 		peerConn.onaddstream = onAddStreamHandler;
-		console.log("prepareCall 2.2");
 		return pc_pac_psi;
 	}
 };
 
 function onIceCandidateHandler(evt) {
-	console.log("onIceCandidateHandler ")
 	if (!evt || !evt.candidate) {
 		return;
 	}
 	wsc.send(JSON.stringify({
-		"candidate" : evt.candidate
+		"candidate" : evt.candidate,
+		"uuid": uuid
 	}));
 };
 
 function onTrackHandler(evt) {
-	console.log("onAddStreamHandler ");
 	remoteVideo.srcObject = evt.streams[0];
 };
 
 function onAddStreamHandler(evt) {
-	console.log("onAddStreamHandler ");
   remoteVideo.src = window.URL.createObjectURL(evt.stream);
 };
 
 function createAndSendOffer() {
-	console.log("createAndSendOffer ");
 	peerConn.createOffer(function(offer) {
 		var off = new RTCSessionDescription(offer);
 		peerConn.setLocalDescription(new RTCSessionDescription(off),
 				function() {
 					wsc.send(JSON.stringify({
-						"sdp" : off
+						"sdp" : off,
+						"uuid": uuid
 					}));
-				}, function(error) {
-					console.log("createAndSendOffer erro 1 : " + error);
-				});
-	}, function(error) {
-		console.log("createAndSendOffer erro 2 : " + error);
-	});
+				}, function(error) { });
+	}, function(error) { });
 };
 
 
 
-function answerCall(processo) {
-	console.log("answerCall");
-	peerConn = prepareCall(processo);
+function answerCall(acao) {
+	peerConn = prepareCall(acao);
 	createAndSendAnswer();
 }
 
 function createAndSendAnswer() {
-	console.log("createAndSendAnswer ");
   peerConn.createAnswer(
     function (answer) {
       var ans = new RTCSessionDescription(answer);
       peerConn.setLocalDescription(ans, function() {
-          wsc.send(JSON.stringify({"sdp": ans}));
+          wsc.send(JSON.stringify({
+        	  "sdp": ans,
+        	  "uuid": uuid
+          }));
         }, 
-        function (error) { 
-        	console.log("createAndSendAnswer erro 1 " + error);
-        }
-      );
+        function (error) { });
     },
-    function (error) { 
-    	console.log("createAndSendAnswer erro 2 " + error);
-    }
-  );
+    function (error) { });
 };
 
 function createdDescription(description) {
-	  console.log('got description');
-
 	  peerConn.setLocalDescription(description).then(function() {
-			wsc.send(JSON.stringify({'sdp': peerConn.localDescription}));
+			wsc.send(JSON.stringify({
+				"sdp": peerConn.localDescription,
+				"uuid": uuid
+			}));
 	  }).catch(errorHandler);
 }
 
@@ -264,17 +236,28 @@ function endCall() {
 			});
 			localVideo.src = "";
 		}
-		if(origen == psi_pac){
-			if (remoteVideo) remoteVideo.src = "";	  
-		}		
+		if (remoteVideo){
+			remoteVideo.src = "";	  
+		}
 	}
 };
 
 function errorHandler(error) {
-	console.log("ERROR HANDLER: " + error);
 }
 
 function onError(evt) {
-//	endCall();
-//	window.close();
+	avisoReload();
 }
+
+function uuid() {
+    function s4() {
+    	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+function onClose(){
+	avisoReload();
+}
+
+function avisoReload(){ }

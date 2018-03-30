@@ -26,7 +26,7 @@ function onMessage(evt) {
 }
 
 function onError(evt) {
-	alert('Erro ao conetar ao servidor: ' + evt.data);
+	alert('Erro ao conetar ao servidor.');
 	window.close();
 }
 
