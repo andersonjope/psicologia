@@ -2,6 +2,8 @@ package br.com.jope.psicologia.persistence;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,6 +16,7 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 public abstract class BaseServiceCore<E extends BaseEntity> implements BaseService<E> {
 
 	private static final long serialVersionUID = -4048759443768481563L;
+	private static Logger logger = Logger.getLogger(BaseServiceCore.class.getName());
 	
 	@Autowired
 	@Qualifier("repositoryService")
@@ -29,7 +32,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}catch (BussinessException be) {
 			throw be;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getMessage());
 			throw new BussinessException(ex.getMessage());
 		}
 	}
@@ -42,7 +45,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}catch (BussinessException be) {
 			throw be;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getMessage());
 			throw new BussinessException(ex.getMessage());
 		}
 	}
@@ -55,7 +58,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}catch (BussinessException be) {
 			throw be;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getMessage());
 			throw new BussinessException(ex.getMessage());
 		}
 	}
@@ -69,7 +72,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}catch (BussinessException be) {
 			throw be;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getMessage());
 			throw new BussinessException(ex.getMessage());
 		}
 	}
@@ -82,7 +85,7 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}catch (BussinessException be) {
 			throw be;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			logger.log(Level.SEVERE, ex.getMessage());
 			throw new BussinessException(ex.getMessage());
 		}
 	}
@@ -93,8 +96,8 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		try {
 			return repository.loadListNamedQuery(consulta);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 	

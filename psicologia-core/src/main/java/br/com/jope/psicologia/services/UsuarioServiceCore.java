@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.services;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,9 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 @Transactional
 public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements UsuarioService {
 
+	private static final String DE_LOGIN = "deLogin";
 	private static final long serialVersionUID = -6116817864081641327L;
+	private static Logger logger = Logger.getLogger(UsuarioServiceCore.class.getName());
 
 	@Override
 	protected Class<Usuario> getBeanClass() {
@@ -27,14 +31,12 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 	public boolean validarUsuarioLogin(String deLogin) throws BussinessException {
 		try {
 			ConsultaVO consulta = new ConsultaVO(Usuario.FIND_USUARIO_LOGIN);
-			consulta.addParametros("deLogin", deLogin);
+			consulta.addParametros(DE_LOGIN, deLogin);
 			List<Usuario> list = loadListNamedQuery(consulta);
-			if(!list.isEmpty()) {
-				return true;				
-			}
-			return false;
+			
+			return !list.isEmpty();
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}
@@ -43,7 +45,7 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 	public Usuario loadUsuarioLogin(Usuario usuario) throws BussinessException {
 		try {
 			ConsultaVO consulta = new ConsultaVO(Usuario.FIND_USUARIO_LOGIN);
-			consulta.addParametros("deLogin", usuario.getDeLogin().toLowerCase());
+			consulta.addParametros(DE_LOGIN, usuario.getDeLogin().toLowerCase());
 			List<Usuario> list = loadListNamedQuery(consulta);
 			if(!list.isEmpty()) {
 				Usuario usuarioRecuperado = list.get(0);
@@ -60,7 +62,7 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 			}
 			return null;
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}
@@ -69,14 +71,14 @@ public class UsuarioServiceCore extends BaseServiceCore<Usuario> implements Usua
 	public Usuario loadUsuarioLogin(String deLogin) throws BussinessException {
 		try {
 			ConsultaVO consulta = new ConsultaVO(Usuario.FIND_USUARIO_LOGIN);
-			consulta.addParametros("deLogin", deLogin);
+			consulta.addParametros(DE_LOGIN, deLogin);
 			List<Usuario> list = loadListNamedQuery(consulta);
 			if(!list.isEmpty()) {
 				return list.get(0);				
 			}
 			return null;
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}

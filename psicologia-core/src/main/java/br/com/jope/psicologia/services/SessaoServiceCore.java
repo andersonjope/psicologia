@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.services;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 public class SessaoServiceCore extends BaseServiceCore<Sessao> implements SessaoService {
 
 	private static final long serialVersionUID = 3219331761214309870L;
+	private static Logger logger = Logger.getLogger(SessaoServiceCore.class.getName());
 
 	@Override
 	protected Class<Sessao> getBeanClass() {
@@ -28,11 +31,10 @@ public class SessaoServiceCore extends BaseServiceCore<Sessao> implements Sessao
 		try {
 			ConsultaVO consulta = new ConsultaVO(Sessao.FIND_SESSAO_MEDICO);
 			consulta.addParametros("nuUsuario", nuUsuario);
-			List<Sessao> list = super.loadListNamedQuery(consulta); 
 
-			return list;
+			return super.loadListNamedQuery(consulta);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}
@@ -42,11 +44,10 @@ public class SessaoServiceCore extends BaseServiceCore<Sessao> implements Sessao
 		try {
 			ConsultaVO consulta = new ConsultaVO(Sessao.FIND_SESSAO_CLIENTE);
 			consulta.addParametros("nuUsuario", nuUsuario);
-			List<Sessao> list = super.loadListNamedQuery(consulta); 
 
-			return list;
+			return super.loadListNamedQuery(consulta);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}
@@ -58,12 +59,10 @@ public class SessaoServiceCore extends BaseServiceCore<Sessao> implements Sessao
 			consulta.addParametros("nuCliente", nuCliente);
 			consulta.addParametros("nuMedico", medico.getNuMedico());
 			List<Sessao> list = super.loadListNamedQuery(consulta); 
-			if(!Util.isEmpty(list)) {
-				return true;
-			}
-			return false;
+			
+			return !Util.isEmpty(list);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}

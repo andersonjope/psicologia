@@ -9,7 +9,7 @@ public class ConsultaVO implements Serializable {
 	private static final long serialVersionUID = 5635758594110099813L;
 	
 	private String query;
-	private Map<String, Object> parametros;
+	private transient Map<String, Object> parametros;
 	
 	public ConsultaVO(String query) {
 		this.query = query;

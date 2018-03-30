@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,9 +23,10 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 public class RepositoryServiceCore<E extends BaseEntity> implements RepositoryService<E> {
 
 	private static final long serialVersionUID = 1489170320973529521L;
+	private static Logger logger = Logger.getLogger(RepositoryServiceCore.class.getName());
 	
 	@PersistenceContext
-	private EntityManager em;
+	private transient EntityManager em;
 	
 
 	public EntityManager getEm() {
@@ -33,11 +36,10 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 	@Override
 	public E update(E entity) throws BussinessException {
 		try {
-			E merge = getEm().merge(entity);
-			return merge;
+			return getEm().merge(entity);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 
@@ -46,8 +48,8 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 		try {
 			getEm().remove(entity);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 
@@ -56,8 +58,8 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 		try {
 			getEm().persist(entity);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 
@@ -65,22 +67,20 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 	@Override
 	public List<E> getAll(Class<E> entity) throws BussinessException {
 		try {
-			List<E> resultList = getEm().createQuery(" from " + entity.getSimpleName()).getResultList();
-			return resultList;
+			return getEm().createQuery(" from " + entity.getSimpleName()).getResultList();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 
 	@Override
 	public E getId(Class<E> entity, Serializable id) throws BussinessException {
 		try {
-			E find = getEm().find(entity, id);
-			return find;
+			return getEm().find(entity, id);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 
@@ -94,8 +94,8 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 			
 			return query.getResultList();
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
 		}
 	}
 

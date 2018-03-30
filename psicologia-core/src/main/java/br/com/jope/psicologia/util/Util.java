@@ -13,16 +13,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Util implements Serializable {
 
 	private static final long serialVersionUID = 2125689433135450051L;
+	private static Logger logger = Logger.getLogger(Util.class.getName());
 	private static final String ZERO = "0";
-	private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	private static final String lower = ""; //upper.toLowerCase();
-	private static final String caracter = "!@#$%&*()_+";
-	private static final String digits = "0123456789";
-	private static final String alphanum = upper + lower + digits + caracter;
+	private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String CARACTER = "!@#$%&*()_+";
+	private static final String DIGITS = "0123456789";
+	private static final String ALPHANUM = UPPER + DIGITS + CARACTER;
     private static final int TAMANHO_SENHA = 5;
     public static final String FORMATO_DATA_DIA_MES_ANO = "dd/MM/yyyy";
 
@@ -74,11 +76,8 @@ public class Util implements Serializable {
 	
 	
 	private static boolean isEmptyDate(Object obj) {
-		if(obj == null){
-			return true;
-		}
-	return false;
-}
+		return obj == null;
+	}
 
 	/**
 	 * 
@@ -194,11 +193,7 @@ public class Util implements Serializable {
 	private static Boolean isEmptyCollection(java.util.Collection<?> obj){
 		if(obj == null){
 			return Boolean.TRUE;
-		}else
-		if(obj.size() == 0){
-			return Boolean.TRUE;
-		}else
-		if(obj.isEmpty()){
+		}else if(obj.isEmpty()){
 			return Boolean.TRUE;
 		}else
 			return Boolean.FALSE;
@@ -214,11 +209,7 @@ public class Util implements Serializable {
 	private static Boolean isEmptyList(java.util.List<?> obj){
 		if(obj == null){
 			return Boolean.TRUE;
-		}else
-		if(obj.size() == 0){
-			return Boolean.TRUE;
-		}else
-		if(obj.isEmpty()){
+		}else  if(obj.isEmpty()){
 			return Boolean.TRUE;
 		}else
 			return Boolean.FALSE;
@@ -287,14 +278,13 @@ public class Util implements Serializable {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(input.getBytes());
             BigInteger number = new BigInteger(1, messageDigest);
-            String hashtext = number.toString(16);
+            StringBuilder hashtext = new StringBuilder(number.toString(16));
 
             while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+            	hashtext.append("0").append(hashtext);
             }
-            return hashtext;
-        }
-        catch (NoSuchAlgorithmException e) {
+            return hashtext.toString();
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
@@ -303,10 +293,10 @@ public class Util implements Serializable {
     	int length = TAMANHO_SENHA;
         StringBuilder result = new StringBuilder();
         Random rand = new Random();
-        result.append(upper.charAt(rand.nextInt(upper.length())));
+        result.append(UPPER.charAt(rand.nextInt(UPPER.length())));
         while(length-1 > 0) {
             rand = new Random();
-            result.append(String.valueOf(alphanum.charAt(rand.nextInt(alphanum.length()))).toLowerCase());
+            result.append(String.valueOf(ALPHANUM.charAt(rand.nextInt(ALPHANUM.length()))).toLowerCase());
             length--;
         }
         return result.toString();
@@ -318,7 +308,7 @@ public class Util implements Serializable {
         try {
             date = formatter.parse(dateInString);
         } catch (ParseException e) {
-            e.printStackTrace();
+        	logger.log(Level.SEVERE, e.getMessage());
         }	
         return date;
     }
@@ -332,10 +322,6 @@ public class Util implements Serializable {
 		texto = texto.replace(" ", "");
 		texto = texto.replaceAll("_", "");
 		return texto;
-	}
-    
-    public static void main(String[] args) {
-		System.out.println(encrypt("123"));
 	}
     
 }

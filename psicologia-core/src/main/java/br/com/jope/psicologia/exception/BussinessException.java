@@ -4,46 +4,38 @@ public class BussinessException extends Throwable {
 
 	private static final long serialVersionUID = -5850026435649162235L;
 	
-	private String codigo;
-	private String mensagem;
-	private String[] mensagens;
+	private final String codigo;
+	private final String mensagem;
+	private final String[] mensagens;
 	
 	public BussinessException(String mensagem){
 		this.mensagem=mensagem;
+		this.codigo = null;
+		this.mensagens = null;
 	}
 	
 	public BussinessException(String codigo,String mensagem){
 		this.codigo=codigo;
 		this.mensagem=mensagem;
+		this.mensagens = null;
 	}
 
 	public BussinessException(String codigo,String[] mensagens){
 		this.codigo=codigo;
 		this.mensagens=mensagens;
+		this.mensagem=null;
 	}
 
 	public String getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
 	public String getMensagem() {
 		return mensagem;
-	}
-
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
 	}
 
 	public String[] getMensagens() {
 		return mensagens;
 	}
 
-	public void setMensagens(String[] mensagens) {
-		this.mensagens = mensagens;
-	}
-	
 }

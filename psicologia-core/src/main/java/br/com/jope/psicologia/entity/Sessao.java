@@ -111,7 +111,7 @@ public class Sessao extends BaseEntity {
 
 	public void addSalaSessao(SalaSessao salaSessao) {
 		if(salaSessaoList == null) {
-			salaSessaoList = new ArrayList<SalaSessao>();
+			salaSessaoList = new ArrayList<>();
 		}
 		salaSessao.setSessao(this);
 		salaSessaoList.add(salaSessao);

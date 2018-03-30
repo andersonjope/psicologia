@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.services;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,6 +20,7 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 public class MedicoServiceCore extends BaseServiceCore<Medico> implements MedicoService {
 
 	private static final long serialVersionUID = 4075679295085204488L;
+	private static Logger logger = Logger.getLogger(MedicoServiceCore.class.getName());
 	
 	@Autowired(required=true)
 	@Qualifier("usuarioService")
@@ -50,7 +53,7 @@ public class MedicoServiceCore extends BaseServiceCore<Medico> implements Medico
 			
 			return null;
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());
 		}
 	}
