@@ -26,40 +26,31 @@ public class WebRTCEventSocketServer {
     public synchronized String onMessage(String message, Session session, @PathParam("hash") String hash) {
         try {
             JSONObject jObj = new JSONObject(message);
-            System.out.println("received message from client " + hash + " message: " + message);
-            synchronized (peers) {
-            	if(session.isOpen()) {
-            		for (Session s : peers) {
-            			try {
-            				s.getBasicRemote().sendText(message);
-//                    System.out.println("send message to peer ");
-            			} catch (IOException e) {
-            				e.printStackTrace();
-            			}
-            			
-            		}				            		
-            	}
-			}
+            Thread.sleep(100);
+            for (Session s : peers) {
+            	s.getBasicRemote().sendText(message);            			
+            }				            		
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        } catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
         return message;
     }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("hash") String hash) {
-//        System.out.println("mediator: opened websocket channel for client " + hash);
-        peers.add(session);
-
         try {
-            session.getBasicRemote().sendText(hash);
+        	peers.add(session);
+        	session.getBasicRemote().sendText(hash);        		
         } catch (IOException e) {
         }
     }
 
     @OnClose
     public void onClose(Session session, @PathParam("hash") String hash) {
-//        System.out.println("mediator: closed websocket channel for client " + hash);
         peers.remove(session);
     }
     

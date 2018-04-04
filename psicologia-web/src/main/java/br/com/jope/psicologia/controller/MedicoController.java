@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +28,9 @@ import br.com.jope.psicologia.view.message.MessageType;
 @Controller
 public class MedicoController extends AbstractController {
 
+	private static final String CADASTRAR_MEDICO = "cadastrarMedico";
 	private static final long serialVersionUID = 5433459120147438409L;
+	private static Logger logger = Logger.getLogger(MedicoController.class.getName());
 
 	@Autowired(required=true)
 	@Qualifier("medicoService")
@@ -48,7 +52,7 @@ public class MedicoController extends AbstractController {
 	public String cadastrarMedico(Model model) {
 		model.addAttribute("formularioMedico", new FormularioMedico());
 		loadMedicoList(model);
-		return "cadastrarMedico";
+		return CADASTRAR_MEDICO;
 	}
 	
 	@RequestMapping(value="/salvarMedico", method = RequestMethod.POST)
@@ -56,13 +60,13 @@ public class MedicoController extends AbstractController {
 		try {
 			if(result.hasErrors()) {
 				loadMedicoList(model);
-				return "cadastrarMedico";			
+				return CADASTRAR_MEDICO;			
 			}
 			
 			if(usuarioService.validarUsuarioLogin(formularioMedico.getMedico().getUsuario().getDeLogin())) {
 				addMessages(model, MessageType.WARNING, false, "E-mail já informado para outro Usuário.");
 				loadMedicoList(model);
-				return "cadastrarMedico";
+				return CADASTRAR_MEDICO;
 			}
 			
 			Medico medico = formularioMedico.getMedico();
@@ -83,10 +87,10 @@ public class MedicoController extends AbstractController {
 			loadMedicoList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro médico efeturado.");
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		
-		return "cadastrarMedico";
+		return CADASTRAR_MEDICO;
 	}
 
 	private void loadMedicoList(Model model) {
@@ -94,7 +98,7 @@ public class MedicoController extends AbstractController {
 			List<Medico> medicoList = medicoService.getAll();
 			model.addAttribute("medicoList", medicoList);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	

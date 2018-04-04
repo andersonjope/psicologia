@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,17 +27,18 @@ import br.com.jope.psicologia.vo.UsuarioVO;
 public class AbstractController implements Serializable {
 
 	private static final long serialVersionUID = -4808859477511429595L;
+	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
 
 	protected static final String[] DIRECIONAMENTO = new String[] {"psi_pac","pac_psi"};
-	private final String webSocketAddressPingPong = "ws://%s:%s/psicologia-web/pingpong/%s";
-	private final String webSocketAddressPsiPac = "ws://%s:%s/psicologia-web/webtrc/%s";
-	private PingPongEventSocketClient client;
-	private List<Message> messages;
+	private static final String WEBSOCKETADDRESSPINGPONG = "ws://%s:%s/psicologia-web/pingpong/%s";
+	private static final String WEBSOCKETADDRESSPSIPAC = "ws://%s:%s/psicologia-web/webtrc/%s";
+	private transient PingPongEventSocketClient client;
+	private transient List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
 		try {
 			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-			String urlPingPong = String.format(webSocketAddressPingPong, parametro);
+			String urlPingPong = String.format(WEBSOCKETADDRESSPINGPONG, parametro);
 			client = new PingPongEventSocketClient(new URI(urlPingPong));
 			client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
 				public void handleMessage(String message) {
@@ -43,7 +46,7 @@ public class AbstractController implements Serializable {
 				}
 			});
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
     }
 	
@@ -51,7 +54,7 @@ public class AbstractController implements Serializable {
 		try {
 			for(String direc : direcionamento) {
 				String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao.concat(direc)};
-				String urlPsiPac= String.format(webSocketAddressPsiPac, parametro);
+				String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
 				WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
 				clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
 					public void handleMessage(String message) {
@@ -60,7 +63,7 @@ public class AbstractController implements Serializable {
 				});				
 			}
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	
@@ -75,7 +78,7 @@ public class AbstractController implements Serializable {
 			JSONObject jsonObject = new JSONObject(mensagem);
 			client.sendMessage(mensagem);
 		} catch (JSONException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	
@@ -91,11 +94,8 @@ public class AbstractController implements Serializable {
 	
 	private void criaMessage(MessageType messageType, boolean multipleMessage, String keyMsg) {
 		String message = keyMsg;
-		if(message == null){
-			message = keyMsg;
-		}
 		if(!multipleMessage){
-			messages = new ArrayList<Message>();
+			messages = new ArrayList<>();
 		}
 		Message messageBean = new Message();
 		messageBean.setMessageType(messageType);

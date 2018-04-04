@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +24,7 @@ import br.com.jope.psicologia.vo.UsuarioVO;
 public class HomeController extends AbstractController {
 	
 	private static final long serialVersionUID = 1256433797116808827L;
+	private static Logger logger = Logger.getLogger(HomeController.class.getName());
 
 	@Autowired(required=true)
 	@Qualifier("sessaoService")
@@ -49,7 +52,7 @@ public class HomeController extends AbstractController {
 				}				
 			}
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "home";
 	}

@@ -2,6 +2,8 @@ package br.com.jope.psicologia.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,7 +37,10 @@ import br.com.jope.psicologia.view.message.MessageType;
 @Controller
 public class SessaoController extends AbstractController {
 
+	private static final String FORMULARIO_SESSAO = "formularioSessao";
+	private static final String INICIAR_SESSAO = "iniciarSessao";
 	private static final long serialVersionUID = -5671612353886861039L;
+	private static Logger logger = Logger.getLogger(SessaoController.class.getName());
 
 	@Autowired(required=true)
 	@Qualifier("medicoService")
@@ -54,26 +59,26 @@ public class SessaoController extends AbstractController {
 		try {
 			loadDados(model);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
-		return "iniciarSessao";
+		return INICIAR_SESSAO;
 	}
 
 	private void loadDados(Model model) throws BussinessException {
 		List<Cliente> clienteList = clienteService.getAll();
 		model.addAttribute("clienteList", clienteList);
-		model.addAttribute("formularioSessao", new FormularioCriaSessao());
+		model.addAttribute(FORMULARIO_SESSAO, new FormularioCriaSessao());
 	}
 	
 	@RequestMapping(value="/criarSessao", method = RequestMethod.POST)
-	public String criarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioCriaSessao formularioSessao, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public String criarSessao(Model model, @Valid @ModelAttribute(FORMULARIO_SESSAO) FormularioCriaSessao formularioSessao, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		try {			
 			Medico medico = medicoService.loadMedicoPorUsuario(loadUsuarioLogado(request).getNuUsuario());
 			
 			if(sessaoService.isSessaoAberta(formularioSessao.getNuCliente(), medico)) {
 				addMessages(model, MessageType.ERROR, false, "Sessão em andamento para o Paciente informado.");
 				loadDados(model);
-				return "iniciarSessao";
+				return INICIAR_SESSAO;
 			}
 			
 			Cliente cliente = new Cliente();
@@ -88,7 +93,7 @@ public class SessaoController extends AbstractController {
 			
 			addMessages(redirectAttributes, MessageType.WARNING, false, "Sessão criada.");
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "redirect:/home";
 	}
@@ -105,9 +110,9 @@ public class SessaoController extends AbstractController {
 			loadDados(model);
 			addMessages(model, MessageType.SUCCESS, false, "Sessão encerrada.");
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
-		return "iniciarSessao";
+		return INICIAR_SESSAO;
 	}
 	
 	@RequestMapping(value="/gerenciarSessao", method = RequestMethod.GET)
@@ -118,20 +123,20 @@ public class SessaoController extends AbstractController {
 			formularioSessao.setNuSessao(sessao.getNuSessao());
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("sessao", sessao);
-			model.addAttribute("formularioSessao", formularioSessao);
+			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
 			model.addAttribute("formularioSessaoSom", new FormularioAlteraSessaoSom());
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
 			model.addAttribute("hashSessao", hashSessao);
 			initializeWebSocket(request, hashSessao);
 			initializeWebSocket(request, hashSessao, DIRECIONAMENTO);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "gerenciarSessao";
 	}
 	
 	@RequestMapping(value="/alterarSessao", method = RequestMethod.POST)
-	public String alterarSessao(Model model, @Valid @ModelAttribute("formularioSessao") FormularioAlteraSessao formularioSessao, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+	public String alterarSessao(Model model, @Valid @ModelAttribute(FORMULARIO_SESSAO) FormularioAlteraSessao formularioSessao, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, formularioSessao.getNuSessao());
 			SalaSessao salaSessaoAnterior = new SalaSessao();
@@ -194,7 +199,7 @@ public class SessaoController extends AbstractController {
 			
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("hashSessao", hashSessao);
-			model.addAttribute("formularioSessao", formularioSessao);
+			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
 			
 			notificaCliente(request, hashSessao, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
 			
@@ -203,7 +208,7 @@ public class SessaoController extends AbstractController {
 				return "redirect:/home";				
 			}
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "sessao/controlesSessao";
 	}
@@ -218,9 +223,8 @@ public class SessaoController extends AbstractController {
 			formularioSessaoSom.setVelocidade(formularioSessaoSom.getVelocidade());
 			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
 			formularioSessao.setNuSessao(sessao.getNuSessao());
-//			formularioSessao.setPlayStop(formularioSessaoSom.isPlayStop());
 			
-			model.addAttribute("formularioSessao", formularioSessao);
+			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
 			model.addAttribute("formularioSessaoSom", formularioSessaoSom);
 			model.addAttribute("sessao", sessao);
 			
@@ -229,7 +233,7 @@ public class SessaoController extends AbstractController {
 			addMessages(model, MessageType.INFO, false, "Dados enviados para o Paciente.");
 			loadSessaoSalaSessao(model, sessao.getNuSessao());
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "gerenciarSessao";
 	}

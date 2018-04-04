@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.controller;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +30,9 @@ import br.com.jope.psicologia.vo.UsuarioVO;
 @Controller
 public class ClienteController extends AbstractController {
 
+	private static final String CADASTRAR_CLIENTE = "cadastrarCliente";
 	private static final long serialVersionUID = -3883844098757797700L;
+	private static Logger logger = Logger.getLogger(ClienteController.class.getName());
 
 	@Autowired(required=true)
 	@Qualifier("clienteService")
@@ -55,7 +59,7 @@ public class ClienteController extends AbstractController {
 	public String cadastrarCliente(Model model) {
 		model.addAttribute("formularioCliente", new FormularioCliente());
 		loadClienteList(model);
-		return "cadastrarCliente";
+		return CADASTRAR_CLIENTE;
 	}
 	
 	@RequestMapping(value="/salvarCliente", method = RequestMethod.POST)
@@ -63,13 +67,13 @@ public class ClienteController extends AbstractController {
 		try {
 			if(result.hasErrors()) {
 				loadClienteList(model);
-				return "cadastrarCliente";			
+				return CADASTRAR_CLIENTE;			
 			}
 			
 			if(usuarioService.validarUsuarioLogin(formularioCliente.getCliente().getUsuario().getDeLogin())) {
 				addMessages(model, MessageType.WARNING, false, "E-mail já informado para outro Usuário.");
 				loadClienteList(model);
-				return "cadastrarCliente";
+				return CADASTRAR_CLIENTE;
 			}
 			
 			Cliente cliente = formularioCliente.getCliente();
@@ -90,10 +94,10 @@ public class ClienteController extends AbstractController {
 			loadClienteList(model);
 			addMessages(model, MessageType.SUCCESS, false, "Cadastro cliente efetuado.");
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		
-		return "cadastrarCliente";
+		return CADASTRAR_CLIENTE;
 	}
 
 	private void loadClienteList(Model model) {
@@ -101,7 +105,7 @@ public class ClienteController extends AbstractController {
 			List<Cliente> clienteList = clienteService.getAll();
 			model.addAttribute("clienteList", clienteList);
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 	}
 	

@@ -1,5 +1,8 @@
 package br.com.jope.psicologia.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -25,7 +28,9 @@ import br.com.jope.psicologia.vo.UsuarioVO;
 @Controller
 public class LoginController extends AbstractController {
 
+	private static final String LOGIN = "login";
 	private static final long serialVersionUID = -6270307833906156938L;
+	private static Logger logger = Logger.getLogger(LoginController.class.getName());
 
 	@Autowired(required=true)
 	@Qualifier("usuarioService")
@@ -37,14 +42,14 @@ public class LoginController extends AbstractController {
 	@RequestMapping(value="/auth", method = RequestMethod.GET)
 	public String auth(Model model) {
 		model.addAttribute("formularioLogin", new FormularioLogin());
-		return "login";
+		return LOGIN;
 	}
 	
 	@RequestMapping(value="/sair", method = RequestMethod.GET)
 	public String sair(Model model, HttpServletRequest request) {
 		request.getSession().removeAttribute(EnumUsuario.USUARIO_LOGADO.getDescricao());
 		model.addAttribute("formularioLogin", new FormularioLogin());
-		return "login";
+		return LOGIN;
 	}
 	
 	@RequestMapping(value="/auth", method = RequestMethod.POST)
@@ -52,13 +57,13 @@ public class LoginController extends AbstractController {
 		try {
 			if(formularioLogin.isRecuperaSenha()) {
 				if(result.hasErrors()) {
-					return "login";			
+					return LOGIN;			
 				}		
 				
 				Usuario usuario = usuarioService.loadUsuarioLogin(formularioLogin.getEmail());
 				if(Util.isEmpty(usuario)){
 					addMessages(model, MessageType.ERROR, false, "Usuário não encontrado, com E-amil informado.");
-					return "login";								
+					return LOGIN;								
 				}
 				
 				String randomSenha = Util.getRandomSenha();
@@ -70,7 +75,7 @@ public class LoginController extends AbstractController {
 				
 			}else {
 				if(result.hasErrors()) {
-					return "login";			
+					return LOGIN;			
 				}
 				
 				Usuario usuario = new Usuario();
@@ -81,13 +86,13 @@ public class LoginController extends AbstractController {
 				
 				if(Util.isEmpty(usuario)) {
 					addMessages(model, MessageType.ERROR, false, "Usuário não encontrado, com login informado.");
-					return "login";			
+					return LOGIN;			
 				}
 				
 				request.getSession(true).setAttribute(EnumUsuario.USUARIO_LOGADO.getDescricao(), new UsuarioVO(usuario));				
 			}
 		} catch (BussinessException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "redirect:home";
 	}

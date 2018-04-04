@@ -36,7 +36,7 @@
 		    <input id="endVideoPaciente" style="display: none;" type="button" class="btn btn-success" value="Encerrar Vídeo"/>
     	</div>
     </div>
-	<div class="form-group">
+	<div id="videos" class="form-group">
 		<div class="col-sm-10">
 	    	<video id="remoteVideo" autoplay ></video>
 	    	<video id="localVideo" autoplay muted></video>
@@ -44,9 +44,7 @@
     </div>
 </body>
     	
-	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
 	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
-<!-- 		<script type="text/javascript" src="http://cdn.peerjs.com/0.3/peer.min.js"></script> -->
-<!-- 		<script type="text/javascript" src="resources/js/webrtc/peer.js"></script> -->
 	
 </html>

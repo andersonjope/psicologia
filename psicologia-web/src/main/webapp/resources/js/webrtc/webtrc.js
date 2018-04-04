@@ -63,7 +63,7 @@ function loadInit(){
 }
 
 function messageInitConnection(processo) {
-	uuid = uuid();
+	uuid = loadUuid();
 	processado = false;
 	wsc.send(JSON.stringify({
 		"processo" : processo,
@@ -174,10 +174,6 @@ function onIceCandidateHandler(evt) {
 	}));
 };
 
-function onTrackHandler(evt) {
-	remoteVideo.srcObject = evt.streams[0];
-};
-
 function onAddStreamHandler(evt) {
   remoteVideo.src = window.URL.createObjectURL(evt.stream);
 };
@@ -240,6 +236,10 @@ function endCall() {
 			remoteVideo.src = "";	  
 		}
 	}
+	$("#initVideoCliente").css('display', 'block');
+	$("#endVideoCliente").css('display', 'none');
+	$("#endVideoPaciente").css('display', 'none');
+	window.location.reload();
 };
 
 function errorHandler(error) {
@@ -249,7 +249,7 @@ function onError(evt) {
 	avisoReload();
 }
 
-function uuid() {
+function loadUuid() {
     function s4() {
     	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
     }
@@ -260,4 +260,5 @@ function onClose(){
 	avisoReload();
 }
 
-function avisoReload(){ }
+function avisoReload(){
+}
