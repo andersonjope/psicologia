@@ -39,17 +39,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 	
-//	@Bean
-//    public MultipartResolver multipartResolver() {
-//        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-//        multipartResolver.setMaxUploadSize(2000000);
-//        return multipartResolver;
-//    }
-    
     @Bean
     public TilesConfigurer tilesConfigurer(){
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/tiles/tiles.xml"});
+        tilesConfigurer.setDefinitions("/WEB-INF/views/tiles/tiles.xml");
         tilesConfigurer.setCheckRefresh(true);
         tilesConfigurer.setValidateDefinitions(true);
         return tilesConfigurer;
@@ -79,7 +72,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	@Override

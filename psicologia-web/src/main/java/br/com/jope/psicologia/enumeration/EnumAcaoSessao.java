@@ -7,8 +7,8 @@ public enum EnumAcaoSessao {
 	ENCERRAR("3"),
 	AUMENTAR("4"),
 	DIMINUIR("5"),
-	SOMATIVO("6"),
-	SOMMUDO("7"),
+	SOM_ATIVO("6"),
+	SOM_MUDO("7"),
 	;
 	
 	private final String codigo;

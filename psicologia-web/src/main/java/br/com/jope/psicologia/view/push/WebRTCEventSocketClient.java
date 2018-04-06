@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.view.push;
 
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -12,9 +14,12 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 // based on http://stackoverflow.com/questions/26452903/javax-websocket-client-simple-example
 
+import br.com.jope.psicologia.controller.AbstractController;
+
 @ClientEndpoint
 public class WebRTCEventSocketClient {
 	
+	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
 	private Session userSession = null;
 	private MessageHandler messageHandler;
 	
@@ -23,14 +28,12 @@ public class WebRTCEventSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpointURI);
         } catch (Exception e) {
-        	e.printStackTrace();
-            throw new RuntimeException(e);
+        	logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     @OnOpen
     public void onOpen(Session userSession) {
-//        System.out.println("client: opening websocket " + userSession.getId());
         this.userSession = userSession;
     }
 
@@ -42,7 +45,6 @@ public class WebRTCEventSocketClient {
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
-        System.out.println("client: closing websocket " + userSession.getId());
         this.userSession = null;
     }
 
@@ -53,7 +55,6 @@ public class WebRTCEventSocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-//        System.out.println("client: received message "+message);
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
         }

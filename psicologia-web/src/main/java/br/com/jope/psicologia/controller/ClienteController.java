@@ -51,7 +51,7 @@ public class ClienteController extends AbstractController {
 		String hashSessao = Util.encrypt(String.valueOf(usuario.getNuUsuario()));
 		model.addAttribute("hashSessao", hashSessao);
 		initializeWebSocket(request, hashSessao);
-		initializeWebSocket(request, hashSessao, DIRECIONAMENTO);
+		initializeWebSocketWebRTC(request, hashSessao);
 		return "salaCliente";
 	}
 	

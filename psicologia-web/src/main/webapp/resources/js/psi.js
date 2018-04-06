@@ -1,6 +1,5 @@
 var wsPingPong = "";
-var wsWebRtcPsiPac = "";
-var wsWebRtcPacPsi = "";
+var wsWebRtc = "";
 var context = "/psicologia-web";
 
 function urlWebSocket(hash){

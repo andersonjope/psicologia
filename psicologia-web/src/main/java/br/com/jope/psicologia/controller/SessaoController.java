@@ -98,23 +98,6 @@ public class SessaoController extends AbstractController {
 		return "redirect:/home";
 	}
 	
-	//TODO REMOVER
-	@RequestMapping(value="/encerrarSessao", method = RequestMethod.GET)
-	public String encerrarSessao(Model model, @RequestParam("sessao") Long nuSessao) {
-		try {
-			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
-			sessao.setDhFinalSessao(new Date());
-			
-			sessaoService.alterar(sessao);
-			
-			loadDados(model);
-			addMessages(model, MessageType.SUCCESS, false, "Sessão encerrada.");
-		} catch (BussinessException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
-		return INICIAR_SESSAO;
-	}
-	
 	@RequestMapping(value="/gerenciarSessao", method = RequestMethod.GET)
 	public String gerenciarSessao(Model model, @RequestParam("sessao") Long nuSessao, HttpServletRequest request) {
 		try {
@@ -128,7 +111,7 @@ public class SessaoController extends AbstractController {
 			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
 			model.addAttribute("hashSessao", hashSessao);
 			initializeWebSocket(request, hashSessao);
-			initializeWebSocket(request, hashSessao, DIRECIONAMENTO);
+			initializeWebSocketWebRTC(request, hashSessao);
 		} catch (BussinessException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
@@ -182,10 +165,10 @@ public class SessaoController extends AbstractController {
 				}
 				alteraSessao = true;
 				break;
-			case SOMATIVO:
+			case SOM_ATIVO:
 				formularioSessao.setSomAtivo(true);
 				break;
-			case SOMMUDO:
+			case SOM_MUDO:
 				formularioSessao.setSomAtivo(false);
 				break;
 
@@ -213,35 +196,4 @@ public class SessaoController extends AbstractController {
 		return "sessao/controlesSessao";
 	}
 	
-	//TODO REMOVER
-	@RequestMapping(value="/alterarSessaoSom", method = RequestMethod.POST)
-	public String alterarSessaoSom(Model model, @ModelAttribute("formularioSessaoSom") FormularioAlteraSessaoSom formularioSessaoSom, BindingResult result, HttpServletRequest request) {
-		try {
-			Sessao sessao = sessaoService.getId(Sessao.class, formularioSessaoSom.getNuSessao());
-			
-			formularioSessaoSom.setNuSessao(sessao.getNuSessao());
-			formularioSessaoSom.setVelocidade(formularioSessaoSom.getVelocidade());
-			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
-			formularioSessao.setNuSessao(sessao.getNuSessao());
-			
-			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
-			model.addAttribute("formularioSessaoSom", formularioSessaoSom);
-			model.addAttribute("sessao", sessao);
-			
-			notificaCliente(request, sessao.getCliente().getUsuario().getDeLogin(), formularioSessaoSom.getVelocidade(), formularioSessaoSom.isPlayStop());
-			
-			addMessages(model, MessageType.INFO, false, "Dados enviados para o Paciente.");
-			loadSessaoSalaSessao(model, sessao.getNuSessao());
-		} catch (BussinessException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
-		return "gerenciarSessao";
-	}
-
-	private void loadSessaoSalaSessao(Model model, Long nuSessao) throws BussinessException {
-		Sessao sessaoAlterada = sessaoService.getId(Sessao.class, nuSessao);
-		List<SalaSessao> salaSessaoList = sessaoAlterada.getSalaSessaoList();
-		
-		model.addAttribute("salaSessaoList", salaSessaoList);
-	}
 }

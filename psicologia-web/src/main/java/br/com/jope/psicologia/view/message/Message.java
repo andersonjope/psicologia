@@ -3,7 +3,7 @@ package br.com.jope.psicologia.view.message;
 public class Message {
 
 	private MessageType messageType;
-	private String message;
+	private String deMessage;
 	
 	public final MessageType getMessageType() {
 		return messageType;
@@ -11,11 +11,11 @@ public class Message {
 	public final void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
 	}
-	public final String getMessage() {
-		return message;
+	public final String getDeMessage() {
+		return deMessage;
 	}
-	public final void setMessage(String message) {
-		this.message = message;
+	public final void setDeMessage(String message) {
+		this.deMessage = message;
 	}
 	
 }

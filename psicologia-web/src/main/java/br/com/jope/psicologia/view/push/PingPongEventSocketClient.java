@@ -1,6 +1,8 @@
 package br.com.jope.psicologia.view.push;
 
 import java.net.URI;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.CloseReason;
@@ -12,8 +14,11 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 // based on http://stackoverflow.com/questions/26452903/javax-websocket-client-simple-example
 
+import br.com.jope.psicologia.controller.SessaoController;
+
 @ClientEndpoint
 public class PingPongEventSocketClient {
+	private static Logger logger = Logger.getLogger(SessaoController.class.getName());
 	
 	private Session userSession = null;
 	private MessageHandler messageHandler;
@@ -23,14 +28,12 @@ public class PingPongEventSocketClient {
             WebSocketContainer container = ContainerProvider.getWebSocketContainer();
             container.connectToServer(this, endpointURI);            	
         } catch (Exception e) {
-        	e.printStackTrace();
-            throw new RuntimeException(e);
+        	logger.log(Level.SEVERE, e.getMessage());
         }
     }
 
     @OnOpen
     public void onOpen(Session userSession) {
-        //System.out.println("client: opening websocket ");
         this.userSession = userSession;
     }
 
@@ -42,7 +45,6 @@ public class PingPongEventSocketClient {
      */
     @OnClose
     public void onClose(Session userSession, CloseReason reason) {
-        //System.out.println("client: closing websocket");
         this.userSession = null;
     }
 
@@ -53,7 +55,6 @@ public class PingPongEventSocketClient {
      */
     @OnMessage
     public void onMessage(String message) {
-        //System.out.println("client: received message "+message);
         if (this.messageHandler != null) {
             this.messageHandler.handleMessage(message);
         }

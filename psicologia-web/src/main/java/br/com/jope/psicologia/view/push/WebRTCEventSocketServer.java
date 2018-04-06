@@ -3,7 +3,11 @@ package br.com.jope.psicologia.view.push;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -16,47 +20,71 @@ import javax.websocket.server.ServerEndpoint;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import br.com.jope.psicologia.controller.AbstractController;
+import br.com.jope.psicologia.util.Util;
+
 @ServerEndpoint("/webtrc/{hash}")
 public class WebRTCEventSocketServer {
 
-    private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
+	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
+	private static Map<String, Set<Session>> mapPeers = Collections.synchronizedMap(new LinkedHashMap<String, Set<Session>>()); 
 
     @SuppressWarnings("unused")
 	@OnMessage
     public synchronized String onMessage(String message, Session session, @PathParam("hash") String hash) {
         try {
             JSONObject jObj = new JSONObject(message);
-            Thread.sleep(100);
-            for (Session s : peers) {
-            	s.getBasicRemote().sendText(message);            			
-            }				            		
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+            Thread.sleep(500);
+            Set<Session> peers = loadMapPeers(hash);
+        	if(!Util.isEmpty(peers)) {
+	            for (Session s : peers) {
+	            	s.getBasicRemote().sendText(message);            			
+	            }		
+        	}
+        } catch (JSONException | InterruptedException | IOException e) {
+        	logger.log(Level.SEVERE, e.getLocalizedMessage());
+        } 
         return message;
     }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("hash") String hash) {
         try {
-        	peers.add(session);
+        	addMapPeers(hash, session);
         	session.getBasicRemote().sendText(hash);        		
         } catch (IOException e) {
+        	logger.log(Level.SEVERE, e.getLocalizedMessage());
         }
     }
 
     @OnClose
     public void onClose(Session session, @PathParam("hash") String hash) {
-        peers.remove(session);
+    	removeMapPeers(session, hash);
     }
     
     @OnError
     public void onError(Throwable t) {
-    	t.printStackTrace();
+    	logger.log(Level.SEVERE, t.getLocalizedMessage());
+    }
+    
+    void addMapPeers(String hash, Session session) {
+    	if(!mapPeers.containsKey(hash)) {
+    		Set<Session> peers = new HashSet<>();
+    		peers.add(session);
+    		mapPeers.put(hash, peers);
+    	}else {
+    		mapPeers.get(hash).add(session);
+    	}
+    }
+    
+    void removeMapPeers(Session session, String hash) {
+    	if(mapPeers.containsKey(hash)) {
+    		mapPeers.get(hash).remove(session);
+    	}
+    }
+    
+    Set<Session> loadMapPeers(String hash) {
+		return mapPeers.containsKey(hash) ? mapPeers.get(hash) : null;
     }
 }
 

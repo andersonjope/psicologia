@@ -4,7 +4,12 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,39 +34,39 @@ public class AbstractController implements Serializable {
 	private static final long serialVersionUID = -4808859477511429595L;
 	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
 
-	protected static final String[] DIRECIONAMENTO = new String[] {"psi_pac","pac_psi"};
 	private static final String WEBSOCKETADDRESSPINGPONG = "ws://%s:%s/psicologia-web/pingpong/%s";
 	private static final String WEBSOCKETADDRESSPSIPAC = "ws://%s:%s/psicologia-web/webtrc/%s";
-	private transient PingPongEventSocketClient client;
+	private transient Map<String, Set<PingPongEventSocketClient>> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, Set<PingPongEventSocketClient>>());
 	private transient List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
 		try {
 			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
 			String urlPingPong = String.format(WEBSOCKETADDRESSPINGPONG, parametro);
-			client = new PingPongEventSocketClient(new URI(urlPingPong));
+			PingPongEventSocketClient client = new PingPongEventSocketClient(new URI(urlPingPong));
 			client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
 				public void handleMessage(String message) {
 					return;
 				}
 			});
+			
+			addMapClients(hashSessao, client);
+			
 		} catch (URISyntaxException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
     }
 	
-	protected void initializeWebSocket(HttpServletRequest request, String hashSessao, String[] direcionamento) {
+	protected void initializeWebSocketWebRTC(HttpServletRequest request, String hashSessao) {
 		try {
-			for(String direc : direcionamento) {
-				String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao.concat(direc)};
-				String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
-				WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
-				clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
-					public void handleMessage(String message) {
-						return;
-					}
-				});				
-			}
+			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
+			String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
+			WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
+			clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
+				public void handleMessage(String message) {
+					return;
+				}
+			});				
 		} catch (URISyntaxException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
@@ -70,13 +75,16 @@ public class AbstractController implements Serializable {
 	@SuppressWarnings("unused")
 	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
 		try {
-			if(client == null) {
+			if(Util.isEmpty(loadMapClients(hashSessao))) {
 				initializeWebSocket(request, hashSessao);
 			}
 			
 			String mensagem = "{\"identificador\":\""+ hashSessao+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
-			client.sendMessage(mensagem);
+			
+			for (PingPongEventSocketClient client : loadMapClients(hashSessao)) {
+				client.sendMessage(mensagem);				
+			}
 		} catch (JSONException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
@@ -99,7 +107,7 @@ public class AbstractController implements Serializable {
 		}
 		Message messageBean = new Message();
 		messageBean.setMessageType(messageType);
-		messageBean.setMessage(message);
+		messageBean.setDeMessage(message);
 		messages.add(messageBean);
 	}
 	
@@ -117,6 +125,20 @@ public class AbstractController implements Serializable {
 		if(!Util.isEmpty(usuario.getCoTelefone())) {
 			usuario.setCoTelefone(Util.removeCaracteres(usuario.getCoTelefone()));
 		}
+	}
+	
+	void addMapClients(String hash, PingPongEventSocketClient client) {
+		if(!mapClients.containsKey(hash)) {
+    		Set<PingPongEventSocketClient> clients = new HashSet<>();
+    		clients.add(client);
+    		mapClients.put(hash, clients);
+    	}else {
+    		mapClients.get(hash).add(client);
+    	}
+	}
+	
+	Set<PingPongEventSocketClient> loadMapClients(String hash) {
+		return mapClients.containsKey(hash) ? mapClients.get(hash) : null;
 	}
 	
 }

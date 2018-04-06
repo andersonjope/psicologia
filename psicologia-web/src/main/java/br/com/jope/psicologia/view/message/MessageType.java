@@ -3,7 +3,7 @@ package br.com.jope.psicologia.view.message;
 public enum MessageType {
 	ERROR("ERROR"), WARNING("WARNING"), SUCCESS("SUCCESS"), INFO("INFO");
 	
-	private String descricao;
+	private final String descricao;
 	
 	private MessageType(String descricao) {
 		this.descricao = descricao;
@@ -13,8 +13,4 @@ public enum MessageType {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
 }
