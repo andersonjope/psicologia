@@ -76,7 +76,9 @@ public class PingPongEventSocketClient {
      * @param message
      */
     public void sendMessage(String message) {
-        this.userSession.getAsyncRemote().sendText(message);
+    	if(this.userSession != null) {
+    		this.userSession.getAsyncRemote().sendText(message);    		
+    	}
     }
 
     public static interface MessageHandler {

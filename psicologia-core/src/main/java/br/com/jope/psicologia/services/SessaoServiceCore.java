@@ -53,10 +53,9 @@ public class SessaoServiceCore extends BaseServiceCore<Sessao> implements Sessao
 	}
 
 	@Override
-	public boolean isSessaoAberta(Long nuCliente, Medico medico) throws BussinessException {
+	public boolean isSessaoAberta(Medico medico) throws BussinessException {
 		try {
-			ConsultaVO consulta = new ConsultaVO(Sessao.FIND_SESSAO_ABERTA_CLIENTE_MEDICO);
-			consulta.addParametros("nuCliente", nuCliente);
+			ConsultaVO consulta = new ConsultaVO(Sessao.FIND_SESSAO_ABERTA_MEDICO);
 			consulta.addParametros("nuMedico", medico.getNuMedico());
 			List<Sessao> list = super.loadListNamedQuery(consulta); 
 			

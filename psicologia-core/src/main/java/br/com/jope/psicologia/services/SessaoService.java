@@ -13,6 +13,6 @@ public interface SessaoService extends BaseService<Sessao> {
 	
 	List<Sessao> loadSessaoCliente(Long nuUsuario) throws BussinessException;
 
-	boolean isSessaoAberta(Long nuCliente, Medico medico) throws BussinessException;
+	boolean isSessaoAberta(Medico medico) throws BussinessException;
 	
 }

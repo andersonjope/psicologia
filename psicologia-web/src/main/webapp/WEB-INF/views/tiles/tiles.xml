@@ -39,7 +39,7 @@
 	</definition>
 	
 	<definition name="salaCliente" extends="template" >
-		<put-attribute name="menu" value="" />
+		<put-attribute name="header" value="" />
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
 		<put-list-attribute name="addScripts">
 			<add-attribute value="resources/js/psi.js" />

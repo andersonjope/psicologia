@@ -75,7 +75,7 @@ public class SessaoController extends AbstractController {
 		try {			
 			Medico medico = medicoService.loadMedicoPorUsuario(loadUsuarioLogado(request).getNuUsuario());
 			
-			if(sessaoService.isSessaoAberta(formularioSessao.getNuCliente(), medico)) {
+			if(sessaoService.isSessaoAberta(medico)) {
 				addMessages(model, MessageType.ERROR, false, "Sessão em andamento para o Paciente informado.");
 				loadDados(model);
 				return INICIAR_SESSAO;
@@ -167,9 +167,11 @@ public class SessaoController extends AbstractController {
 				break;
 			case SOM_ATIVO:
 				formularioSessao.setSomAtivo(true);
+				salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());
 				break;
 			case SOM_MUDO:
 				formularioSessao.setSomAtivo(false);
+				salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());
 				break;
 
 			default:

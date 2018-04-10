@@ -28,7 +28,6 @@
 </head>
 <body>
 	<input type="hidden" id="origen" value="psi_pac">
-	<div id="frame" style="width:100%; height:100%;"></div>
 
 	<div id="controles" >
 		<c:import url="/WEB-INF/views/sessao/controlesSessao.jsp"></c:import>
@@ -47,6 +46,7 @@
 	    </div>
     </div>
 
+	<div id="frame" style="width:100%; height:100%;"></div>
 	
 <body>	
 	<script type="text/javascript">

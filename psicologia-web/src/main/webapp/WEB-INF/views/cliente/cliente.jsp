@@ -26,9 +26,6 @@
 	<input type="hidden" id="origen" value="pac_psi">
 	<script type="text/javascript">
 		urlWebSocket("${hashSessao}");
-		$(document).ready(function() {
-			$("#showBotaoVoltar").removeAttr("style");
-		});
 	</script>	
 	
 	<div class="form-group" id="buttonPaciente">

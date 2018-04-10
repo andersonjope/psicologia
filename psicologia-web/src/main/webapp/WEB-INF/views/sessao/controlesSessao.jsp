@@ -25,11 +25,7 @@
 						<img src="resources/imagens/pause.png" title="Pausar" align="middle" height="50" width="50" >				
 					</a>
 				</c:if>
-				<c:if test="${formularioSessao.sessaoIniciada}">
-					<a id="encerrar" href="#" >
-						<img src="resources/imagens/closes.png" title="Encerrar sessão" align="middle" height="50" width="50" >
-					</a>
-				</c:if>
+				
 				<c:if test="${formularioSessao.sessaoIniciada}">
 					<a id="aumentar" href="#" >
 						<img src="resources/imagens/plus.png" title="Aumentar" align="middle" height="40" width="40" >		
@@ -52,6 +48,21 @@
 		</div>
 	</form:form>
 	
+	<form:form id="formSessaoEncerrar" modelAttribute="formularioSessao" action="${alterarSessao}" method="POST">
+		<form:hidden path="nuSessao" />
+		<form:hidden path="acao" id="acaoEncerrar"/>
+	
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<c:if test="${formularioSessao.sessaoIniciada}">
+					<a id="encerrar" href="#" >
+						<img src="resources/imagens/closes.png" title="Encerrar sessão" align="middle" height="50" width="50" >
+					</a>
+				</c:if>
+			</div>
+		</div>
+	</form:form>
+	
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#iniciar").click(function() {
@@ -65,8 +76,8 @@
 		});
 		
 		$("#encerrar").click(function() {
-		 	$("#acao").val('3');
-		 	$("#formSessaoId").submit();
+		 	$("#acaoEncerrar").val('3');
+		 	$("#formSessaoEncerrar").submit();
 		});
 		
 		$("#aumentar").click(function() {

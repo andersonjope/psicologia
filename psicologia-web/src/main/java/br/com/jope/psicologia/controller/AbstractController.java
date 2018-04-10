@@ -75,15 +75,18 @@ public class AbstractController implements Serializable {
 	@SuppressWarnings("unused")
 	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
 		try {
-			if(Util.isEmpty(loadMapClients(hashSessao))) {
+			Set<PingPongEventSocketClient> loadMapClients = loadMapClients(hashSessao);
+			if(Util.isEmpty(loadMapClients)) {
 				initializeWebSocket(request, hashSessao);
 			}
 			
 			String mensagem = "{\"identificador\":\""+ hashSessao+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
 			
-			for (PingPongEventSocketClient client : loadMapClients(hashSessao)) {
-				client.sendMessage(mensagem);				
+			if(!Util.isEmpty(loadMapClients)) {
+				for (PingPongEventSocketClient client : loadMapClients) {
+					client.sendMessage(mensagem);				
+				}				
 			}
 		} catch (JSONException e) {
 			logger.log(Level.SEVERE, e.getMessage());
