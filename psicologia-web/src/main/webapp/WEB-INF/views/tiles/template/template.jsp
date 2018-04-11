@@ -9,6 +9,8 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="resources/css/styles/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/css/psi.css">
+    
     <link rel="icon" href="resources/imagens/logo.png">
     
     <tilesx:useAttribute id="scriptList" name="scripts" classname="java.util.List" />
@@ -80,15 +82,6 @@
 		var serverName = "${pageContext.request.serverName}";
 		var serverPort = "${pageContext.request.serverPort}";
 		var contextPath = "${pageContext.request.contextPath}";
-		
-		$(document).ready(function() {
-			$(".hideMessage").delay(3000).hide(100);
-			
-			$(".maskcpf").inputmask("999.999.999-99", { "placeholder": "000.000.000-00" });
-			$(".masktelefone").inputmask("(99)[9]9999-9999", { "placeholder": "(xx)xxxxx-xxxx" });
-			$(".maskdata").inputmask("99/99/99", { "placeholder": "dd/mm/aa" });
-			$(".maskcep").inputmask("99.999-999", { "placeholder": "00.000-000" });
-		});
 	</script>
 	
 </body>

@@ -4,22 +4,7 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<style type="text/css">
-		.content-wrapper{
-			margin-left: 0px;
-		}
-		#remoteVideo{
-			height: 350px; 
-			width: 550px;
-			float: left;
-		}
-		#localVideo{
-			height: 250px; 
-			width: 250px;
-			float: left;
-		}
-	</style>
+<head> 
 </head>
 <body>
 	<div id="frame" style="width:100%; height:100%;"></div>
@@ -41,7 +26,4 @@
     </div>
 </body>
     	
-<!-- 	<script type="text/javascript" src="https://webrtc.github.io/adapter/adapter-latest.js"></script> -->
-	<script type="text/javascript" src="resources/js/webrtc/webtrc.js"></script>
-	
 </html>

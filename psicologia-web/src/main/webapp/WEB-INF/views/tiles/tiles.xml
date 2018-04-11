@@ -21,6 +21,7 @@
 			<add-attribute value="resources/js/inputmask/inputmask.phone.extensions.js" />
 			<add-attribute value="resources/js/inputmask/inputmask.regex.extensions.js" />
 			<add-attribute value="resources/js/inputmask/jquery.inputmask.js" />
+			<add-attribute value="resources/js/psi.js" />
 		</put-list-attribute>
 		<put-list-attribute name="addScripts" >
 		    <add-attribute value="" />		
@@ -42,8 +43,8 @@
 		<put-attribute name="header" value="" />
 		<put-attribute name="content" value="/WEB-INF/views/cliente/cliente.jsp" />
 		<put-list-attribute name="addScripts">
-			<add-attribute value="resources/js/psi.js" />
 		    <add-attribute value="resources/js/websocket/websocket.js" />
+		    <add-attribute value="resources/js/webrtc/webtrc.js" />
 	  	</put-list-attribute>
 	</definition>
 	
@@ -66,8 +67,8 @@
 	<definition name="gerenciarSessao" extends="template">
 		<put-attribute name="content" value="/WEB-INF/views/sessao/gerenciarSessao.jsp" />
 		<put-list-attribute name="addScripts">
-		    <add-attribute value="resources/js/psi.js" />
 		    <add-attribute value="resources/js/websocket/websocket.js" />
+		    <add-attribute value="resources/js/webrtc/webtrc.js" />
 	  	</put-list-attribute>
 	</definition>
 	
