@@ -1,37 +1,15 @@
-'use strict';
-
-$(document).ready(function() {
-	var websocket = new WebSocket(wsPingPong);
-	
-	websocket.onmessage = function(evt) { onMessage(evt) };
-	websocket.onerror = function(evt) { onError(evt) };
-	websocket.onopen = function(evt) { onOpen(evt) };
-});
-
-function onMessage(evt) {
-	if(evt.data !== "" && evt.data !== null){
-		try {
-			var obj = jQuery.parseJSON(evt.data);
-			var velocidade = obj.velocidade;
-			var playStop = obj.playStop;
-			if (velocidade > 0) {
-				loadIframe(velocidade, playStop);
-			}else{
-				loadIframe(0,false);				
-			}
-		} catch (e) {
-			loadIframe(0,false);
+function mensagePingPong(message) {
+	console.log("metodo mensagePingPong: " + message);
+	var velocidade = message.velocidade;
+	var playStop = message.playStop;
+	if (velocidade > 0) {
+		loadIframe(velocidade, playStop);
+	}else{
+		if($("#iniciar").length > 0){
+			$("#iniciar").css("display", "block");
 		}
+		loadIframe(0,false);				
 	}
-}
-
-function onError(evt) {
-	alert('Erro ao conetar ao servidor.');
-	window.close();
-}
-
-function onOpen(evt) {
-//    alert("Erro ao conetar ao servidor. open");
 }
                
 function loadIframe(velocidade, playStop){

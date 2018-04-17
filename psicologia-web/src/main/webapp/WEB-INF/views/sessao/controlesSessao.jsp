@@ -16,7 +16,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<c:if test="${not formularioSessao.sessaoIniciada}">
-					<a id="iniciar" href="#" >
+					<a id="iniciar" href="#" style="display: none;">
 						<img src="resources/imagens/play.png" title="Iniciar" align="middle" height="50" width="50" >
 					</a>
 				</c:if>

@@ -11,7 +11,6 @@ var peerConnCfg = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'
 var psi_pac = "psi_pac";
 var pac_psi = "pac_psi";
 var wsc = null;
-var origen = null;
 var pc_psi_pac = null;
 var pc_pac_psi = null;
 var localVideoStream = null;
@@ -27,21 +26,9 @@ $(document).ready(function() {
 });
 
 function loadInit(){
-	origen = $("#origen").val();
 	if (navigator.getUserMedia) {
 		remoteVideo = document.getElementById('remoteVideo');
 		localVideo = document.getElementById('localVideo');
-		
-		wsc = new WebSocket(wsWebRtc);
-		wsc.onmessage = function(evt) {
-			messageData(evt)
-		};
-		wsc.onerror = function(evt) {
-			onError(evt)
-		};
-		wsc.onclose = function(evt) {
-			onClose(evt)
-		};
 
 		$("#initVideoCliente").click(function() {
 			messageInitConnection("iniciarpsipac");
@@ -65,26 +52,29 @@ function loadInit(){
 function messageInitConnection(processo) {
 	uuid = loadUuid();
 	processado = false;
-	wsc.send(JSON.stringify({
-		"processo" : processo,
-		"acao" : origen,
-		"uuid": uuid
-	}));
+	if(ws.readyState === 1){
+		ws.send(JSON.stringify({
+			"operacao" : "video",
+			"processo" : processo,
+			"acao" : origem,
+			"uuid": uuid
+		}));		
+	}
 	$("#initVideoCliente").css('display', 'none');
 	$("#endVideoCliente").css('display', 'block');
 }
 
-function messageData(evt) {
+function messageVideo(message) {
 	try {
-		var signal = JSON.parse(evt.data);
+		var signal = message;
 
 		if (signal.processo) {
 			if (!processado) {
 				processado = true;
 				if (signal.processo == "iniciarpsipac") {
-					if (psi_pac == origen) {
+					if (psi_pac == origem) {
 						initiateCall(signal.acao);
-					} else if (pac_psi == origen) {
+					} else if (pac_psi == origem) {
 						if (!peerConn){
 							answerCall(signal.acao);
 						}
@@ -92,17 +82,17 @@ function messageData(evt) {
 					setTimeout(messageInitConnection("iniciarpacpsi"),2000);
 				}else if (signal.processo == "iniciarpacpsi") {
 					$("#endVideoPaciente").css('display', 'block');
-					if (psi_pac == origen) {
+					if (psi_pac == origem) {
 						if (!peerConn){
 							answerCall(signal.acao);
 						}
-					} else if (pac_psi == origen) {
+					} else if (pac_psi == origem) {
 						initiateCall(signal.acao);
 					}					
 				}
 			}
 		} else {
-
+			console.log("signal.sdp: " + signal.sdp);
 			if (signal.sdp) {
 				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
 					  if(signal.sdp.type == 'offer') {
@@ -113,7 +103,7 @@ function messageData(evt) {
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate)).catch(errorHandler);
 			} else if (signal.ice) {
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
-			} else if (signal.closeConnection) {
+			} else if (signal.closeConnection == "true") {
 				endCall();
 			}
 		}
@@ -124,8 +114,9 @@ function messageData(evt) {
 }
 
 function messageEndCall() {
-	if (wsc) {
-		wsc.send(JSON.stringify({
+	if (ws) {
+		ws.send(JSON.stringify({
+			"operacao" : "video",
 			"closeConnection" : true,
 			"uuid": uuid
 		}));
@@ -168,7 +159,8 @@ function onIceCandidateHandler(evt) {
 	if (!evt || !evt.candidate) {
 		return;
 	}
-	wsc.send(JSON.stringify({
+	ws.send(JSON.stringify({
+		"operacao" : "video",
 		"candidate" : evt.candidate,
 		"uuid": uuid
 	}));
@@ -183,7 +175,8 @@ function createAndSendOffer() {
 		var off = new RTCSessionDescription(offer);
 		peerConn.setLocalDescription(new RTCSessionDescription(off),
 				function() {
-					wsc.send(JSON.stringify({
+					ws.send(JSON.stringify({
+						"operacao" : "video",
 						"sdp" : off,
 						"uuid": uuid
 					}));
@@ -203,7 +196,8 @@ function createAndSendAnswer() {
     function (answer) {
       var ans = new RTCSessionDescription(answer);
       peerConn.setLocalDescription(ans, function() {
-          wsc.send(JSON.stringify({
+          ws.send(JSON.stringify({
+        	  "operacao" : "video",
         	  "sdp": ans,
         	  "uuid": uuid
           }));
@@ -215,7 +209,8 @@ function createAndSendAnswer() {
 
 function createdDescription(description) {
 	  peerConn.setLocalDescription(description).then(function() {
-			wsc.send(JSON.stringify({
+			ws.send(JSON.stringify({
+				"operacao" : "video",
 				"sdp": peerConn.localDescription,
 				"uuid": uuid
 			}));

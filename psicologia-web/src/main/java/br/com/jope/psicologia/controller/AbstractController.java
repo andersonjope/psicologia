@@ -26,6 +26,7 @@ import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.view.message.Message;
 import br.com.jope.psicologia.view.message.MessageType;
 import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
+import br.com.jope.psicologia.view.push.SocketClientEndPoint;
 import br.com.jope.psicologia.view.push.WebRTCEventSocketClient;
 import br.com.jope.psicologia.vo.UsuarioVO;
 
@@ -34,58 +35,64 @@ public class AbstractController implements Serializable {
 	private static final long serialVersionUID = -4808859477511429595L;
 	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
 
+	private static final String WEB_SOCKET_ADDRESS = "ws://%s:%s/psicologia-web/ws/%s";
 	private static final String WEBSOCKETADDRESSPINGPONG = "ws://%s:%s/psicologia-web/pingpong/%s";
 	private static final String WEBSOCKETADDRESSPSIPAC = "ws://%s:%s/psicologia-web/webtrc/%s";
-	private transient Map<String, Set<PingPongEventSocketClient>> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, Set<PingPongEventSocketClient>>());
+	private transient Map<String, Set<SocketClientEndPoint>> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, Set<SocketClientEndPoint>>());
 	private transient List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
-		try {
-			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-			String urlPingPong = String.format(WEBSOCKETADDRESSPINGPONG, parametro);
-			PingPongEventSocketClient client = new PingPongEventSocketClient(new URI(urlPingPong));
-			client.addMessageHandler(new PingPongEventSocketClient.MessageHandler() {
-				public void handleMessage(String message) {
-					return;
-				}
-			});
-			
-			addMapClients(hashSessao, client);
-			
-		} catch (URISyntaxException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
+//		try {
+//			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
+//			String urlPingPong = String.format(WEB_SOCKET_ADDRESS, parametro);
+//			SocketClientEndPoint client = new SocketClientEndPoint(new URI(urlPingPong));
+//			client.addMessageHandler(new SocketClientEndPoint.MessageHandler() {
+//				public void handleMessage(String message) {
+//					return;
+//				}
+//			});
+//			
+//			addMapClients(hashSessao, client);
+//			
+//		} catch (URISyntaxException e) {
+//			logger.log(Level.SEVERE, e.getMessage());
+//		}
     }
 	
 	protected void initializeWebSocketWebRTC(HttpServletRequest request, String hashSessao) {
-		try {
-			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-			String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
-			WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
-			clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
-				public void handleMessage(String message) {
-					return;
-				}
-			});				
-		} catch (URISyntaxException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
+//		try {
+//			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
+//			String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
+//			WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
+//			clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
+//				public void handleMessage(String message) {
+//					return;
+//				}
+//			});				
+//		} catch (URISyntaxException e) {
+//			logger.log(Level.SEVERE, e.getMessage());
+//		}
 	}
 	
 	@SuppressWarnings("unused")
 	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
 		try {
-			Set<PingPongEventSocketClient> loadMapClients = loadMapClients(hashSessao);
+			Set<SocketClientEndPoint> loadMapClients = loadMapClients(hashSessao);
 			if(Util.isEmpty(loadMapClients)) {
 				initializeWebSocket(request, hashSessao);
 			}
 			
-			String mensagem = "{\"identificador\":\""+ hashSessao+ "\", \"velocidade\":\"" + velocidade + "\", \"playStop\":\"" + playStop + "\"}";
+			String mensagem = "{\"operacao\":\"pingpong\", \"velocidade\":\"" + velocidade + "\",\"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
 			
 			if(!Util.isEmpty(loadMapClients)) {
-				for (PingPongEventSocketClient client : loadMapClients) {
-					client.sendMessage(mensagem);				
+				for (SocketClientEndPoint client : loadMapClients) {
+					client.sendMessage(mensagem);
+					client.addMessageHandler(new SocketClientEndPoint.MessageHandler() {
+						public void handleMessage(String message) {
+							return;
+						}
+					});				
 				}				
 			}
 		} catch (JSONException e) {
@@ -130,9 +137,9 @@ public class AbstractController implements Serializable {
 		}
 	}
 	
-	void addMapClients(String hash, PingPongEventSocketClient client) {
+	void addMapClients(String hash, SocketClientEndPoint client) {
 		if(!mapClients.containsKey(hash)) {
-    		Set<PingPongEventSocketClient> clients = new HashSet<>();
+    		Set<SocketClientEndPoint> clients = new HashSet<>();
     		clients.add(client);
     		mapClients.put(hash, clients);
     	}else {
@@ -140,7 +147,7 @@ public class AbstractController implements Serializable {
     	}
 	}
 	
-	Set<PingPongEventSocketClient> loadMapClients(String hash) {
+	Set<SocketClientEndPoint> loadMapClients(String hash) {
 		return mapClients.containsKey(hash) ? mapClients.get(hash) : null;
 	}
 	

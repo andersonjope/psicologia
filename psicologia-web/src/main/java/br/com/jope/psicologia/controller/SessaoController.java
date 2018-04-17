@@ -144,6 +144,7 @@ public class SessaoController extends AbstractController {
 				alteraSessao = true;
 				break;
 			case PAUSAR:
+				salaSessao.setNuVelocidadeMovimento(0);
 				formularioSessao.setSessaoIniciada(false);
 				break;
 			case ENCERRAR:

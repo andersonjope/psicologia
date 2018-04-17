@@ -1,8 +1,14 @@
+'use strict';
+
 var wsPingPong = "";
 var wsWebRtc = "";
+var urlWS = "";
+var ws = null;
 var context = "/psicologia-web";
+var origem = null;
 
 $(document).ready(function() {
+	origem = $("#origem").val();
 	$(".hideMessage").delay(3000).hide(100);
 	
 	$(".maskcpf").inputmask("999.999.999-99", { "placeholder": "000.000.000-00" });
@@ -30,4 +36,72 @@ $(document).ready(function() {
 function urlWebSocket(hash){
 	wsPingPong = "ws://" + document.location.host + context + "/pingpong/" + hash;
 	wsWebRtc =  "ws://" + document.location.host + context + "/webtrc/" + hash;
+	
+	urlWS =  "ws://" + document.location.host + context + "/ws/" + hash;
+	
+	ws = new WebSocket(urlWS);
+	
+	ws.onopen = function() { 
+		if(ws.readyState === 1){
+			ws.send(JSON.stringify({
+				"operacao" : "connection",
+				"user" : $("#origem").val()
+			}));
+		}
+	};
+	
+	ws.onmessage = function(evt) { onMessage(evt) };
+	ws.onerror = function(evt) { onError(evt) };
+	ws.onclose = function(evt) { onClose(evt) };
+}
+
+function onMessage(evt){
+	var message = JSON.parse(evt.data);
+	if(message.operacao === "connection"){
+		console.log("onMessage operacao conneciton: " + message.users);
+		validaSituacaoUsuario(message);
+		loadIframe(0,false);
+	} else if(message.operacao === "pingpong"){
+		console.log("onMessage operacao pingpong: " + message);
+		mensagePingPong(message);
+	} else if(message.operacao === "video"){
+		console.log("onMessage operacao video: " + message);
+		messageVideo(message);
+	}else{
+		console.log("onMessage else.............");
+		$("#online").css("display", "none");
+		$("#offline").css("display", "block");
+		if($("#initVideoCliente").length > 0){
+			$("#initVideoCliente").css("display", "none");
+			$("#iniciar").css("display", "none");
+		}
+		loadIframe(0,false);
+	}
+}
+
+function onError(evt){
+	console.log(evt);
+}
+
+function onClose(evt){
+	console.log("onClose: " + evt.data);
+}
+
+function validaSituacaoUsuario(message){
+	var users = message.users;
+	$.each(users, function(key, value) {
+		if(key != $("#origem").val()){
+			if(value === "true"){
+				$("#online").css("display", "block");
+				$("#offline").css("display", "none");
+				if($("#initVideoCliente").length > 0){
+					$("#initVideoCliente").css("display", "block");
+					$("#iniciar").css("display", "block");
+				}
+			}else{
+				$("#online").css("display", "none");
+				$("#offline").css("display", "block");						
+			}
+		}				
+	});
 }

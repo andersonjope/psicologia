@@ -13,15 +13,18 @@
 </script>
 </head>
 <body>
-	<input type="hidden" id="origen" value="psi_pac">
+	<input type="hidden" id="origem" value="psi_pac">
 	<div class="col-sm-offset-2 col-sm-12" style="float: left;">
 		<div id="controles" >
 			<c:import url="/WEB-INF/views/sessao/controlesSessao.jsp"></c:import>
 		</div>
-	
+		
 	    <div class="form-group">
 			<div class="col-sm-offset-2 col-sm-12">
-			    <input id="initVideoCliente" type="button" class="btn btn-success" value="Iniciar Chamada Vídeo"/>
+				<img id="online" src="resources/imagens/status_away.png" style="display: none;" title="Online" align="middle" height="32" width="32" >
+				<img id="offline" src="resources/imagens/status_busy.png" style="display: block;" title="Offline" align="middle" height="32" width="32" >
+				
+			    <input id="initVideoCliente" style="display: none;" type="button" class="btn btn-success" value="Iniciar Chamada Vídeo"/>
 			    <input id="endVideoCliente" style="display: none;" type="button" class="btn btn-success" value="Encerrar Chamda Vídeo"/>
 	    	</div>
 	    </div>
@@ -44,7 +47,7 @@
 	
 <body>	
 	<script type="text/javascript">
-		urlWebSocket("${hashSessao}");
+		urlWebSocket("${hashSessao}", "psi");
 	</script>
 	
 </html>

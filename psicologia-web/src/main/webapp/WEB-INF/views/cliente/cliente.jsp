@@ -8,13 +8,16 @@
 </head>
 <body>
 	<div id="frame" style="width:100%; height:100%;"></div>
-	<input type="hidden" id="origen" value="pac_psi">
+	<input type="hidden" id="origem" value="pac_psi">
 	<script type="text/javascript">
 		urlWebSocket("${hashSessao}");
 	</script>	
 	
 	<div class="form-group" id="buttonPaciente">
 		<div class="col-sm-offset-2 col-sm-10">
+			<img id="online" src="resources/imagens/status_away.png" style="display: none;" title="Online" align="middle" height="32" width="32" >
+			<img id="offline" src="resources/imagens/status_busy.png" style="display: block;" title="Offline" align="middle" height="32" width="32" >
+			
 		    <input id="endVideoPaciente" style="display: none;" type="button" class="btn btn-success" value="Encerrar Vídeo"/>
     	</div>
     </div>
