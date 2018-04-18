@@ -92,7 +92,6 @@ function messageVideo(message) {
 				}
 			}
 		} else {
-			console.log("signal.sdp: " + signal.sdp);
 			if (signal.sdp) {
 				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
 					  if(signal.sdp.type == 'offer') {
@@ -137,7 +136,7 @@ function initiateCall(processo) {
 			createAndSendOffer();
 		}, function(error) { });
 	} else {
-		alert("Sorry, your browser does not support WebRTC!")
+		alert("Sorry, your browser does not support WebRTC!");
 	}
 };
 
@@ -231,11 +230,15 @@ function endCall() {
 			remoteVideo.src = "";	  
 		}
 	}
-	$("#initVideoCliente").css('display', 'block');
-	$("#endVideoCliente").css('display', 'none');
-	$("#endVideoPaciente").css('display', 'none');
-	window.location.reload();
-};
+	if($("#endVideoCliente").length > 0){
+		$("#endVideoCliente").css('display', 'none');		
+		$("#initVideoCliente").css('display', 'block');
+	}
+	if($("#endVideoPaciente").length > 0){
+		$("#endVideoPaciente").css('display', 'none');		
+	}
+	//window.location.reload();
+}
 
 function errorHandler(error) {
 }

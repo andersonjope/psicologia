@@ -47,7 +47,7 @@
 	
 <body>	
 	<script type="text/javascript">
-		urlWebSocket("${hashSessao}", "psi");
+		urlWebSocket("${hashSessao}");
 	</script>
 	
 </html>

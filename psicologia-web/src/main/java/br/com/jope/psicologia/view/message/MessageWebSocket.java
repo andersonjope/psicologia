@@ -17,9 +17,9 @@ public class MessageWebSocket implements Serializable {
 	private String processo;
 	private String acao;
 	private String uuid;
-	private Integer velocidade;
+	private String velocidade;
 	private boolean closeConnection;
-	private boolean playStop;
+	private String playStop;
 	
 	public String getUser() {
 		return user;
@@ -57,16 +57,16 @@ public class MessageWebSocket implements Serializable {
 	public void setUsers(Map<String, String> users) {
 		this.users = users;
 	}
-	public Integer getVelocidade() {
+	public String getVelocidade() {
 		return velocidade;
 	}
-	public void setVelocidade(Integer velocidade) {
+	public void setVelocidade(String velocidade) {
 		this.velocidade = velocidade;
 	}
-	public boolean isPlayStop() {
+	public String getPlayStop() {
 		return playStop;
 	}
-	public void setPlayStop(boolean playStop) {
+	public void setPlayStop(String playStop) {
 		this.playStop = playStop;
 	}
 	public String getProcesso() {

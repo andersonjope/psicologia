@@ -58,14 +58,11 @@ function urlWebSocket(hash){
 function onMessage(evt){
 	var message = JSON.parse(evt.data);
 	if(message.operacao === "connection"){
-		console.log("onMessage operacao conneciton: " + message.users);
 		validaSituacaoUsuario(message);
 		loadIframe(0,false);
 	} else if(message.operacao === "pingpong"){
-		console.log("onMessage operacao pingpong: " + message);
 		mensagePingPong(message);
 	} else if(message.operacao === "video"){
-		console.log("onMessage operacao video: " + message);
 		messageVideo(message);
 	}else{
 		console.log("onMessage else.............");
@@ -74,8 +71,12 @@ function onMessage(evt){
 		if($("#initVideoCliente").length > 0){
 			$("#initVideoCliente").css("display", "none");
 			$("#iniciar").css("display", "none");
+			$("#endVideoCliente").css("display", "none");
 		}
-		loadIframe(0,false);
+		if($("#endVideoPaciente").length > 0){
+			$("#endVideoPaciente").css("display", "none");
+		}
+		loadIframe(0, false);
 	}
 }
 

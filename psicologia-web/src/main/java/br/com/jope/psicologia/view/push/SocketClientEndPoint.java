@@ -88,4 +88,5 @@ public class SocketClientEndPoint {
     public static interface MessageHandler {
         public void handleMessage(String message);
     }
+
 }

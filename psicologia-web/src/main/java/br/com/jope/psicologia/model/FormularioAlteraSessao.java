@@ -3,6 +3,7 @@ package br.com.jope.psicologia.model;
 public class FormularioAlteraSessao {
 
 	private Long nuSessao;
+	private Integer nuVelocidadeMovimento;
 	private String acao;
 	private boolean sessaoIniciada;
 	private boolean somAtivo;
@@ -13,6 +14,14 @@ public class FormularioAlteraSessao {
 
 	public void setNuSessao(Long nuSessao) {
 		this.nuSessao = nuSessao;
+	}
+
+	public Integer getNuVelocidadeMovimento() {
+		return nuVelocidadeMovimento;
+	}
+
+	public void setNuVelocidadeMovimento(Integer nuVelocidadeMovimento) {
+		this.nuVelocidadeMovimento = nuVelocidadeMovimento;
 	}
 
 	public String getAcao() {

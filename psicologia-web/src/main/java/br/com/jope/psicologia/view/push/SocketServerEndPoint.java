@@ -41,8 +41,6 @@ public class SocketServerEndPoint {
 	@OnMessage
     public synchronized MessageWebSocket onMessage(MessageWebSocket message, Session session, @PathParam("hash") String hash) {
         try {
-        	System.out.println("@ServerEndpoint onmessage " + session.getId() + " hash : " + hash + " mensagem: " + message);
-//        	MessageWebSocket messageWebSocket = convertJsonToObject(message);
             if(!Util.isEmpty(message.getOperacao()) && message.getOperacao().equals("connection")) {
             	Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(hash);
             	Map<String, String> users = new LinkedHashMap<>();

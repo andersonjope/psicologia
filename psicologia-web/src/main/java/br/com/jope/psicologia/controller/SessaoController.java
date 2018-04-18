@@ -183,11 +183,12 @@ public class SessaoController extends AbstractController {
 				sessaoService.alterar(sessao);				
 			}
 			
+			formularioSessao.setNuVelocidadeMovimento(salaSessao.getNuVelocidadeMovimento());
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("hashSessao", hashSessao);
 			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
 			
-			notificaCliente(request, hashSessao, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
+//			notificaCliente(request, hashSessao, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
 			
 			if(EnumAcaoSessao.ENCERRAR.equals(acaoSessao)) {
 				addMessages(redirectAttributes, MessageType.INFO, false, "Sessão encerrada, dados enviados para o Paciente.");

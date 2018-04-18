@@ -5,11 +5,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,9 +23,7 @@ import br.com.jope.psicologia.enumeration.EnumUsuario;
 import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.view.message.Message;
 import br.com.jope.psicologia.view.message.MessageType;
-import br.com.jope.psicologia.view.push.PingPongEventSocketClient;
 import br.com.jope.psicologia.view.push.SocketClientEndPoint;
-import br.com.jope.psicologia.view.push.WebRTCEventSocketClient;
 import br.com.jope.psicologia.vo.UsuarioVO;
 
 public class AbstractController implements Serializable {
@@ -38,7 +34,7 @@ public class AbstractController implements Serializable {
 	private static final String WEB_SOCKET_ADDRESS = "ws://%s:%s/psicologia-web/ws/%s";
 	private static final String WEBSOCKETADDRESSPINGPONG = "ws://%s:%s/psicologia-web/pingpong/%s";
 	private static final String WEBSOCKETADDRESSPSIPAC = "ws://%s:%s/psicologia-web/webtrc/%s";
-	private transient Map<String, Set<SocketClientEndPoint>> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, Set<SocketClientEndPoint>>());
+	private transient Map<String, SocketClientEndPoint> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, SocketClientEndPoint>());
 	private transient List<Message> messages;
 	
 	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
@@ -77,23 +73,16 @@ public class AbstractController implements Serializable {
 	@SuppressWarnings("unused")
 	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
 		try {
-			Set<SocketClientEndPoint> loadMapClients = loadMapClients(hashSessao);
-			if(Util.isEmpty(loadMapClients)) {
+			SocketClientEndPoint client = loadMapClient(hashSessao);
+			if(Util.isEmpty(client)) {
 				initializeWebSocket(request, hashSessao);
 			}
 			
 			String mensagem = "{\"operacao\":\"pingpong\", \"velocidade\":\"" + velocidade + "\",\"playStop\":\"" + playStop + "\"}";
 			JSONObject jsonObject = new JSONObject(mensagem);
 			
-			if(!Util.isEmpty(loadMapClients)) {
-				for (SocketClientEndPoint client : loadMapClients) {
-					client.sendMessage(mensagem);
-					client.addMessageHandler(new SocketClientEndPoint.MessageHandler() {
-						public void handleMessage(String message) {
-							return;
-						}
-					});				
-				}				
+			if(!Util.isEmpty(client)) {
+				client.sendMessage(mensagem);
 			}
 		} catch (JSONException e) {
 			logger.log(Level.SEVERE, e.getMessage());
@@ -139,15 +128,14 @@ public class AbstractController implements Serializable {
 	
 	void addMapClients(String hash, SocketClientEndPoint client) {
 		if(!mapClients.containsKey(hash)) {
-    		Set<SocketClientEndPoint> clients = new HashSet<>();
-    		clients.add(client);
-    		mapClients.put(hash, clients);
+    		mapClients.put(hash, client);
     	}else {
-    		mapClients.get(hash).add(client);
+    		mapClients.remove(hash);
+    		mapClients.put(hash, client);
     	}
 	}
 	
-	Set<SocketClientEndPoint> loadMapClients(String hash) {
+	SocketClientEndPoint loadMapClient(String hash) {
 		return mapClients.containsKey(hash) ? mapClients.get(hash) : null;
 	}
 	

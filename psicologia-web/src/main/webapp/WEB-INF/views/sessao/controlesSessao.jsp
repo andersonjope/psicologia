@@ -11,7 +11,8 @@
 		<form:hidden path="nuSessao" />
 		<form:hidden path="acao" id="acao"/>
 		<form:hidden path="sessaoIniciada"/>
-		<form:hidden path="somAtivo"/>
+		<form:hidden path="somAtivo" id="somAtivo"/>
+		<form:hidden path="nuVelocidadeMovimento" id="velocidade"/>
 	
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
@@ -72,6 +73,7 @@
 		
 		$("#pausar").click(function() {
 		 	$("#acao").val('2');
+		 	$("#velocidade").val(0);
 		 	$("#formSessaoId").submit();
 		});
 		
@@ -82,21 +84,25 @@
 		
 		$("#aumentar").click(function() {
 		 	$("#acao").val('4');
+		 	$("#velocidade").val(new Number($("#velocidade").val()) + 1);
 		 	$("#formSessaoId").submit();
 		});
 		
 		$("#diminuir").click(function() {
 		 	$("#acao").val('5');
+		 	$("#velocidade").val(new Number($("#velocidade").val()) - 1);
 		 	$("#formSessaoId").submit();
 		});
 		
 		$("#somLigado").click(function() {
 		 	$("#acao").val('6');
+		 	$("#somAtivo").val('true');
 		 	$("#formSessaoId").submit();
 		});
 		
 		$("#somMudo").click(function() {
 		 	$("#acao").val('7');
+		 	$("#somAtivo").val('false');
 		 	$("#formSessaoId").submit();
 		});
 		
@@ -106,6 +112,11 @@
 		        data: $(this).serialize(),
 		        type: "POST",
 		        success: function(data) {
+		        	ws.send(JSON.stringify({
+						"operacao" : "pingpong",
+						"velocidade" : $("#velocidade").val(),
+						"playStop" : $("#playStop").val()						
+					}));
 		            $("#controles").html(data);   
 		        }
 		    });
