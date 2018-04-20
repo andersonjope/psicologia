@@ -42,6 +42,13 @@ function loadInit(){
 			messageEndCall();
 		});
 		
+		$("#remoteVideo").on('loadedmetadata', function() {
+			if (pac_psi == origem) {
+				console.log("video paciente");
+				messageInitConnection("iniciarpacpsi");				
+			}
+		});
+		
 	} else {
 		$("#initVideoCliente").css('display', 'none');
 		$("#endVideoCliente").css('display', 'none');
@@ -79,7 +86,6 @@ function messageVideo(message) {
 							answerCall(signal.acao);
 						}
 					}		
-					setTimeout(messageInitConnection("iniciarpacpsi"),2000);
 				}else if (signal.processo == "iniciarpacpsi") {
 					$("#endVideoPaciente").css('display', 'block');
 					if (psi_pac == origem) {
@@ -102,7 +108,7 @@ function messageVideo(message) {
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate)).catch(errorHandler);
 			} else if (signal.ice) {
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
-			} else if (signal.closeConnection == "true") {
+			} else if (signal.closeConnection) {
 				endCall();
 			}
 		}
@@ -237,7 +243,9 @@ function endCall() {
 	if($("#endVideoPaciente").length > 0){
 		$("#endVideoPaciente").css('display', 'none');		
 	}
-	//window.location.reload();
+	if (psi_pac == origem) {
+		window.location.reload();		
+	}
 }
 
 function errorHandler(error) {

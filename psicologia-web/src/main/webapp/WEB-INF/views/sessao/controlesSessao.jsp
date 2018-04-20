@@ -68,12 +68,13 @@
 	$(document).ready(function() {
 		$("#iniciar").click(function() {
 		 	$("#acao").val('1');
+		 	$("#velocidade").val(new Number($("#velocidade").val()));
 		 	$("#formSessaoId").submit();
 		});
 		
 		$("#pausar").click(function() {
 		 	$("#acao").val('2');
-		 	$("#velocidade").val(0);
+		 	$("#velocidade").val(new Number(0));
 		 	$("#formSessaoId").submit();
 		});
 		

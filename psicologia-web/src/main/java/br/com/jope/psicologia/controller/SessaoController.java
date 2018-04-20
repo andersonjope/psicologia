@@ -26,7 +26,6 @@ import br.com.jope.psicologia.entity.Sessao;
 import br.com.jope.psicologia.enumeration.EnumAcaoSessao;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioAlteraSessao;
-import br.com.jope.psicologia.model.FormularioAlteraSessaoSom;
 import br.com.jope.psicologia.model.FormularioCriaSessao;
 import br.com.jope.psicologia.services.ClienteService;
 import br.com.jope.psicologia.services.MedicoService;
@@ -103,12 +102,11 @@ public class SessaoController extends AbstractController {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, nuSessao);
 			FormularioAlteraSessao formularioSessao = new FormularioAlteraSessao();
+			loadDadoUltimaMovimentacao(sessao, formularioSessao);
 			formularioSessao.setNuSessao(sessao.getNuSessao());
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("sessao", sessao);
 			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
-			model.addAttribute("formularioSessaoSom", new FormularioAlteraSessaoSom());
-			model.addAttribute("salaSessaoList", sessao.getSalaSessaoList());
 			model.addAttribute("hashSessao", hashSessao);
 			initializeWebSocket(request, hashSessao);
 			initializeWebSocketWebRTC(request, hashSessao);
@@ -117,16 +115,23 @@ public class SessaoController extends AbstractController {
 		}
 		return "gerenciarSessao";
 	}
+
+	private void loadDadoUltimaMovimentacao(Sessao sessao, FormularioAlteraSessao formularioSessao) {
+		SalaSessao salaSessaoAnterior = new SalaSessao();
+		if(!Util.isEmpty(sessao.getSalaSessaoList())) {
+			salaSessaoAnterior = sessao.getSalaSessaoList().get(0);
+		}
+		if(!Util.isEmpty(salaSessaoAnterior.getNuVelocidadeMovimento())) {
+			formularioSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());										
+		}else {
+			formularioSessao.setNuVelocidadeMovimento(1);										
+		}
+	}
 	
 	@RequestMapping(value="/alterarSessao", method = RequestMethod.POST)
 	public String alterarSessao(Model model, @Valid @ModelAttribute(FORMULARIO_SESSAO) FormularioAlteraSessao formularioSessao, BindingResult result, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		try {
 			Sessao sessao = sessaoService.getId(Sessao.class, formularioSessao.getNuSessao());
-			SalaSessao salaSessaoAnterior = new SalaSessao();
-			if(!Util.isEmpty(sessao.getSalaSessaoList())) {
-				salaSessaoAnterior = sessao.getSalaSessaoList().get(0);
-			}
-			
 			SalaSessao salaSessao = new SalaSessao();
 			salaSessao.setDhRegistro(new Date());
 			
@@ -134,45 +139,36 @@ public class SessaoController extends AbstractController {
 			EnumAcaoSessao acaoSessao = EnumAcaoSessao.loadCodigo(formularioSessao.getAcao());
 			switch (acaoSessao) {
 			case INICIAR:
-				if(!Util.isEmpty(salaSessaoAnterior.getNuVelocidadeMovimento())) {
-					salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());										
-				}else {
-					salaSessao.setNuVelocidadeMovimento(1);					
-				}
+				salaSessao.setNuVelocidadeMovimento(formularioSessao.getNuVelocidadeMovimento());										
 				sessao.addSalaSessao(salaSessao);
 				formularioSessao.setSessaoIniciada(true);
 				alteraSessao = true;
 				break;
 			case PAUSAR:
-				salaSessao.setNuVelocidadeMovimento(0);
 				formularioSessao.setSessaoIniciada(false);
 				break;
 			case ENCERRAR:
 				sessao.setDhFinalSessao(new Date());
-				formularioSessao.setSessaoIniciada(false);
 				alteraSessao = true;
 				break;
 			case AUMENTAR:
-				if(!Util.isEmpty(salaSessaoAnterior.getNuVelocidadeMovimento())) {
-					salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento() + 1);					
-					sessao.addSalaSessao(salaSessao);
-				}
+				salaSessao.setNuVelocidadeMovimento(formularioSessao.getNuVelocidadeMovimento());
 				alteraSessao = true;
 				break;
 			case DIMINUIR:
-				if(!Util.isEmpty(salaSessaoAnterior.getNuVelocidadeMovimento()) && salaSessaoAnterior.getNuVelocidadeMovimento() > 1) {
-					salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento() - 1);					
+				if(!Util.isEmpty(formularioSessao.getNuVelocidadeMovimento()) && formularioSessao.getNuVelocidadeMovimento() > 1) {
+					salaSessao.setNuVelocidadeMovimento(formularioSessao.getNuVelocidadeMovimento());				
 					sessao.addSalaSessao(salaSessao);
 				}
 				alteraSessao = true;
 				break;
 			case SOM_ATIVO:
 				formularioSessao.setSomAtivo(true);
-				salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());
+				salaSessao.setNuVelocidadeMovimento(formularioSessao.getNuVelocidadeMovimento());
 				break;
 			case SOM_MUDO:
 				formularioSessao.setSomAtivo(false);
-				salaSessao.setNuVelocidadeMovimento(salaSessaoAnterior.getNuVelocidadeMovimento());
+				salaSessao.setNuVelocidadeMovimento(formularioSessao.getNuVelocidadeMovimento());
 				break;
 
 			default:
@@ -183,12 +179,9 @@ public class SessaoController extends AbstractController {
 				sessaoService.alterar(sessao);				
 			}
 			
-			formularioSessao.setNuVelocidadeMovimento(salaSessao.getNuVelocidadeMovimento());
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
 			model.addAttribute("hashSessao", hashSessao);
 			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
-			
-//			notificaCliente(request, hashSessao, salaSessao.getNuVelocidadeMovimento(), formularioSessao.isSomAtivo());
 			
 			if(EnumAcaoSessao.ENCERRAR.equals(acaoSessao)) {
 				addMessages(redirectAttributes, MessageType.INFO, false, "Sessão encerrada, dados enviados para o Paciente.");

@@ -39,29 +39,31 @@ public class SocketServerEndPoint {
 	private static Map<String, Set<SocketUsuario>> clients = Collections.synchronizedMap(new LinkedHashMap<String, Set<SocketUsuario>>());
 
 	@OnMessage
-    public synchronized MessageWebSocket onMessage(MessageWebSocket message, Session session, @PathParam("hash") String hash) {
+    public MessageWebSocket onMessage(MessageWebSocket message, Session session, @PathParam("hash") String hash) {
         try {
-            if(!Util.isEmpty(message.getOperacao()) && message.getOperacao().equals("connection")) {
-            	Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(hash);
-            	Map<String, String> users = new LinkedHashMap<>();
-            	for (SocketUsuario socketUsuario : loadSocketUsuarios) {
-            		if(socketUsuario.getSession().isOpen()) {
-            			if(!Util.isEmpty(socketUsuario.getUsers())) {
-            				for(Map.Entry<String, String> mapUsers : socketUsuario.getUsers().entrySet()) {
-            					if(!mapUsers.getKey().equals(message.getUser())) {
-            						users.putAll(putUsers(mapUsers.getKey(), socketUsuario));            			            					
-            					}
-            				}            			
-            			}else {
-            				users.putAll(putUsers(message.getUser(), socketUsuario));            			
-            			}            			
-            		}
-				}
-            	message.setUsers(users);
-            }
-            
-            broadcast(message, hash);
-        	
+        	Thread.sleep(500);
+        	synchronized(this) {
+        		if(!Util.isEmpty(message.getOperacao()) && message.getOperacao().equals("connection")) {
+        			Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(hash);
+        			Map<String, String> users = new LinkedHashMap<>();
+        			for (SocketUsuario socketUsuario : loadSocketUsuarios) {
+        				if(socketUsuario.getSession().isOpen()) {
+        					if(!Util.isEmpty(socketUsuario.getUsers())) {
+        						for(Map.Entry<String, String> mapUsers : socketUsuario.getUsers().entrySet()) {
+        							if(!mapUsers.getKey().equals(message.getUser())) {
+        								users.putAll(putUsers(mapUsers.getKey(), socketUsuario));            			            					
+        							}
+        						}            			
+        					}else {
+        						users.putAll(putUsers(message.getUser(), socketUsuario));            			
+        					}            			
+        				}
+        			}
+        			message.setUsers(users);
+        		}
+        		
+        		broadcast(message, hash);        		
+        	}
         } catch (Exception e) {
         	logger.log(Level.SEVERE, e.getLocalizedMessage());
 		} 
@@ -92,7 +94,11 @@ public class SocketServerEndPoint {
     @OnClose
     public void onClose(Session session, @PathParam("hash") String hash) {
     	System.out.println("@ServerEndpoint onclose " + session.getId() + " hash : " + hash);
-    	Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(session, hash);
+    	encerraSessao(session, hash, "close");
+    }
+
+	private void encerraSessao(Session session, String hash, String closeOrError) {
+		Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(session, hash);
     	if(!Util.isEmpty(loadSocketUsuarios)) {
     		Map<String, String> users = new LinkedHashMap<>();
     		for (SocketUsuario socketUsuario : loadSocketUsuarios) {
@@ -104,6 +110,7 @@ public class SocketServerEndPoint {
     		}
     		
     		MessageWebSocket message = new MessageWebSocket();
+    		message.setOperacao(closeOrError);
         	message.setUsers(users);	
         	broadcast(message, hash);
     		
@@ -111,12 +118,11 @@ public class SocketServerEndPoint {
     			maps.getValue().removeAll(loadSocketUsuarios);
     		}
     	}
-    }
+	}
 
     @OnError
-    public void onError(Throwable t) {
-    	t.printStackTrace();
-    	logger.log(Level.SEVERE, t.getLocalizedMessage());
+    public void onError(Throwable t, Session session, @PathParam("hash") String hash) {
+    	encerraSessao(session, hash, "error");
     }
     
     private Set<SocketUsuario> loadSocketUsuarios(Session session, String hash) {
@@ -172,13 +178,11 @@ public class SocketServerEndPoint {
     
     static void broadcast(MessageWebSocket message, String hash) {
     	try {
-    		Set<SocketUsuario> socketUsuarios = loadSocketUsuarios(hash);
+			Set<SocketUsuario> socketUsuarios = loadSocketUsuarios(hash);
 	    	for (SocketUsuario socketUsuario : socketUsuarios) {
-	    		Session session = socketUsuario.getSession();
-				synchronized (session) {
-					if(session.isOpen()) {
-						session.getBasicRemote().sendObject(message);						
-					}
+    			Session session = socketUsuario.getSession();
+				if(session.isOpen()) {
+					session.getBasicRemote().sendObject(message);						
 				}
 			}
     	} catch (IOException | EncodeException e) {

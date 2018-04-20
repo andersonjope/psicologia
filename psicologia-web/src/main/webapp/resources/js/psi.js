@@ -51,41 +51,23 @@ function urlWebSocket(hash){
 	};
 	
 	ws.onmessage = function(evt) { onMessage(evt) };
-	ws.onerror = function(evt) { onError(evt) };
-	ws.onclose = function(evt) { onClose(evt) };
 }
 
 function onMessage(evt){
 	var message = JSON.parse(evt.data);
-	if(message.operacao === "connection"){
+	if(message.operacao === "connection" || message.operacao === "close"){
+		console.log("onMessage connection---------");
 		validaSituacaoUsuario(message);
 		loadIframe(0,false);
 	} else if(message.operacao === "pingpong"){
 		mensagePingPong(message);
 	} else if(message.operacao === "video"){
+		console.log("onMessage video++++++++++++");
 		messageVideo(message);
-	}else{
-		console.log("onMessage else.............");
-		$("#online").css("display", "none");
-		$("#offline").css("display", "block");
-		if($("#initVideoCliente").length > 0){
-			$("#initVideoCliente").css("display", "none");
-			$("#iniciar").css("display", "none");
-			$("#endVideoCliente").css("display", "none");
-		}
-		if($("#endVideoPaciente").length > 0){
-			$("#endVideoPaciente").css("display", "none");
-		}
-		loadIframe(0, false);
+	} else if(message.operacao === "error"){
+		console.log("onMessage error++++++++++++");
+		validaSituacaoUsuario(message);
 	}
-}
-
-function onError(evt){
-	console.log(evt);
-}
-
-function onClose(evt){
-	console.log("onClose: " + evt.data);
 }
 
 function validaSituacaoUsuario(message){
@@ -101,7 +83,14 @@ function validaSituacaoUsuario(message){
 				}
 			}else{
 				$("#online").css("display", "none");
-				$("#offline").css("display", "block");						
+				$("#offline").css("display", "block");
+				if($("#initVideoCliente").length > 0){
+					$("#initVideoCliente").css("display", "none");
+					$("#iniciar").css("display", "none");
+				}
+				if($("#endVideoPaciente").length > 0){
+					$("#endVideoPaciente").css("display", "none");
+				}
 			}
 		}				
 	});
