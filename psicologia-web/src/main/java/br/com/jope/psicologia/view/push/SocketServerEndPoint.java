@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,10 +31,6 @@ import br.com.jope.psicologia.view.message.MessageWebSocket;
 public class SocketServerEndPoint {
 
 	private static Logger logger = Logger.getLogger(SocketServerEndPoint.class.getName());
-	private static Map<String, Set<Session>> mapPeers = Collections.synchronizedMap(new LinkedHashMap<String, Set<Session>>()); 
-	private Session session;
-    private static Set<SocketServerEndPoint> socketEndpoints = new CopyOnWriteArraySet<>();
-	
 	private static Map<String, Set<SocketUsuario>> clients = Collections.synchronizedMap(new LinkedHashMap<String, Set<SocketUsuario>>());
 
 	@OnMessage
@@ -151,34 +146,7 @@ public class SocketServerEndPoint {
     	}
     	return new HashSet<>();
     }
-    
-    void addMapPeers(String hash, Session session) {
-    	if(!mapPeers.containsKey(hash)) {
-    		Set<Session> peers = new HashSet<>();
-    		peers.add(session);
-    		mapPeers.put(hash, peers);
-    	}else {
-    		mapPeers.get(hash).add(session);
-    	}
-    }
-    
-    void removeMapPeers(Session session, String hash) {
-    	if(mapPeers.containsKey(hash)) {
-    		mapPeers.get(hash).remove(session);
-    	}
-    }
-    
-    Set<Session> loadMapPeers(String hash) {
-		return mapPeers.containsKey(hash) ? mapPeers.get(hash) : null;
-    }
 
-    MessageWebSocket createMensagem(String hash, String message) {
-    	MessageWebSocket retorno = new MessageWebSocket();
-    	retorno.setHash(hash);
-    	retorno.setMessage(message);
-    	return retorno;
-    }
-    
     static void broadcast(MessageWebSocket message, String hash) {
     	try {
 			Set<SocketUsuario> socketUsuarios = loadSocketUsuarios(hash);
@@ -193,28 +161,12 @@ public class SocketServerEndPoint {
     	}
     }
     
-    static void broadcast(MessageWebSocket message, Session session) {
-    	try {
-	    	for (SocketServerEndPoint socketServerEndPoint : socketEndpoints) {
-	    		if(!session.equals(socketServerEndPoint.session)) {
-	    			synchronized (socketServerEndPoint) {
-	    				socketServerEndPoint.session.getBasicRemote().sendObject(message);
-	    			}	    			
-	    		}
-			}
-    	} catch (IOException | EncodeException e) {
-    		logger.log(Level.SEVERE, e.getLocalizedMessage());
-    	}
-    }
-    
-    MessageWebSocket convertJsonToObject(String message) {
+    MessageWebSocket convertJsonToObject(String message) throws IOException {
     	try {
     		ObjectMapper mapper = new ObjectMapper();
 			return mapper.readValue(message, MessageWebSocket.class);
 		} catch (JsonParseException | JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE, e.getLocalizedMessage());
 		}
     	return null;
     }

@@ -94,12 +94,6 @@
 		    <version>2.8.0</version>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework</groupId> -->
-<!-- 			<artifactId>spring-messaging</artifactId> -->
-<!-- 			<version>${spring.version}</version> -->
-<!-- 		</dependency> -->
-
 		<!-- Security (used for CSRF protection only) -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
