@@ -1,20 +1,14 @@
 package br.com.jope.psicologia.controller;
 
 import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,65 +23,9 @@ import br.com.jope.psicologia.vo.UsuarioVO;
 public class AbstractController implements Serializable {
 
 	private static final long serialVersionUID = -4808859477511429595L;
-	private static Logger logger = Logger.getLogger(AbstractController.class.getName());
 
-	private static final String WEB_SOCKET_ADDRESS = "ws://%s:%s/psicologia-web/ws/%s";
-	private static final String WEBSOCKETADDRESSPINGPONG = "ws://%s:%s/psicologia-web/pingpong/%s";
-	private static final String WEBSOCKETADDRESSPSIPAC = "ws://%s:%s/psicologia-web/webtrc/%s";
 	private transient Map<String, SocketClientEndPoint> mapClients = Collections.synchronizedMap(new LinkedHashMap<String, SocketClientEndPoint>());
 	private transient List<Message> messages;
-	
-	protected void initializeWebSocket(HttpServletRequest request, String hashSessao) {
-//		try {
-//			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-//			String urlPingPong = String.format(WEB_SOCKET_ADDRESS, parametro);
-//			SocketClientEndPoint client = new SocketClientEndPoint(new URI(urlPingPong));
-//			client.addMessageHandler(new SocketClientEndPoint.MessageHandler() {
-//				public void handleMessage(String message) {
-//					return;
-//				}
-//			});
-//			
-//			addMapClients(hashSessao, client);
-//			
-//		} catch (URISyntaxException e) {
-//			logger.log(Level.SEVERE, e.getMessage());
-//		}
-    }
-	
-	protected void initializeWebSocketWebRTC(HttpServletRequest request, String hashSessao) {
-//		try {
-//			String[] parametro = new String[] {request.getServerName(), String.valueOf(request.getServerPort()), hashSessao};
-//			String urlPsiPac= String.format(WEBSOCKETADDRESSPSIPAC, parametro);
-//			WebRTCEventSocketClient clientVideoPsiPac = new WebRTCEventSocketClient(new URI(urlPsiPac));
-//			clientVideoPsiPac.addMessageHandler(new WebRTCEventSocketClient.MessageHandler() {
-//				public void handleMessage(String message) {
-//					return;
-//				}
-//			});				
-//		} catch (URISyntaxException e) {
-//			logger.log(Level.SEVERE, e.getMessage());
-//		}
-	}
-	
-	@SuppressWarnings("unused")
-	protected void notificaCliente(HttpServletRequest request, String hashSessao, Integer velocidade, boolean playStop) {
-		try {
-			SocketClientEndPoint client = loadMapClient(hashSessao);
-			if(Util.isEmpty(client)) {
-				initializeWebSocket(request, hashSessao);
-			}
-			
-			String mensagem = "{\"operacao\":\"pingpong\", \"velocidade\":\"" + velocidade + "\",\"playStop\":\"" + playStop + "\"}";
-			JSONObject jsonObject = new JSONObject(mensagem);
-			
-			if(!Util.isEmpty(client)) {
-				client.sendMessage(mensagem);
-			}
-		} catch (JSONException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
-	}
 	
 	protected void addMessages(Model model, MessageType messageType, boolean multipleMessage, String keyMsg){
 		criaMessage(messageType, multipleMessage, keyMsg);

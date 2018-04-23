@@ -105,11 +105,10 @@ public class SessaoController extends AbstractController {
 			loadDadoUltimaMovimentacao(sessao, formularioSessao);
 			formularioSessao.setNuSessao(sessao.getNuSessao());
 			String hashSessao = Util.encrypt(String.valueOf(sessao.getCliente().getUsuario().getNuUsuario()));
-			model.addAttribute("sessao", sessao);
+			model.addAttribute("nuSessao", sessao.getNuSessao());
 			model.addAttribute(FORMULARIO_SESSAO, formularioSessao);
 			model.addAttribute("hashSessao", hashSessao);
-			initializeWebSocket(request, hashSessao);
-			initializeWebSocketWebRTC(request, hashSessao);
+			model.addAttribute("nuUsuario", sessao.getMedico().getUsuario().getNuUsuario());
 		} catch (BussinessException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 		}

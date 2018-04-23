@@ -10,6 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="resources/css/styles/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/psi.css">
+    <link rel="stylesheet" href="resources/css/sb-admin-2.min.css">
     
     <link rel="icon" href="resources/imagens/logo.png">
     

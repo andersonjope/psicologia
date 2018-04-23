@@ -39,10 +39,14 @@ public class SocketServerEndPoint {
 	private static Map<String, Set<SocketUsuario>> clients = Collections.synchronizedMap(new LinkedHashMap<String, Set<SocketUsuario>>());
 
 	@OnMessage
-    public MessageWebSocket onMessage(MessageWebSocket message, Session session, @PathParam("hash") String hash) {
+    public MessageWebSocket onMessage(String message1, Session session, @PathParam("hash") String hash) {
+		MessageWebSocket message = null;
         try {
-        	Thread.sleep(500);
+        	Thread.sleep(200);
         	synchronized(this) {
+        		System.out.println("message : " + message1);
+
+        		message = convertJsonToObject(message1);
         		if(!Util.isEmpty(message.getOperacao()) && message.getOperacao().equals("connection")) {
         			Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(hash);
         			Map<String, String> users = new LinkedHashMap<>();
@@ -61,7 +65,6 @@ public class SocketServerEndPoint {
         			}
         			message.setUsers(users);
         		}
-        		
         		broadcast(message, hash);        		
         	}
         } catch (Exception e) {

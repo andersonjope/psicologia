@@ -6,11 +6,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#showBotaoVoltar").removeAttr("style");
-	});
-</script>
 </head>
 <body>
 	<input type="hidden" id="origem" value="psi_pac">
@@ -29,14 +24,38 @@
 	    	</div>
 	    </div>
 		<div id="videos" class="form-group">
-			<div class="col-sm-12">
+			<div class="col-sm-8">
 		    	<video id="remoteVideo" autoplay></video>
 		    	<video id="localVideo" autoplay muted></video>
 		    </div>
+		    <div class="col-sm-4" style="float: left;">
+				<div id="accordion">
+					<div class="card">
+						<div id="collapseOne" class="collapse show" data-parent="#accordion">
+							<div class="card-body">
+							
+								<div class="chat-panel panel panel-default">
+			                        <div id="scroltop" class="panel-body">
+			                            <div id="htmlMensagem"></div>
+			                        </div>
+			                        <div class="panel-footer">
+			                            <div class="input-group">
+			                                <input style="display: none;" id="inputMensagem" type="text" maxlength="250" class="form-control input-sm" placeholder="Digite a mensagem aqui..." />
+			                                <span class="input-group-btn">
+			                                    <button style="display: none;" id="btEnviarMensagem" class="btn btn-warning" id="btn-chat">ENVIAR</button>
+			                                </span>
+			                            </div>
+			                        </div>
+			                    </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 	    </div>
-	
+	    
 		<div class="form-group">
-			<div class="col-sm-12">
+			<div class="col-sm-12" style="float: left">
 				<button id="buttonAccordion" class="buttonAccordion"></button>
 				<div class="painelVideoBolinha">
 					<div id="frame" style="width:100%; height:100%;"></div>
@@ -48,6 +67,18 @@
 <body>	
 	<script type="text/javascript">
 		urlWebSocket("${hashSessao}");
+		
+		$(document).ready(function() {
+			$("#showBotaoVoltar").removeAttr("style");
+			
+			carregaMensagens("${nuSessao}");
+			
+			$("#btEnviarMensagem").click(function() {
+				enviarMensagem("${nuSessao}", "${nuUsuario}");
+			});
+		});
+		
+		
 	</script>
 	
 </html>

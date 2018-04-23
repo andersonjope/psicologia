@@ -20,6 +20,7 @@ public class MessageWebSocket implements Serializable {
 	private String velocidade;
 	private boolean closeConnection;
 	private String playStop;
+	private String nuSessao;
 	
 	public String getUser() {
 		return user;
@@ -105,6 +106,12 @@ public class MessageWebSocket implements Serializable {
 	}
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
+	}
+	public String getNuSessao() {
+		return nuSessao;
+	}
+	public void setNuSessao(String nuSessao) {
+		this.nuSessao = nuSessao;
 	}
 	
 }

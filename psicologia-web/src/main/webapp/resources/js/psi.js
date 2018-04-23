@@ -1,7 +1,5 @@
 'use strict';
 
-var wsPingPong = "";
-var wsWebRtc = "";
 var urlWS = "";
 var ws = null;
 var context = "/psicologia-web";
@@ -34,9 +32,6 @@ $(document).ready(function() {
 });
 
 function urlWebSocket(hash){
-	wsPingPong = "ws://" + document.location.host + context + "/pingpong/" + hash;
-	wsWebRtc =  "ws://" + document.location.host + context + "/webtrc/" + hash;
-	
 	urlWS =  "ws://" + document.location.host + context + "/ws/" + hash;
 	
 	ws = new WebSocket(urlWS);
@@ -67,6 +62,8 @@ function onMessage(evt){
 	} else if(message.operacao === "error"){
 		console.log("onMessage error++++++++++++");
 		validaSituacaoUsuario(message);
+	} else if(message.operacao === "mensagem"){
+		carregaMensagens(message.nuSessao);
 	}
 }
 
@@ -77,6 +74,8 @@ function validaSituacaoUsuario(message){
 			if(value === "true"){
 				$("#online").css("display", "block");
 				$("#offline").css("display", "none");
+				$("#inputMensagem").css("display", "block");
+				$("#btEnviarMensagem").css("display", "block");
 				if($("#initVideoCliente").length > 0){
 					$("#initVideoCliente").css("display", "block");
 					$("#iniciar").css("display", "block");
@@ -84,6 +83,8 @@ function validaSituacaoUsuario(message){
 			}else{
 				$("#online").css("display", "none");
 				$("#offline").css("display", "block");
+				$("#inputMensagem").css("display", "none");
+				$("#btEnviarMensagem").css("display", "none");
 				if($("#initVideoCliente").length > 0){
 					$("#initVideoCliente").css("display", "none");
 					$("#iniciar").css("display", "none");
@@ -94,4 +95,56 @@ function validaSituacaoUsuario(message){
 			}
 		}				
 	});
+}
+
+function carregaMensagens(nuSessao){
+	$.ajax({
+        url: "http://" + document.location.host + context + "/loadMensagemSessao",
+        data: "nuSessao=" + nuSessao,
+        type: "GET",
+        success: function(data) {
+        	var li = "";
+        	$.each(data, function(key, value) {
+	        	if(value.tipoUsuario === "psi"){
+	        		li += "<li class='left clearfix'>" +
+                        "<div class='chat-body clearfix'>" +
+                            "<p>" + 
+                            	value.deMensagem +
+                            "</p>" +
+                        "</div>" +
+                    "</li>"
+	        	}else if(value.tipoUsuario === "pac"){
+	        		li += "<li class='right clearfix'>" +
+                        "<div class='chat-body clearfix'>" +
+                            "<p style='text-align: right;'>" + 
+                            	value.deMensagem +
+                            "</p>" +
+                        "</div>" +
+                    "</li>"
+	        	}
+        	});
+        	$("#htmlMensagem").html("<ul class='chat'>" + li + "</ul>");
+        	$("#scroltop").animate({ scrollTop: $("#scroltop")[0].scrollHeight}, 1000);
+        }
+    });
+}
+
+function enviarMensagem(nuSessao, nuUsuario){
+	var inputMensagem = $("#inputMensagem").val();
+	if(inputMensagem != ""){
+		$.ajax({
+			url: "http://" + document.location.host + context + "/incluirMensagemSessao",
+			data: "nuSessao=" + nuSessao + "&nuUsuario=" + nuUsuario + "&mensagem=" +$("#inputMensagem").val(),
+			type: "POST",
+			success: function(data) {
+				$("#inputMensagem").val("");
+				if(data == "OK"){
+					ws.send(JSON.stringify({
+						"operacao" : "mensagem",
+						"nuSessao" : nuSessao
+					}));
+				}
+			}
+		});		
+	}
 }

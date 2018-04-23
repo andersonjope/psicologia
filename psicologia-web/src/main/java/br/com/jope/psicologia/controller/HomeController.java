@@ -42,7 +42,7 @@ public class HomeController extends AbstractController {
 					List<Sessao> sessaoClienteList = sessaoService.loadSessaoCliente(usuario.getNuUsuario());
 					if(!Util.isEmpty(sessaoClienteList)) {
 						Sessao sessao = sessaoClienteList.get(0);
-						model.addAttribute("sessao", sessao);
+						model.addAttribute("nuSessao", sessao.getNuSessao());
 						if(Util.isEmpty(sessao.getDhFinalSessao())) {
 							model.addAttribute("sessaoAberta", true);							
 						}else {

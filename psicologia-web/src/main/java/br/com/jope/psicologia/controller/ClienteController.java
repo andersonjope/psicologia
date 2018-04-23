@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.enumeration.EnumPerfil;
@@ -46,12 +47,12 @@ public class ClienteController extends AbstractController {
 	private EmailService emailService;
 	
 	@RequestMapping(value="/cliente", method = RequestMethod.GET)
-	public String cliente(Model model, HttpServletRequest request) {
+	public String cliente(Model model, HttpServletRequest request, @RequestParam("nuSessao") Long nuSessao) {
 		UsuarioVO usuario = loadUsuarioLogado(request);
 		String hashSessao = Util.encrypt(String.valueOf(usuario.getNuUsuario()));
 		model.addAttribute("hashSessao", hashSessao);
-		initializeWebSocket(request, hashSessao);
-		initializeWebSocketWebRTC(request, hashSessao);
+		model.addAttribute("nuSessao", nuSessao);
+		model.addAttribute("nuUsuario", usuario.getNuUsuario());
 		return "salaCliente";
 	}
 	

@@ -34,12 +34,12 @@
 <!-- 		<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Procurar</button> -->
 <!-- 	</form> -->
 
-	<c:if test="${not empty sessao and sessionScope.usuario.enumPerfil.ordinal() eq 2}">
+	<c:if test="${sessionScope.usuario.enumPerfil.ordinal() eq 2}">
 		<div class="jumbotron text-center">
 			<div class="bloco1">
 				<div class="bloco1image">
 					<c:if test="${sessaoAberta}">
-						<a href="cliente"> 
+						<a href="cliente?nuSessao=${nuSessao}"> 
 							<img src="resources/imagens/dooropen.png" align="middle" height="130" width="130" title="Sessão Aberta" >
 						</a>
 					</c:if>	

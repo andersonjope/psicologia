@@ -42,12 +42,14 @@ function loadInit(){
 			messageEndCall();
 		});
 		
-		$("#remoteVideo").on('loadedmetadata', function() {
-			if (pac_psi == origem) {
-				console.log("video paciente");
-				messageInitConnection("iniciarpacpsi");				
-			}
-		});
+//		$("#remoteVideo").on('loadedmetadata', function() {
+//			alert("oi");
+//			if (pac_psi == origem) {
+//				console.log("video paciente");
+//				processado = false;
+//							
+//			}
+//		});
 		
 	} else {
 		$("#initVideoCliente").css('display', 'none');
@@ -86,6 +88,7 @@ function messageVideo(message) {
 							answerCall(signal.acao);
 						}
 					}		
+//					setTimeout(messageInitConnection("iniciarpacpsi"),5000);
 				}else if (signal.processo == "iniciarpacpsi") {
 					$("#endVideoPaciente").css('display', 'block');
 					if (psi_pac == origem) {
@@ -155,7 +158,7 @@ function prepareCall(acao) {
 	} else if (acao === pac_psi) {
 		pc_pac_psi = new RTCPeerConnection(peerConnCfg);
 		pc_pac_psi.onicecandidate = onIceCandidateHandler;
-		peerConn.onaddstream = onAddStreamHandler;
+		pc_pac_psi.onaddstream = onAddStreamHandler;
 		return pc_pac_psi;
 	}
 };
@@ -169,11 +172,11 @@ function onIceCandidateHandler(evt) {
 		"candidate" : evt.candidate,
 		"uuid": uuid
 	}));
-};
+}
 
 function onAddStreamHandler(evt) {
   remoteVideo.src = window.URL.createObjectURL(evt.stream);
-};
+}
 
 function createAndSendOffer() {
 	peerConn.createOffer(function(offer) {
@@ -187,7 +190,7 @@ function createAndSendOffer() {
 					}));
 				}, function(error) { });
 	}, function(error) { });
-};
+}
 
 
 
@@ -210,7 +213,7 @@ function createAndSendAnswer() {
         function (error) { });
     },
     function (error) { });
-};
+}
 
 function createdDescription(description) {
 	  peerConn.setLocalDescription(description).then(function() {

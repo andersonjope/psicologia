@@ -11,6 +11,15 @@
 	<input type="hidden" id="origem" value="pac_psi">
 	<script type="text/javascript">
 		urlWebSocket("${hashSessao}");
+		
+		$(document).ready(function() {
+			carregaMensagens("${nuSessao}");
+			
+			$("#btEnviarMensagem").click(function() {
+				enviarMensagem("${nuSessao}", "${nuUsuario}");
+			});
+		});
+		
 	</script>	
 	
 	<div class="form-group" id="buttonPaciente">
@@ -22,10 +31,34 @@
     	</div>
     </div>
 	<div id="videos" class="form-group">
-		<div class="col-sm-10">
+		<div class="col-sm-8">
 	    	<video id="remoteVideo" autoplay ></video>
 	    	<video id="localVideo" autoplay muted></video>
 	    </div>
+	    <div class="col-sm-4" style="float: left;">
+			<div id="accordion">
+				<div class="card">
+					<div id="collapseOne" class="collapse show" data-parent="#accordion">
+						<div class="card-body">
+						
+							<div class="chat-panel panel panel-default">
+		                        <div id="scroltop" class="panel-body">
+		                            <div id="htmlMensagem"></div>
+		                        </div>
+		                        <div class="panel-footer">
+		                            <div class="input-group">
+		                                <input style="display: none;" id="inputMensagem" type="text" maxlength="250" class="form-control input-sm" placeholder="Digite a mensagem aqui..." />
+		                                <span class="input-group-btn">
+		                                    <button style="display: none;" id="btEnviarMensagem" class="btn btn-warning" id="btn-chat">ENVIAR</button>
+		                                </span>
+		                            </div>
+		                        </div>
+		                    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
     </div>
 </body>
     	
