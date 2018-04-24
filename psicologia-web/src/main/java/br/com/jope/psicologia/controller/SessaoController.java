@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.jope.psicologia.entity.Cliente;
@@ -28,6 +29,7 @@ import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.model.FormularioAlteraSessao;
 import br.com.jope.psicologia.model.FormularioCriaSessao;
 import br.com.jope.psicologia.services.ClienteService;
+import br.com.jope.psicologia.services.HistoricoSessaoService;
 import br.com.jope.psicologia.services.MedicoService;
 import br.com.jope.psicologia.services.SessaoService;
 import br.com.jope.psicologia.util.Util;
@@ -52,6 +54,10 @@ public class SessaoController extends AbstractController {
 	@Autowired(required=true)
 	@Qualifier("sessaoService")
 	private SessaoService sessaoService;
+	
+	@Autowired(required=true)
+	@Qualifier("historicoSessaoService")
+	private HistoricoSessaoService historicoSessaoService;
 	
 	@RequestMapping(value="/iniciarSessao", method = RequestMethod.GET)
 	public String iniciarSessao(Model model) {
@@ -190,6 +196,17 @@ public class SessaoController extends AbstractController {
 			logger.log(Level.SEVERE, e.getMessage());
 		}
 		return "sessao/controlesSessao";
+	}
+	
+	@RequestMapping(value="/incluirHistoricoAtendimentoSessao", method = RequestMethod.POST)
+	public @ResponseBody String incluirHistoricoAtendimentoSessao(Model model, @RequestParam("nuSessao") Long nuSessao, @RequestParam("nuUsuario") Long nuUsuario, @RequestParam("inicio") boolean inicio, @RequestParam("tipoUsuario") String tipoUsuario) {
+		try {
+			historicoSessaoService.incluirHistoricoSessao(nuSessao, nuUsuario, tipoUsuario, inicio);
+		} catch (BussinessException e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			return "NO";
+		}
+		return "OK";
 	}
 	
 }

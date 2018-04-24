@@ -9,6 +9,8 @@
 </head>
 <body>
 	<input type="hidden" id="origem" value="psi_pac">
+	<input type="hidden" id="nuSessao" value="${nuSessao}">
+	<input type="hidden" id="nuUsuario" value="${nuUsuario}">
 	<div class="col-sm-offset-2 col-sm-12" style="float: left;">
 		<div id="controles" >
 			<c:import url="/WEB-INF/views/sessao/controlesSessao.jsp"></c:import>
@@ -71,14 +73,12 @@
 		$(document).ready(function() {
 			$("#showBotaoVoltar").removeAttr("style");
 			
-			carregaMensagens("${nuSessao}");
+			carregaMensagens($("#nuSessao").val());
 			
 			$("#btEnviarMensagem").click(function() {
-				enviarMensagem("${nuSessao}", "${nuUsuario}");
+				enviarMensagem($("#nuSessao").val(), $("#nuUsuario").val());
 			});
 		});
-		
-		
 	</script>
 	
 </html>

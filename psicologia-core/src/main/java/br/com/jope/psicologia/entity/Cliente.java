@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -13,9 +15,13 @@ import javax.validation.Valid;
 
 @Entity
 @Table(name="cliente")
+@NamedQueries({
+	@NamedQuery(name=Cliente.FIND_CLIENTE_POR_USUARIO, query="select c from Cliente c join c.usuario u where u.nuUsuario = :nuUsuario ")
+})
 public class Cliente extends BaseEntity {
 
 	private static final long serialVersionUID = -7502111196152307044L;
+	public static final String FIND_CLIENTE_POR_USUARIO = "Cliente.findClientePorUsuario";
 	
 	@Id
 	@SequenceGenerator(name = "seq_nu_cliente", sequenceName = "seq_nu_cliente", allocationSize = 1, initialValue = 1)

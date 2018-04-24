@@ -51,16 +51,15 @@ function urlWebSocket(hash){
 function onMessage(evt){
 	var message = JSON.parse(evt.data);
 	if(message.operacao === "connection" || message.operacao === "close"){
-		console.log("onMessage connection---------");
+		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
 		loadIframe(0,false);
 	} else if(message.operacao === "pingpong"){
 		mensagePingPong(message);
 	} else if(message.operacao === "video"){
-		console.log("onMessage video++++++++++++");
 		messageVideo(message);
 	} else if(message.operacao === "error"){
-		console.log("onMessage error++++++++++++");
+		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
 	} else if(message.operacao === "mensagem"){
 		carregaMensagens(message.nuSessao);
@@ -147,4 +146,33 @@ function enviarMensagem(nuSessao, nuUsuario){
 			}
 		});		
 	}
+}
+
+function verificaPsiPacOnline(message){
+	var users = message.users;
+	var situacao = false;
+	$.each(users, function(key, value) {
+		if(key != $("#origem").val()){
+			if(value === "true"){
+				situacao = true;			
+			}else{
+				situacao = false;			
+			}
+		}
+	});
+	
+	setTimeout(registraHistoricoAtendimento(situacao),1000);						
+}
+
+function registraHistoricoAtendimento(situacao){
+	$.ajax({
+		url: "http://" + document.location.host + context + "/incluirHistoricoAtendimentoSessao",
+		data: "nuSessao=" + $("#nuSessao").val() + "&nuUsuario="+ $("#nuUsuario").val() + "&inicio=" + situacao + "&tipoUsuario=" + $("#origem").val(),
+		type: "POST",
+		success: function(data) {
+			if(data == "NO"){
+				registraHistoricoAtendimento(situacao);
+			}
+		}
+	});	
 }

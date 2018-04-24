@@ -9,19 +9,8 @@
 <body>
 	<div id="frame" style="width:100%; height:100%;"></div>
 	<input type="hidden" id="origem" value="pac_psi">
-	<script type="text/javascript">
-		urlWebSocket("${hashSessao}");
-		
-		$(document).ready(function() {
-			carregaMensagens("${nuSessao}");
-			
-			$("#btEnviarMensagem").click(function() {
-				enviarMensagem("${nuSessao}", "${nuUsuario}");
-			});
-		});
-		
-	</script>	
-	
+	<input type="hidden" id="nuSessao" value="${nuSessao}">
+	<input type="hidden" id="nuUsuario" value="${nuUsuario}">
 	<div class="form-group" id="buttonPaciente">
 		<div class="col-sm-offset-2 col-sm-10">
 			<img id="online" src="resources/imagens/status_away.png" style="display: none;" title="Online" align="middle" height="32" width="32" >
@@ -61,5 +50,17 @@
 		</div>
     </div>
 </body>
+	<script type="text/javascript">
+		urlWebSocket("${hashSessao}");
+		
+		$(document).ready(function() {
+			carregaMensagens($("#nuSessao").val());
+			
+			$("#btEnviarMensagem").click(function() {
+				enviarMensagem($("#nuSessao").val(), $("#nuUsuario").val());
+			});
+		});
+		
+	</script>
     	
 </html>
