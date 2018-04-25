@@ -69,11 +69,9 @@ function canvasCliente(velocidade, _playStop){
 	    this.x_speed = x;
 	    this.y_speed = y;
 	    if (this.x < 0) {   
-	    	 console.log('1');
 	        this.x = 0;
 	        this.x_speed = x_speed;
 	    } else if (this.x + this.width > width) {
-	    	console.log('2');
 	        this.x = width - this.width;
 	        this.x_speed = x_speed;
 	    }

@@ -81,7 +81,7 @@ public class HistoricoSessaoServiceCore extends BaseServiceCore<HistoricoSessao>
 						historicoSessao.setCliente(cliente);
 						historicoSessao.setDhInicioCliente(new Date());
 					}				
-				}else if(update){
+				}else if(update && !inicio){
 					Usuario usuario = usuarioService.getId(Usuario.class, nuUsuario);
 					historicoSessao.setUsuario(usuario);
 					historicoSessao.setDhEncerramento(new Date());

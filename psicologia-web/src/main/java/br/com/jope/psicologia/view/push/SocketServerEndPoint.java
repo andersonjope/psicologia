@@ -38,7 +38,6 @@ public class SocketServerEndPoint {
         try {
         	Thread.sleep(200);
         	synchronized(this) {
-        		System.out.println("message : " + message1);
         		MessageWebSocket message = convertJsonToObject(message1);
         		if(!Util.isEmpty(message.getOperacao()) && message.getOperacao().equals("connection")) {
         			Set<SocketUsuario> loadSocketUsuarios = loadSocketUsuarios(hash);
@@ -74,7 +73,6 @@ public class SocketServerEndPoint {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("hash") String hash) {
-        System.out.println("@ServerEndpoint onopen " + session.getId() + " hash : " + hash);
         Set<SocketUsuario> socketUsuarios = new HashSet<>();
         if(!Util.isEmpty(clients)) {
         	socketUsuarios = loadSocketUsuarios(hash);
@@ -88,7 +86,6 @@ public class SocketServerEndPoint {
 
     @OnClose
     public void onClose(Session session, @PathParam("hash") String hash) {
-    	System.out.println("@ServerEndpoint onclose " + session.getId() + " hash : " + hash);
     	encerraSessao(session, hash, "close");
     }
 

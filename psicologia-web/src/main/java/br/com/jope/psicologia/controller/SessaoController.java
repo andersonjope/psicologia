@@ -201,7 +201,9 @@ public class SessaoController extends AbstractController {
 	@RequestMapping(value="/incluirHistoricoAtendimentoSessao", method = RequestMethod.POST)
 	public @ResponseBody String incluirHistoricoAtendimentoSessao(Model model, @RequestParam("nuSessao") Long nuSessao, @RequestParam("nuUsuario") Long nuUsuario, @RequestParam("inicio") boolean inicio, @RequestParam("tipoUsuario") String tipoUsuario) {
 		try {
-			historicoSessaoService.incluirHistoricoSessao(nuSessao, nuUsuario, tipoUsuario, inicio);
+			synchronized (this) {
+				historicoSessaoService.incluirHistoricoSessao(nuSessao, nuUsuario, tipoUsuario, inicio);
+			}
 		} catch (BussinessException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			return "NO";

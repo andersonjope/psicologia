@@ -42,15 +42,6 @@ function loadInit(){
 			messageEndCall();
 		});
 		
-//		$("#remoteVideo").on('loadedmetadata', function() {
-//			alert("oi");
-//			if (pac_psi == origem) {
-//				console.log("video paciente");
-//				processado = false;
-//							
-//			}
-//		});
-		
 	} else {
 		$("#initVideoCliente").css('display', 'none');
 		$("#endVideoCliente").css('display', 'none');
@@ -88,7 +79,7 @@ function messageVideo(message) {
 							answerCall(signal.acao);
 						}
 					}		
-//					setTimeout(messageInitConnection("iniciarpacpsi"),5000);
+					setTimeout(messageInitConnection("iniciarpacpsi"),5000);
 				}else if (signal.processo == "iniciarpacpsi") {
 					$("#endVideoPaciente").css('display', 'block');
 					if (psi_pac == origem) {
@@ -245,9 +236,6 @@ function endCall() {
 	}
 	if($("#endVideoPaciente").length > 0){
 		$("#endVideoPaciente").css('display', 'none');		
-	}
-	if (psi_pac == origem) {
-		window.location.reload();		
 	}
 }
 

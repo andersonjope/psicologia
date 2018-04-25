@@ -80,6 +80,9 @@
 		
 		$("#encerrar").click(function() {
 		 	$("#acaoEncerrar").val('3');
+		 	ws.send(JSON.stringify({
+				"operacao" : "close"						
+			}));
 		 	$("#formSessaoEncerrar").submit();
 		});
 		

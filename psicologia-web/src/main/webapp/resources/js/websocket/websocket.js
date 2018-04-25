@@ -1,5 +1,4 @@
 function mensagePingPong(message) {
-	console.log("metodo mensagePingPong: " + message);
 	var velocidade = message.velocidade;
 	var playStop = message.playStop;
 	if (velocidade > 0) {
