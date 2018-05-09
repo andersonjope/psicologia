@@ -80,8 +80,10 @@ public class SessaoController extends AbstractController {
 		try {			
 			Medico medico = medicoService.loadMedicoPorUsuario(loadUsuarioLogado(request).getNuUsuario());
 			
-			if(sessaoService.isSessaoAberta(medico)) {
-				addMessages(model, MessageType.ERROR, false, "Sessão em andamento para o Paciente informado.");
+			List<Sessao> sessaoAberta = sessaoService.isSessaoAberta(medico);
+			if(!Util.isEmpty(sessaoAberta)) {
+				Sessao sessao = sessaoAberta.get(0);
+				addMessages(model, MessageType.ERROR, false, "Encerrar a sessão do paciente " + sessao.getCliente().getUsuario().getDeNome() + " antes de abrir uma nova sessão.");
 				loadDados(model);
 				return INICIAR_SESSAO;
 			}

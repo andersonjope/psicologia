@@ -53,6 +53,7 @@ function onMessage(evt){
 	if(message.operacao === "connection" || message.operacao === "close"){
 		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
+		carregaMensagens($("#nuSessao").val());
 		loadIframe(0,false);
 	} else if(message.operacao === "pingpong"){
 		mensagePingPong(message);

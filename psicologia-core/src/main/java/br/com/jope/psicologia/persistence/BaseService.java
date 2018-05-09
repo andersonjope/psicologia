@@ -9,17 +9,19 @@ import br.com.jope.psicologia.vo.ConsultaVO;
 
 public interface BaseService<E extends BaseEntity> extends Serializable {
 
-	public E alterar(E entity) throws BussinessException;
+	E alterar(E entity) throws BussinessException;
 	
-	public void excluir(E entity) throws BussinessException;
+	void excluir(E entity) throws BussinessException;
 	
-	public void incluir(E entity) throws BussinessException;
+	void incluir(E entity) throws BussinessException;
 	
 	@SuppressWarnings("rawtypes")
-	public E getId(Class entity,Serializable id) throws BussinessException;
+	E getId(Class entity,Serializable id) throws BussinessException;
 
-	public List<E> getAll()  throws BussinessException;
+	List<E> getAll()  throws BussinessException;
 	
-	public List<E> loadListNamedQuery(ConsultaVO consulta) throws BussinessException;
+	List<E> loadListNamedQuery(ConsultaVO consulta) throws BussinessException;
+	
+	void deleteAll(Class<E> entity, String where) throws BussinessException;
 	
 }

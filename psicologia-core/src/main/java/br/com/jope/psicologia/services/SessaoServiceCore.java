@@ -11,7 +11,6 @@ import br.com.jope.psicologia.entity.Medico;
 import br.com.jope.psicologia.entity.Sessao;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.persistence.BaseServiceCore;
-import br.com.jope.psicologia.util.Util;
 import br.com.jope.psicologia.vo.ConsultaVO;
 
 @Service("sessaoService")
@@ -53,13 +52,12 @@ public class SessaoServiceCore extends BaseServiceCore<Sessao> implements Sessao
 	}
 
 	@Override
-	public boolean isSessaoAberta(Medico medico) throws BussinessException {
+	public List<Sessao> isSessaoAberta(Medico medico) throws BussinessException {
 		try {
 			ConsultaVO consulta = new ConsultaVO(Sessao.FIND_SESSAO_ABERTA_MEDICO);
 			consulta.addParametros("nuMedico", medico.getNuMedico());
-			List<Sessao> list = super.loadListNamedQuery(consulta); 
 			
-			return !Util.isEmpty(list);
+			return super.loadListNamedQuery(consulta); 
 		} catch (BussinessException e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			throw new BussinessException(e.getMensagem());

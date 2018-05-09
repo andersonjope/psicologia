@@ -101,4 +101,17 @@ public abstract class BaseServiceCore<E extends BaseEntity> implements BaseServi
 		}
 	}
 	
+	@Override
+	@Transactional(readOnly=false)
+	public void deleteAll(Class<E> entity, String where) throws BussinessException {
+		try {		
+			repository.deleteAll(entity, where);
+		}catch (BussinessException be) {
+			throw be;
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, ex.getMessage());
+			throw new BussinessException(ex.getMessage());
+		}
+	}
+	
 }

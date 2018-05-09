@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.entity.HistoricoSessao;
 import br.com.jope.psicologia.entity.Medico;
+import br.com.jope.psicologia.entity.MensagemSessao;
 import br.com.jope.psicologia.entity.Sessao;
 import br.com.jope.psicologia.entity.Usuario;
 import br.com.jope.psicologia.exception.BussinessException;
@@ -42,6 +43,10 @@ public class HistoricoSessaoServiceCore extends BaseServiceCore<HistoricoSessao>
 	@Autowired(required=true)
 	@Qualifier("clienteService")
 	private ClienteService clienteService;
+	
+	@Autowired(required=true)
+	@Qualifier("mensagemSessaoService")
+	private MensagemSessaoService mensagemSessaoService;
 	
 	@Override
 	protected Class<HistoricoSessao> getBeanClass() {
@@ -85,6 +90,8 @@ public class HistoricoSessaoServiceCore extends BaseServiceCore<HistoricoSessao>
 					Usuario usuario = usuarioService.getId(Usuario.class, nuUsuario);
 					historicoSessao.setUsuario(usuario);
 					historicoSessao.setDhEncerramento(new Date());
+					
+					mensagemSessaoService.deleteAll(MensagemSessao.class, "nu_sessao=" + nuSessao);
 				}
 				
 				if(update) {

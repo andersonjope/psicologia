@@ -119,4 +119,14 @@ public class RepositoryServiceCore<E extends BaseEntity> implements RepositorySe
 		}
 	}
 
+	@Override
+	public void deleteAll(Class<E> entity, String where) throws BussinessException {
+		try {
+			getEm().createQuery(" delete from " + entity.getSimpleName() + " where " + where).executeUpdate();
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			throw new BussinessException(e.getMessage());
+		}
+	}
+
 }

@@ -12,10 +12,12 @@
 	<input type="hidden" id="nuSessao" value="${nuSessao}">
 	<input type="hidden" id="nuUsuario" value="${nuUsuario}">
 	<div class="col-sm-offset-2 col-sm-12" style="float: left;">
-		<div id="controles" >
+		<div id="controles">
 			<c:import url="/WEB-INF/views/sessao/controlesSessao.jsp"></c:import>
 		</div>
-		
+
+	</div>		
+	<div class="col-sm-offset-2 col-sm-12" style="float: left;">
 	    <div class="form-group">
 			<div class="col-sm-offset-2 col-sm-12">
 				<img id="online" src="resources/imagens/status_away.png" style="display: none;" title="Online" align="middle" height="32" width="32" >
@@ -58,7 +60,7 @@
 	    
 		<div class="form-group">
 			<div class="col-sm-12" style="float: left">
-				<button id="buttonAccordion" class="buttonAccordion"></button>
+				<button id="buttonAccordion" class="buttonAccordion">Visual Scan</button>
 				<div class="painelVideoBolinha">
 					<div id="frame" style="width:100%; height:100%;"></div>
 				</div>
@@ -72,9 +74,6 @@
 		
 		$(document).ready(function() {
 			$("#showBotaoVoltar").removeAttr("style");
-			
-			carregaMensagens($("#nuSessao").val());
-			
 			$("#btEnviarMensagem").click(function() {
 				enviarMensagem($("#nuSessao").val(), $("#nuUsuario").val());
 			});

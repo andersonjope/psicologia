@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.jope.psicologia.entity.Cliente;
-import br.com.jope.psicologia.entity.Medico;
 import br.com.jope.psicologia.exception.BussinessException;
 import br.com.jope.psicologia.persistence.BaseServiceCore;
 import br.com.jope.psicologia.util.Util;

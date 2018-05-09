@@ -15,36 +15,39 @@
 		<form:hidden path="nuVelocidadeMovimento" id="velocidade"/>
 	
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
+			<div class="col-sm-offset-2 col-sm-12">
 				<c:if test="${not formularioSessao.sessaoIniciada}">
-					<a id="iniciar" href="#" style="display: none;">
-						<img src="resources/imagens/play.png" title="Iniciar" align="middle" height="50" width="50" >
+					<a id="iniciar" href="#" style="float:left; display: none;">
+						<img src="resources/imagens/play.png" title="Iniciar" height="50" width="50" >
 					</a>
 				</c:if>
 				<c:if test="${formularioSessao.sessaoIniciada}">
 					<a id="pausar" href="#" >
-						<img src="resources/imagens/pause.png" title="Pausar" align="middle" height="50" width="50" >				
+						<img src="resources/imagens/pause.png" title="Pausar" height="50" width="50" >				
 					</a>
 				</c:if>
 				
 				<c:if test="${formularioSessao.sessaoIniciada}">
 					<a id="aumentar" href="#" >
-						<img src="resources/imagens/plus.png" title="Aumentar" align="middle" height="40" width="40" >		
+						<img src="resources/imagens/plus.png" title="Aumentar" height="40" width="40" >		
 					</a>
 					<a id="diminuir" href="#" >
-						<img src="resources/imagens/menos.png" title="Diminuir" align="middle" height="40" width="40" >		
+						<img src="resources/imagens/menos.png" title="Diminuir" height="40" width="40" >		
 					</a>
 					<c:if test="${not formularioSessao.somAtivo}">
 						<a id="somLigado" href="#" >
-							<img src="resources/imagens/autofligado.png" title="Som" align="middle" height="30" width="30" >		
+							<img src="resources/imagens/autofligado.png" title="Som" height="30" width="30" >		
 						</a>
 					</c:if>
 					<c:if test="${formularioSessao.somAtivo}">
 						<a id="somMudo" href="#" >
-							<img src="resources/imagens/autofdesligado.png" title="Mudo" align="middle" height="30" width="30">
+							<img src="resources/imagens/autofdesligado.png" title="Mudo" height="30" width="30">
 						</a>
 					</c:if>
 				</c:if>
+				<a id="encerrar" href="#" style="float: right;">
+					<img src="resources/imagens/closes.png" title="Encerrar sessão" height="50" width="50" >
+				</a>
 			</div>
 		</div>
 	</form:form>
@@ -52,16 +55,6 @@
 	<form:form id="formSessaoEncerrar" modelAttribute="formularioSessao" action="${alterarSessao}" method="POST">
 		<form:hidden path="nuSessao" />
 		<form:hidden path="acao" id="acaoEncerrar"/>
-	
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<c:if test="${formularioSessao.sessaoIniciada}">
-					<a id="encerrar" href="#" >
-						<img src="resources/imagens/closes.png" title="Encerrar sessão" align="middle" height="50" width="50" >
-					</a>
-				</c:if>
-			</div>
-		</div>
 	</form:form>
 	
 <script type="text/javascript">

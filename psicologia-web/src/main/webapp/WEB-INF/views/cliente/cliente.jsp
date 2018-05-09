@@ -54,8 +54,6 @@
 		urlWebSocket("${hashSessao}");
 		
 		$(document).ready(function() {
-			carregaMensagens($("#nuSessao").val());
-			
 			$("#btEnviarMensagem").click(function() {
 				enviarMensagem($("#nuSessao").val(), $("#nuUsuario").val());
 			});
