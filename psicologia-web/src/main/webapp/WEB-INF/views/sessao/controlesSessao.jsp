@@ -112,7 +112,7 @@
 		        	ws.send(JSON.stringify({
 						"operacao" : "pingpong",
 						"velocidade" : $("#velocidade").val(),
-						"playStop" : $("#playStop").val()						
+						"playStop" : $("#somAtivo").val()						
 					}));
 		            $("#controles").html(data);   
 		        }

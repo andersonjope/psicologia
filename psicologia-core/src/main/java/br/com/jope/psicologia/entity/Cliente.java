@@ -33,6 +33,12 @@ public class Cliente extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name="nu_usuario", nullable=false)
 	private Usuario usuario;
+	
+	@Column(name="de_nome_contato", length=100)
+	private String deNomeContato;
+	
+	@Column(name="co_telefone_contato", length=11)
+	private String coTelefoneContato;
 
 	public Long getNuCliente() {
 		return nuCliente;
@@ -48,6 +54,22 @@ public class Cliente extends BaseEntity {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+
+	public String getDeNomeContato() {
+		return deNomeContato;
+	}
+
+	public void setDeNomeContato(String deNomeContato) {
+		this.deNomeContato = deNomeContato;
+	}
+
+	public String getCoTelefoneContato() {
+		return coTelefoneContato;
+	}
+
+	public void setCoTelefoneContato(String coTelefoneContato) {
+		this.coTelefoneContato = coTelefoneContato;
 	}
 
 	@Override

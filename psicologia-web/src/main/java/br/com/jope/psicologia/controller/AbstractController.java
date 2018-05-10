@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.jope.psicologia.entity.Cliente;
 import br.com.jope.psicologia.entity.Usuario;
 import br.com.jope.psicologia.enumeration.EnumUsuario;
 import br.com.jope.psicologia.util.Util;
@@ -61,6 +62,12 @@ public class AbstractController implements Serializable {
 		}
 		if(!Util.isEmpty(usuario.getCoTelefone())) {
 			usuario.setCoTelefone(Util.removeCaracteres(usuario.getCoTelefone()));
+		}
+	}
+	
+	protected void removeCaracter(Cliente cliente) {
+		if(!Util.isEmpty(cliente.getCoTelefoneContato())) {
+			cliente.setCoTelefoneContato(Util.removeCaracteres(cliente.getCoTelefoneContato()));
 		}
 	}
 	

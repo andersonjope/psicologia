@@ -79,6 +79,7 @@ public class ClienteController extends AbstractController {
 			
 			Cliente cliente = formularioCliente.getCliente();
 			removeCaracter(cliente.getUsuario());
+			removeCaracter(cliente);
 			
 			if(!Util.isEmpty(formularioCliente.getDeNascimento())) {
 				cliente.getUsuario().setDtNascimento(Util.converteStringToDate(Util.FORMATO_DATA_DIA_MES_ANO, formularioCliente.getDeNascimento()));

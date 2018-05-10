@@ -20,7 +20,7 @@ public class EmailConfig {
 		mailSender.setHost("smtp.gmail.com");
 		mailSender.setPort(587);
 		mailSender.setUsername("equipamentospsi@gmail.com");
-		mailSender.setPassword("ePSI2018");
+		mailSender.setPassword("ePSI2018/*@");
 
 		Properties javaMailProperties = new Properties();
 		javaMailProperties.put("mail.smtp.starttls.enable", "true");

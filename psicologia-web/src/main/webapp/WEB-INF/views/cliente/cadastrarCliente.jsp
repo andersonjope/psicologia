@@ -72,6 +72,22 @@
 				<form:errors path="cliente.usuario.coTelefone" cssClass="error"/>
 			</div>
 		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="cliente.deNomeContato">Nome Contato de Emergência</label>
+			<div class="col-sm-10">
+				<form:input path="cliente.deNomeContato" id="deNomeContato" class="form-control"/>
+				<form:errors path="cliente.deNomeContato" cssClass="error"/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="cliente.coTelefoneContato">Telefone Contato de Emergência</label>
+			<div class="col-sm-10">
+				<form:input path="cliente.coTelefoneContato" id="coTelefoneContato" class="form-control masktelefone" placeholder="(xx)xxxxx-xxxx"/>
+				<form:errors path="cliente.coTelefoneContato" cssClass="error"/>
+			</div>
+		</div>
 	
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="deNascimento">Data de nascimento</label>
