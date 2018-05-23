@@ -51,10 +51,13 @@ function urlWebSocket(hash){
 function onMessage(evt){
 	var message = JSON.parse(evt.data);
 	if(message.operacao === "connection" || message.operacao === "close"){
+		if(message.operacao === "close"){
+			location.reload();
+		}
 		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
 		carregaMensagens($("#nuSessao").val());
-		loadIframe(0,false);
+		canvasCliente(0,false);
 	} else if(message.operacao === "pingpong"){
 		mensagePingPong(message);
 	} else if(message.operacao === "video"){
@@ -62,6 +65,7 @@ function onMessage(evt){
 	} else if(message.operacao === "error"){
 		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
+		location.reload();
 	} else if(message.operacao === "mensagem"){
 		carregaMensagens(message.nuSessao);
 	}

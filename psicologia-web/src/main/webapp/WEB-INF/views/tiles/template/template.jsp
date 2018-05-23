@@ -21,14 +21,6 @@
 		</c:forEach>
     </c:if>
     
-    <tilesx:useAttribute id="addScriptList" name="addScripts" classname="java.util.List" />
-    <c:if test="${not empty addScriptList}">
-		<c:forEach var="item" items="${addScriptList}">
-		    <c:if test="${item ne ''}">
-				<script type="text/javascript" src="${item}"></script>
-			</c:if>
-		</c:forEach>
-    </c:if>
     
 	<style type="text/css">
 		.error{
@@ -84,6 +76,15 @@
 		var serverPort = "${pageContext.request.serverPort}";
 		var contextPath = "${pageContext.request.contextPath}";
 	</script>
+	
+	<tilesx:useAttribute id="addScriptList" name="addScripts" classname="java.util.List" />
+    <c:if test="${not empty addScriptList}">
+		<c:forEach var="item" items="${addScriptList}">
+		    <c:if test="${item ne ''}">
+				<script type="text/javascript" src="${item}"></script>
+			</c:if>
+		</c:forEach>
+    </c:if>
 	
 </body>
 </html>

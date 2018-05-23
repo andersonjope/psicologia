@@ -7,7 +7,7 @@
 <head> 
 </head>
 <body>
-	<div id="frame" style="width:100%; height:100%;"></div>
+	<c:import url="/WEB-INF/views/canvas/canvas.jsp"/>
 	<input type="hidden" id="origem" value="pac_psi">
 	<input type="hidden" id="nuSessao" value="${nuSessao}">
 	<input type="hidden" id="nuUsuario" value="${nuUsuario}">

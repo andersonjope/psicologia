@@ -62,7 +62,7 @@
 			<div class="col-sm-12" style="float: left">
 				<button id="buttonAccordion" class="buttonAccordion">Visual Scan</button>
 				<div class="painelVideoBolinha">
-					<div id="frame" style="width:100%; height:100%;"></div>
+					<c:import url="/WEB-INF/views/canvas/canvas.jsp"></c:import>
 				</div>
 			</div>
 		</div>

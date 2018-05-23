@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CanvasController {
 	
-	@RequestMapping(value="/iframeCanvas", method = RequestMethod.GET)
+//	@RequestMapping(value="/iframeCanvas", method = RequestMethod.GET)
 	public String cliente(Model model, @RequestParam("time") String time) {
 		return "canvas";
 	}

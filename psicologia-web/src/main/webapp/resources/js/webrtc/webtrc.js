@@ -235,15 +235,12 @@ function endCall() {
 		$("#initVideoCliente").css('display', 'block');
 	}
 	if($("#endVideoPaciente").length > 0){
-		$("#endVideoPaciente").css('display', 'none');		
+		$("#endVideoPaciente").css('display', 'none');
+		location.reload();
 	}
 }
 
 function errorHandler(error) {
-}
-
-function onError(evt) {
-	avisoReload();
 }
 
 function loadUuid() {
@@ -253,9 +250,3 @@ function loadUuid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
-function onClose(){
-	avisoReload();
-}
-
-function avisoReload(){
-}
