@@ -20,6 +20,7 @@ function acaoAudio(acao, audio){
 
 function movimentacaoBall(x_pos, xBall){
 	if(xBall > 0){
+		console.log(x_pos + " : " + xBall);
 		if(x_pos > xBall && !direta){
 	    	direta = true;
 	    	esquerda = false;
