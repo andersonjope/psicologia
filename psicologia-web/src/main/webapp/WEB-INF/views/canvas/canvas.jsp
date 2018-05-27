@@ -4,14 +4,10 @@
 <%@ taglib prefix="tilesx" uri="http://tiles.apache.org/tags-tiles-extras" %>
 
 <div id="containerCanvas">
-	<canvas id="canvas" height="auto" width="auto" ></canvas>
+	<canvas id="canvas" height="150" width="auto"></canvas>
 </div>
 
 <script type="text/javascript">
-	document.getElementById("containerCanvas").width = (window.innerWidth - 30);
-	document.getElementById("containerCanvas").height = 150;
-
 	var canvas = document.getElementById("canvas");
-	canvas.width = document.getElementById("containerCanvas").width;
-	canvas.height = document.getElementById("containerCanvas").height;
+	canvas.width = document.getElementById("containerCanvas").offsetWidth;
 </script>

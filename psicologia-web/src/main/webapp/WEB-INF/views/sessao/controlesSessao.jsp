@@ -92,12 +92,14 @@
 		});
 		
 		$("#somLigado").click(function() {
+			audioInit(false);
 		 	$("#acao").val('6');
 		 	$("#somAtivo").val('true');
 		 	$("#formSessaoId").submit();
 		});
 		
 		$("#somMudo").click(function() {
+			audioInit(true);
 		 	$("#acao").val('7');
 		 	$("#somAtivo").val('false');
 		 	$("#formSessaoId").submit();

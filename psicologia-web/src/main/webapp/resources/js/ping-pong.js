@@ -19,6 +19,7 @@ var ball_y;
 var ball_r;
 var ball_vx;
 var ball_vy;
+var ball_xpos = 0;
 
 function ball(_ball_x, _ball_y, _ball_r, _ball_vx, _ball_vy){
 	ball_x = _ball_x;
@@ -48,12 +49,14 @@ function animate(velocidade) {
 	if (ball_y + ball_r + ball_vy > container.y + container.height || ball_y - ball_r + ball_vy < container.y) {
 		ball_vy = -ball_vy;
 	}
-//	console.log("ball_vx: " + ball_vx + " : ball_vy: " + ball_vy + " : ball_x: " + ball_x + " : ball_y: " + ball_y);
-
-	ball_x += ball_vx
-	ball_y += ball_vy
 	
-	movimentacaoBall(ball_x, container.width);
+	ball_x += ball_vx;
+	ball_y += ball_vy;
+	ball_xpos = ball_x;
+	
+	if(_playStop == "true"){		
+		setTimeout(movimentacaoBall(ball_x, (container.width / 2)),10);		
+	}
 	
 	if(requestId){
 		cancelAnimationFrame(requestId);
@@ -64,16 +67,19 @@ function animate(velocidade) {
 }
 
 function canvasCliente(_velocidade, _playStop){
+	var velocidade = parseInt(_velocidade);
 	var _ball_x = (canvas.width / 2);
 	var _ball_y = (canvas.height / 2);
 	var _ball_r = 20;
 	var _ball_vx = 0;
 	var _ball_vy = 0;
+	if(_playStop){
+		_ball_x = ball_xpos;		
+	}
 	
 	playStop(_playStop);
 	ball(_ball_x, _ball_y, _ball_r, _ball_vx, _ball_vy);
 	
-	var velocidade = parseInt(_velocidade);
 	ball_vx = parseInt(velocidade);
 	animate(velocidade);
 }
