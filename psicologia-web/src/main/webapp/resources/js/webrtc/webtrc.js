@@ -91,17 +91,14 @@ function messageVideo(message) {
 			}
 		} else {
 			if (signal.sdp) {
-				console.log("spd: " + signal.sdp);
 				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
 					  if(signal.sdp.type == 'offer') {
 						  peerConn.createAnswer().then(createdDescription).catch(errorHandler);
 					  }
 				  }).catch(errorHandler);
 			} else if (signal.candidate) {
-				console.log("candidate: " + signal.candidate);
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate)).catch(errorHandler);
 			} else if (signal.ice) {
-				console.log("ice: " + signal.ice);
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
 			} else if (signal.closeConnection) {
 				endCall();
@@ -251,7 +248,6 @@ function endCall() {
 }
 
 function errorHandler(error) {
-	console.log("error: " + error);
 }
 
 function loadUuid() {
