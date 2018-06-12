@@ -2,9 +2,7 @@
 
 'use strict';
 
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
-
-var hostname = window.location.hostname;
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 var constraints = {video: true, audio: true};
 var peerConnCfg = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'}, {'urls': 'stun:stun2.l.google.com:19302'}]};
@@ -93,14 +91,17 @@ function messageVideo(message) {
 			}
 		} else {
 			if (signal.sdp) {
+				console.log("spd: " + signal.sdp);
 				peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp)).then(function() {
 					  if(signal.sdp.type == 'offer') {
 						  peerConn.createAnswer().then(createdDescription).catch(errorHandler);
 					  }
 				  }).catch(errorHandler);
 			} else if (signal.candidate) {
+				console.log("candidate: " + signal.candidate);
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate)).catch(errorHandler);
 			} else if (signal.ice) {
+				console.log("ice: " + signal.ice);
 				peerConn.addIceCandidate(new RTCIceCandidate(signal.ice)).catch(errorHandler);
 			} else if (signal.closeConnection) {
 				endCall();
@@ -129,6 +130,12 @@ function initiateCall(processo) {
 			localVideoStream = stream;
 			localVideo.src = window.URL.createObjectURL(localVideoStream);
 			
+//			try {
+//				localVideo.src = URL.createObjectURL(localVideoStream);
+//			} catch (error) {
+//				localVideo.src = URL.createObjectURL(localVideoStream);
+//			}
+			
 			localVideoStream.getTracks().forEach(function(track) {
 				peerConn.addTrack(track, localVideoStream);
 			  });
@@ -144,12 +151,12 @@ function prepareCall(acao) {
 	if (acao === psi_pac) {
 		pc_psi_pac = new RTCPeerConnection(peerConnCfg);
 		pc_psi_pac.onicecandidate = onIceCandidateHandler;
-		pc_psi_pac.onaddstream = onAddStreamHandler;
+		pc_psi_pac.onaddstream = onTrackStreamHandler;
 		return pc_psi_pac;
 	} else if (acao === pac_psi) {
 		pc_pac_psi = new RTCPeerConnection(peerConnCfg);
 		pc_pac_psi.onicecandidate = onIceCandidateHandler;
-		pc_pac_psi.onaddstream = onAddStreamHandler;
+		pc_pac_psi.onaddstream = onTrackStreamHandler;
 		return pc_pac_psi;
 	}
 };
@@ -165,8 +172,12 @@ function onIceCandidateHandler(evt) {
 	}));
 }
 
-function onAddStreamHandler(evt) {
-  remoteVideo.src = window.URL.createObjectURL(evt.stream);
+function onTrackStreamHandler(evt) {
+	remoteVideo.src = window.URL.createObjectURL(evt.stream);
+//  	try {
+//	} catch (error) {
+//		remoteVideo.src = URL.createObjectURL(evt.stream);
+//	}
 }
 
 function createAndSendOffer() {
@@ -236,11 +247,11 @@ function endCall() {
 	}
 	if($("#endVideoPaciente").length > 0){
 		$("#endVideoPaciente").css('display', 'none');
-		location.reload();
 	}
 }
 
 function errorHandler(error) {
+	console.log("error: " + error);
 }
 
 function loadUuid() {

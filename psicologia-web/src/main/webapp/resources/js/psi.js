@@ -2,7 +2,6 @@
 
 var urlWS = "";
 var ws = null;
-var context = "/psicologia-web";
 var origem = null;
 
 $(document).ready(function() {
@@ -29,10 +28,20 @@ $(document).ready(function() {
 
 		});
 	}
+	
+	$("#btEnviarMensagem").click(function() {
+		enviarMensagem();
+	});
+	$("#inputMensagem").keypress(function(e) {
+		if(e.which == 13) {
+	    	enviarMensagem();	    	
+	    }
+	});
+	
 });
 
 function urlWebSocket(hash){
-	urlWS =  "ws://" + document.location.host + context + "/ws/" + hash;
+	urlWS =  "ws://" + document.location.host + contextPath + "/ws/" + hash;
 	
 	ws = new WebSocket(urlWS);
 	
@@ -52,7 +61,7 @@ function onMessage(evt){
 	var message = JSON.parse(evt.data);
 	if(message.operacao === "connection" || message.operacao === "close"){
 		if(message.operacao === "close"){
-			location.reload();
+			window.location.reload();
 		}
 		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
@@ -65,7 +74,7 @@ function onMessage(evt){
 	} else if(message.operacao === "error"){
 		verificaPsiPacOnline(message);
 		validaSituacaoUsuario(message);
-		location.reload();
+		window.location.reload();
 	} else if(message.operacao === "mensagem"){
 		carregaMensagens(message.nuSessao);
 	}
@@ -103,7 +112,7 @@ function validaSituacaoUsuario(message){
 
 function carregaMensagens(nuSessao){
 	$.ajax({
-        url: "http://" + document.location.host + context + "/loadMensagemSessao",
+        url: "http://" + document.location.host + contextPath + "/loadMensagemSessao",
         data: "nuSessao=" + nuSessao,
         type: "GET",
         success: function(data) {
@@ -133,12 +142,15 @@ function carregaMensagens(nuSessao){
     });
 }
 
-function enviarMensagem(nuSessao, nuUsuario){
+function enviarMensagem(){
+	var nuSessao = $("#nuSessao").val();
+	var nuUsuario = $("#nuUsuario").val();
 	var inputMensagem = $("#inputMensagem").val();
+	
 	if(inputMensagem != ""){
 		$.ajax({
-			url: "http://" + document.location.host + context + "/incluirMensagemSessao",
-			data: "nuSessao=" + nuSessao + "&nuUsuario=" + nuUsuario + "&mensagem=" +$("#inputMensagem").val(),
+			url: "http://" + document.location.host + contextPath + "/incluirMensagemSessao",
+			data: "nuSessao=" + nuSessao + "&nuUsuario=" + nuUsuario + "&mensagem=" + inputMensagem,
 			type: "POST",
 			success: function(data) {
 				$("#inputMensagem").val("");
@@ -171,7 +183,7 @@ function verificaPsiPacOnline(message){
 
 function registraHistoricoAtendimento(situacao){
 	$.ajax({
-		url: "http://" + document.location.host + context + "/incluirHistoricoAtendimentoSessao",
+		url: "http://" + document.location.host + contextPath + "/incluirHistoricoAtendimentoSessao",
 		data: "nuSessao=" + $("#nuSessao").val() + "&nuUsuario="+ $("#nuUsuario").val() + "&inicio=" + situacao + "&tipoUsuario=" + $("#origem").val(),
 		type: "POST",
 		success: function(data) {

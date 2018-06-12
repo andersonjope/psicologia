@@ -46,7 +46,7 @@
 			                            <div class="input-group">
 			                                <input style="display: none;" id="inputMensagem" type="text" maxlength="250" class="form-control input-sm" placeholder="Digite a mensagem aqui..." />
 			                                <span class="input-group-btn">
-			                                    <button style="display: none;" id="btEnviarMensagem" class="btn btn-warning" id="btn-chat">ENVIAR</button>
+			                                    <button style="display: none;" id="btEnviarMensagem" class="btn btn-warning">ENVIAR</button>
 			                                </span>
 			                            </div>
 			                        </div>
@@ -74,9 +74,6 @@
 		
 		$(document).ready(function() {
 			$("#showBotaoVoltar").removeAttr("style");
-			$("#btEnviarMensagem").click(function() {
-				enviarMensagem($("#nuSessao").val(), $("#nuUsuario").val());
-			});
 		});
 	</script>
 	

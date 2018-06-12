@@ -14,6 +14,12 @@
     
     <link rel="icon" href="resources/imagens/logo.png">
     
+    <script type="text/javascript">
+		var serverName = "${pageContext.request.serverName}";
+		var serverPort = "${pageContext.request.serverPort}";
+		var contextPath = "${pageContext.request.contextPath}";
+	</script>
+    
     <tilesx:useAttribute id="scriptList" name="scripts" classname="java.util.List" />
     <c:if test="${not empty scriptList}">
 		<c:forEach var="item" items="${scriptList}">
@@ -70,12 +76,6 @@
 			<tiles:insertAttribute name="footer"/>
 		</div>
 	</div>
-	
-	<script type="text/javascript">
-		var serverName = "${pageContext.request.serverName}";
-		var serverPort = "${pageContext.request.serverPort}";
-		var contextPath = "${pageContext.request.contextPath}";
-	</script>
 	
 	<tilesx:useAttribute id="addScriptList" name="addScripts" classname="java.util.List" />
     <c:if test="${not empty addScriptList}">

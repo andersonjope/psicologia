@@ -58,7 +58,7 @@
 					<th>Nome</th>
 					<th>Email</th>
 					<th>Telefone</th>
-					<th>Sesão</th>
+					<th>Sessão</th>
 				</tr>
 			</thead>
 			<tbody>
