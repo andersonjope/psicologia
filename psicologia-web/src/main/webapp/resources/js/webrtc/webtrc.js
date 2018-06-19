@@ -2,6 +2,9 @@
 
 'use strict';
 
+var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+var RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription;
+
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
 var constraints = {video: true, audio: true};
@@ -122,16 +125,16 @@ function messageEndCall() {
 
 function initiateCall(processo) {
 	peerConn = prepareCall(processo);
+	peerConn.oniceconnectionstatechange = onIceConnectionStateChange;
 	if (navigator.getUserMedia) {
 		navigator.getUserMedia(constraints, function(stream) {
 			localVideoStream = stream;
-			localVideo.src = window.URL.createObjectURL(localVideoStream);
 			
-//			try {
-//				localVideo.src = URL.createObjectURL(localVideoStream);
-//			} catch (error) {
-//				localVideo.src = URL.createObjectURL(localVideoStream);
-//			}
+			try {
+				localVideo.srcObject = localVideoStream;
+			} catch (error) {
+				localVideo.src = URL.createObjectURL(localVideoStream);
+			}
 			
 			localVideoStream.getTracks().forEach(function(track) {
 				peerConn.addTrack(track, localVideoStream);
@@ -142,18 +145,22 @@ function initiateCall(processo) {
 	} else {
 		alert("Sorry, your browser does not support WebRTC!");
 	}
-};
+}
+
+function onIceConnectionStateChange(ev) {
+    ev.currentTarget.iceConnectionState;
+}
 
 function prepareCall(acao) {
 	if (acao === psi_pac) {
 		pc_psi_pac = new RTCPeerConnection(peerConnCfg);
 		pc_psi_pac.onicecandidate = onIceCandidateHandler;
-		pc_psi_pac.onaddstream = onTrackStreamHandler;
+		pc_psi_pac.ontrack = onTrackStreamHandler;
 		return pc_psi_pac;
 	} else if (acao === pac_psi) {
 		pc_pac_psi = new RTCPeerConnection(peerConnCfg);
 		pc_pac_psi.onicecandidate = onIceCandidateHandler;
-		pc_pac_psi.onaddstream = onTrackStreamHandler;
+		pc_pac_psi.ontrack = onTrackStreamHandler;
 		return pc_pac_psi;
 	}
 };
@@ -170,11 +177,9 @@ function onIceCandidateHandler(evt) {
 }
 
 function onTrackStreamHandler(evt) {
-	remoteVideo.src = window.URL.createObjectURL(evt.stream);
-//  	try {
-//	} catch (error) {
-//		remoteVideo.src = URL.createObjectURL(evt.stream);
-//	}
+	if (remoteVideo.srcObject !== evt.streams[0]) {
+	    remoteVideo.srcObject = evt.streams[0];
+	  }
 }
 
 function createAndSendOffer() {
@@ -232,10 +237,12 @@ function endCall() {
 			localVideoStream.getTracks().forEach(function (track) {
 				track.stop();
 			});
+			localVideo.srcObject = null;
 			localVideo.src = "";
 		}
 		if (remoteVideo){
-			remoteVideo.src = "";	  
+			remoteVideo.srcObject = null;
+			remoteVideo.src = "";
 		}
 	}
 	if($("#endVideoCliente").length > 0){
@@ -245,6 +252,7 @@ function endCall() {
 	if($("#endVideoPaciente").length > 0){
 		$("#endVideoPaciente").css('display', 'none');
 	}
+	criaTagVideo();
 }
 
 function errorHandler(error) {

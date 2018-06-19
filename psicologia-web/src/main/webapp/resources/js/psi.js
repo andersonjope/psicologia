@@ -5,6 +5,7 @@ var ws = null;
 var origem = null;
 
 $(document).ready(function() {
+	criaTagVideo();
 	origem = $("#origem").val();
 	$(".hideMessage").delay(3000).hide(100);
 	
@@ -192,4 +193,10 @@ function registraHistoricoAtendimento(situacao){
 			}
 		}
 	});	
+}
+
+function criaTagVideo(){
+	var videoRemote = "<video id='remoteVideo' autoplay></video>";
+	var videoLocal = "<video id='localVideo' autoplay muted></video>";
+	$("#innerVideos").html(videoRemote + videoLocal);
 }

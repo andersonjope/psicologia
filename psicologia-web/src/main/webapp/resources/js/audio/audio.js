@@ -41,11 +41,9 @@ function movimentacaoBall(x_pos, width){
 function validaExecucaoAudio(){
 	if(_playStop == "true"){
 		if(audioDerection == "direita"){
-			console.log("direita");
 	    	acaoAudio('play', 'audioDireita');	    	
 	    	acaoAudio('pause', 'audioEsquerda');	    	
 		}else if(audioDerection == "esquerda"){
-			console.log("esquerda");
 	    	acaoAudio('play', 'audioEsquerda');	    	
 	    	acaoAudio('pause', 'audioDireita');	    	
 		}		

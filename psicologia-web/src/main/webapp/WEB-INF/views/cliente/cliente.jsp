@@ -21,8 +21,7 @@
     </div>
 	<div id="videos" class="form-group">
 		<div class="col-sm-8">
-	    	<video id="remoteVideo" autoplay ></video>
-	    	<video id="localVideo" autoplay muted></video>
+	    	<span id="innerVideos"></span>
 	    </div>
 	    <div class="col-sm-4" style="float: left;">
 			<div id="accordion">
